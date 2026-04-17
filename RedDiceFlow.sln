@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37111.16 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedDiceFlow", "RedDiceFlow\RedDiceFlow.csproj", "{119A8CDD-5E84-4FD5-8D86-B979D3F063CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{119A8CDD-5E84-4FD5-8D86-B979D3F063CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119A8CDD-5E84-4FD5-8D86-B979D3F063CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119A8CDD-5E84-4FD5-8D86-B979D3F063CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119A8CDD-5E84-4FD5-8D86-B979D3F063CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF3F3B28-8045-45B4-88B6-25EE77300B88}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,65 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RedDiceFlow.ViewModels"
+        x:Class="RedDiceFlow.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Red Dice Flow — Workstation"
+        Width="1000" Height="650"
+        MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#121212">
+
+    <Grid ColumnDefinitions="240, *" RowDefinitions="*, 32">
+        
+        <StackPanel Grid.Column="0" Grid.RowSpan="2" Background="#1A1A1A" Spacing="5">
+            <TextBlock Text="RED DICE FLOW" 
+                       Foreground="#C3073F" 
+                       FontSize="22" 
+                       FontWeight="ExtraBold" 
+                       Margin="20,40,20,30" 
+                       HorizontalAlignment="Center"/>
+            
+            <Button Content="Dashboard" Name="BtnDash" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
+            <Button Content="Board Games" Name="BtnGames" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
+            <Button Content="Analytics" Name="BtnAnalytic" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
+            <Button Content="Settings" Name="BtnSettings" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="40" Spacing="25">
+            <TextBlock Text="Вітаємо в системі менеджменту" 
+                       Foreground="White" 
+                       FontSize="28" 
+                       FontWeight="Bold"/>
+            
+            <StackPanel Spacing="10">
+                <Label Content="Швидкий запис для менеджера:" Foreground="#888888"/>
+                <TextBox Name="QuickNoteInput" 
+                         Width="400" 
+                         HorizontalAlignment="Left" 
+                         Watermark="Введіть назву гри..."/>
+            </StackPanel>
+
+            <Button Content="Додати запис" 
+                    Background="#C3073F" 
+                    Foreground="White" 
+                    Padding="20,10"
+                    Click="OnAddRecordClick"/>
+        </StackPanel>
+
+        <Border Grid.Column="1" Grid.Row="1" Background="#1A1A1A" BorderBrush="#252525" BorderThickness="0,1,0,0">
+            <DockPanel Margin="15,0">
+                <TextBlock Name="StatusDisplay" 
+                           Text="Система готова" 
+                           Foreground="#666666" 
+                           FontSize="11" 
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="v1.0-alpha" 
+                           Foreground="#444444" 
+                           FontSize="10" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Right"/>
+            </DockPanel>
+        </Border>
+        
+    </Grid>
+</Window>
