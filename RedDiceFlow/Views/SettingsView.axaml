@@ -1,9 +1,44 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="RedDiceFlow.Views.SettingsView">
-             
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock Text="SETTINGS PAGE" FontSize="24" Foreground="White"/>
-    </StackPanel>
     
+    <StackPanel Margin="30" Spacing="25">
+        <TextBlock Text="System Settings" Foreground="White" FontSize="32" FontWeight="Heavy"/>
+
+        <Border Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1" MaxWidth="600" HorizontalAlignment="Left">
+            <StackPanel Spacing="15">
+                <TextBlock Text="Manager Profile" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                <Grid ColumnDefinitions="Auto, 20, *">
+                    <Border Grid.Column="0" Width="60" Height="60" Background="#C3073F" CornerRadius="30">
+                        <TextBlock Text="AD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                    </Border>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="Admin Mode" Foreground="White" FontWeight="Bold"/>
+                        <TextBlock Text="reddice_admin@flow.com" Foreground="#888888" FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Border Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1" MaxWidth="600" HorizontalAlignment="Left">
+            <StackPanel Spacing="20">
+                <TextBlock Text="General Preferences" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0" Text="Dark Mode (Always On)" Foreground="#888888" VerticalAlignment="Center"/>
+                    <ToggleSwitch Grid.Column="1" IsChecked="True" IsEnabled="False"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0" Text="Enable Auto-Save" Foreground="#888888" VerticalAlignment="Center"/>
+                    <ToggleSwitch Grid.Column="1" IsChecked="True"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0" Text="System Notifications" Foreground="#888888" VerticalAlignment="Center"/>
+                    <ToggleSwitch Grid.Column="1" IsChecked="False"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
 </UserControl>

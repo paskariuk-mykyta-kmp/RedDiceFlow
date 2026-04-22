@@ -2,25 +2,73 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="RedDiceFlow.Views.DashboardView">
     
-    <StackPanel Margin="40" Spacing="25">
-        <TextBlock Text="Вітаємо в системі менеджменту" 
-                   Foreground="White" 
-                   FontSize="28" 
-                   FontWeight="Bold"/>
-            
-        <StackPanel Spacing="10">
-            <Label Content="Швидкий запис для менеджера:" Foreground="#888888"/>
-            <TextBox Name="QuickNoteInput" 
-                     Width="400" 
-                     HorizontalAlignment="Left" 
-                     Watermark="Введіть назву гри..."/>
-        </StackPanel>
+    <ScrollViewer>
+        <StackPanel Margin="30" Spacing="30">
+            <TextBlock Text="Dashboard" Foreground="White" FontSize="32" FontWeight="Heavy"/>
 
-        <Button Content="Додати запис" 
-                Background="#C3073F" 
-                Foreground="White" 
-                Padding="20,10"
-                Click="OnAddRecordClick"/>
-    </StackPanel>
-    
+            <Grid ColumnDefinitions="*, 20, *, 20, *">
+                <Border Grid.Column="0" Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Total Games" Foreground="#888888" FontSize="14" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="🎲" FontSize="20"/>
+                        </Grid>
+                        <TextBlock Text="124" Foreground="#C3073F" FontSize="36" FontWeight="Bold" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Active Loans" Foreground="#888888" FontSize="14" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="⏳" FontSize="20"/>
+                        </Grid>
+                        <TextBlock Text="8" Foreground="White" FontSize="36" FontWeight="Bold" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Free Tables" Foreground="#888888" FontSize="14" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="🪑" FontSize="20"/>
+                        </Grid>
+                        <TextBlock Text="12" Foreground="#4CAF50" FontSize="36" FontWeight="Bold" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="1.5*, 30, *">
+                <Border Grid.Column="0" Background="#1A1A1A" CornerRadius="12" Padding="25" BorderBrush="#252525" BorderThickness="1">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Quick Registration" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                        
+                        <StackPanel Spacing="5">
+                            <Label Content="Board Game Title:" Foreground="#888888"/>
+                            <TextBox Name="QuickNoteInput" Watermark="e.g. Terraforming Mars"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="5">
+                            <Label Content="Customer / Table Name:" Foreground="#888888"/>
+                            <TextBox Watermark="e.g. Table #5"/>
+                        </StackPanel>
+
+                        <Button Content="Register Loan" Background="#C3073F" Foreground="White" Padding="20,12" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="OnAddRecordClick"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="#1A1A1A" CornerRadius="12" Padding="25" BorderBrush="#252525" BorderThickness="1">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Recent Activity" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                        <Border BorderBrush="#252525" BorderThickness="0,0,0,1" Padding="0,0,0,10">
+                            <TextBlock Text="🟢 Loaned 'Monopoly' (14:20)" Foreground="#888888" FontSize="13"/>
+                        </Border>
+                        <Border BorderBrush="#252525" BorderThickness="0,0,0,1" Padding="0,0,0,10">
+                            <TextBlock Text="🔴 Returned 'Dixit' (13:45)" Foreground="#888888" FontSize="13"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -1,8 +1,95 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="RedDiceFlow.Views.GamesView">
-  Welcome to Avalonia!
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *" Margin="30">
+        
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel>
+                    <TextBlock Text="Board Games" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="8 games in the catalog" Foreground="#888888" FontSize="14"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="+ ADD GAME" Background="#C3073F" Foreground="White" Padding="20,10" FontWeight="Bold" CornerRadius="5"/>
+            </Grid>
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="Auto, *" Margin="0,0,0,20">
+            <TextBox Grid.Column="0" Width="300" Watermark="Search games..." Background="#1A1A1A" Foreground="White" Padding="10"/>
+            
+            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="20,0,0,0">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="ALL" Background="#C3073F" Foreground="White" CornerRadius="15" Padding="15,5"/>
+                    <Button Content="STRATEGY" Background="#1A1A1A" Foreground="#888888" CornerRadius="15" Padding="15,5"/>
+                    <Button Content="FAMILY" Background="#1A1A1A" Foreground="#888888" CornerRadius="15" Padding="15,5"/>
+                    <Button Content="COOPERATIVE" Background="#1A1A1A" Foreground="#888888" CornerRadius="15" Padding="15,5"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="2*, *, *, *, *, *" Margin="15,0,15,10">
+            <TextBlock Grid.Column="0" Text="GAME" Foreground="#888888" FontSize="12" FontWeight="Bold"/>
+            <TextBlock Grid.Column="1" Text="CATEGORY" Foreground="#888888" FontSize="12" FontWeight="Bold"/>
+            <TextBlock Grid.Column="2" Text="QTY" Foreground="#888888" FontSize="12" FontWeight="Bold"/>
+            <TextBlock Grid.Column="3" Text="PRICE" Foreground="#888888" FontSize="12" FontWeight="Bold"/>
+            <TextBlock Grid.Column="4" Text="STATUS" Foreground="#888888" FontSize="12" FontWeight="Bold"/>
+            <TextBlock Grid.Column="5" Text="ACTIONS" Foreground="#888888" FontSize="12" FontWeight="Bold"/>
+        </Grid>
+        
+        <Border Grid.Row="2" BorderBrush="#C3073F" BorderThickness="0,0,0,2" VerticalAlignment="Bottom" Margin="0,0,0,-5"/>
+
+        <ScrollViewer Grid.Row="3" Margin="0,15,0,0">
+            <StackPanel Spacing="5">
+                
+                <Border Background="#1A1A1A" CornerRadius="8" Padding="15,10">
+                    <Grid ColumnDefinitions="2*, *, *, *, *, *">
+                        <TextBlock Grid.Column="0" Text="Catan" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Strategy" Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="12" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="₴ 1,600" Foreground="#C3073F" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Border Grid.Column="4" Background="#1A3320" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left">
+                            <TextBlock Text="IN STOCK" Foreground="#4CAF50" FontSize="11" FontWeight="Bold"/>
+                        </Border>
+                        <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                            <TextBlock Text="✏️" FontSize="16" Cursor="Hand" ToolTip.Tip="Edit"/>
+                            <TextBlock Text="🗑️" FontSize="16" Cursor="Hand" ToolTip.Tip="Delete"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="#1A1A1A" CornerRadius="8" Padding="15,10">
+                    <Grid ColumnDefinitions="2*, *, *, *, *, *">
+                        <TextBlock Grid.Column="0" Text="Gloomhaven" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Dungeon Crawler" Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="0" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="₴ 5,400" Foreground="#C3073F" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Border Grid.Column="4" Background="#331A1A" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left">
+                            <TextBlock Text="OUT OF STOCK" Foreground="#FF5252" FontSize="11" FontWeight="Bold"/>
+                        </Border>
+                        <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                            <TextBlock Text="✏️" FontSize="16" Cursor="Hand"/>
+                            <TextBlock Text="🗑️" FontSize="16" Cursor="Hand"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="#1A1A1A" CornerRadius="8" Padding="15,10">
+                    <Grid ColumnDefinitions="2*, *, *, *, *, *">
+                        <TextBlock Grid.Column="0" Text="Arkham Horror" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Cooperative" Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="2" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="₴ 2,800" Foreground="#C3073F" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Border Grid.Column="4" Background="#332A1A" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left">
+                            <TextBlock Text="LOW STOCK" Foreground="#FFC107" FontSize="11" FontWeight="Bold"/>
+                        </Border>
+                        <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                            <TextBlock Text="✏️" FontSize="16" Cursor="Hand"/>
+                            <TextBlock Text="🗑️" FontSize="16" Cursor="Hand"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

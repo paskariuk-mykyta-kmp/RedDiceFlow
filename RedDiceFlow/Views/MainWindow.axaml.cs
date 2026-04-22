@@ -9,32 +9,32 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        
+
         MainContentArea.Content = new DashboardView();
+        BtnDash.Background = Avalonia.Media.Brush.Parse("#C3073F");
     }
 
     private void OnMenuClick(object? sender, RoutedEventArgs e)
     {
         if (sender is Button button)
         {
-            switch (button.Name)
-            {
-                case "BtnDash":
-                    MainContentArea.Content = new DashboardView();
-                    break;
-                case "BtnGames":
-                    MainContentArea.Content = new GamesView();
-                    break;
-                case "BtnAnalytic":
-                    MainContentArea.Content = new AnalyticsView();
-                    break;
-                case "BtnSettings":
-                    MainContentArea.Content = new SettingsView();
-                    break;
-            }
+            
+            BtnDash.Background = Avalonia.Media.Brush.Parse("#252525");
+            BtnGames.Background = Avalonia.Media.Brush.Parse("#252525");
+            BtnAnalytic.Background = Avalonia.Media.Brush.Parse("#252525");
+            BtnSettings.Background = Avalonia.Media.Brush.Parse("#252525");
 
             
-            StatusDisplay.Text = "Розділ: " + button.Content;
+            button.Background = Avalonia.Media.Brush.Parse("#C3073F");
+
+            
+            switch (button.Name)
+            {
+                case "BtnDash": MainContentArea.Content = new DashboardView(); break;
+                case "BtnGames": MainContentArea.Content = new GamesView(); break;
+                case "BtnAnalytic": MainContentArea.Content = new AnalyticsView(); break;
+                case "BtnSettings": MainContentArea.Content = new SettingsView(); break;
+            }
         }
     }
 }
