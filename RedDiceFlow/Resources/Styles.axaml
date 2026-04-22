@@ -1,0 +1,70 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+        <Color x:Key="MainRed">#C3073F</Color>
+        <Color x:Key="DarkBg">#1A1A1A</Color>
+        <Color x:Key="DeepBg">#121212</Color>
+        <Color x:Key="GrayBorder">#252525</Color>
+        <Color x:Key="TextWhite">#FFFFFF</Color>
+        <Color x:Key="TextDim">#888888</Color>
+        <Color x:Key="StatusGreen">#4CAF50</Color>
+
+        <SolidColorBrush x:Key="MainRedBrush" Color="{StaticResource MainRed}"/>
+        <SolidColorBrush x:Key="DarkBgBrush" Color="{StaticResource DarkBg}"/>
+        <SolidColorBrush x:Key="DeepBgBrush" Color="{StaticResource DeepBg}"/>
+        <SolidColorBrush x:Key="GrayBorderBrush" Color="{StaticResource GrayBorder}"/>
+        <SolidColorBrush x:Key="TextDimBrush" Color="{StaticResource TextDim}"/>
+    </Styles.Resources>
+
+    <Style Selector="TextBlock.Header">
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontWeight" Value="Heavy"/>
+        <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+    </Style>
+
+    <Style Selector="TextBlock.SubHeader">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+    </Style>
+
+    <Style Selector="Button.MenuButton">
+        <Setter Property="Background" Value="{StaticResource GrayBorder}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+        <Setter Property="Padding" Value="20,12"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.MenuButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource MainRed}"/>
+    </Style>
+
+    <Style Selector="TextBox.Modern">
+        <Setter Property="Background" Value="{StaticResource DarkBg}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="{StaticResource GrayBorder}"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+
+    <Style Selector="Border.TableRow">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Border.TableRow:pointerover">
+        <Setter Property="Background" Value="#1f1f1f"/>
+    </Style>
+
+</Styles>

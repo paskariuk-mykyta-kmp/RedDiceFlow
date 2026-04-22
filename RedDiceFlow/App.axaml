@@ -3,34 +3,38 @@
              x:Class="RedDiceFlow.App"
              xmlns:local="using:RedDiceFlow"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
+
+    <Application.Resources>
+        </Application.Resources>
+
     <Application.Styles>
-    <FluentTheme />
-    
-    <Style Selector="ScrollBar /template/ Border#TrackRoot">
-        <Setter Property="Background" Value="Transparent" />
-    </Style>
+        <FluentTheme />
+        
+        <StyleInclude Source="avares://RedDiceFlow/Resources/Styles.axaml"/>
+        
+        <Style Selector="ScrollBar /template/ Border#TrackRoot">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
 
-    <Style Selector="ScrollBar /template/ Thumb">
-        <Setter Property="Background" Value="#333333" />
-        <Setter Property="CornerRadius" Value="10" />
-    </Style>
+        <Style Selector="ScrollBar /template/ Thumb">
+            <Setter Property="Background" Value="#333333" />
+            <Setter Property="CornerRadius" Value="10" />
+        </Style>
 
-    <Style Selector="ScrollBar:pointerover /template/ Thumb">
-        <Setter Property="Background" Value="#C3073F" />
-    </Style>
+        <Style Selector="ScrollBar:pointerover /template/ Thumb">
+            <Setter Property="Background" Value="#C3073F" />
+        </Style>
 
-    <Style Selector="ScrollBar:vertical">
-        <Setter Property="Width" Value="8" />
-    </Style>
+        <Style Selector="ScrollBar:vertical">
+            <Setter Property="Width" Value="8" />
+        </Style>
 
-    <Style Selector="ScrollBar:horizontal">
-        <Setter Property="Height" Value="8" />
-    </Style>
-</Application.Styles>
+        <Style Selector="ScrollBar:horizontal">
+            <Setter Property="Height" Value="8" />
+        </Style>
+    </Application.Styles>
 </Application>

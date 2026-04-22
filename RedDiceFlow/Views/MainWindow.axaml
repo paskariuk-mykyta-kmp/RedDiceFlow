@@ -1,45 +1,38 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:RedDiceFlow.ViewModels"
         x:Class="RedDiceFlow.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Title="Red Dice Flow — Workstation"
-        Width="1000" Height="650"
-        MinWidth="900" MinHeight="600"
-        WindowStartupLocation="CenterScreen"
-        Background="#121212">
+        Title="Red Dice Flow - Store Manager"
+        Background="{StaticResource DeepBgBrush}"
+        Width="1200" Height="800"
+        WindowStartupLocation="CenterScreen">
 
-    <Grid ColumnDefinitions="240, *" RowDefinitions="*, 32">
-        
-       <StackPanel Grid.Column="0" Grid.RowSpan="2" Background="#1A1A1A" Spacing="5">
+    <Grid ColumnDefinitions="260, *">
+        <StackPanel Grid.Column="0" Background="{StaticResource DarkBgBrush}">
+            <StackPanel Margin="10,25">
+                <Image Source="avares://RedDiceFlow/Assets/logo.png" Width="180" Height="180"/>
+                <TextBlock Text="RED DICE FLOW" Foreground="{StaticResource MainRedBrush}" 
+                           FontSize="22" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+            </StackPanel>
             
-            <StackPanel Margin="10,5,10,5" Spacing="0"> <Image Source="avares://RedDiceFlow/Assets/logo.png" 
-                       Width="220" Height="220" 
-                       Stretch="Uniform"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,0"/> <TextBlock Text="RED DICE FLOW" 
-                           Foreground="#C3073F" 
-                           FontSize="24" FontWeight="ExtraBold" 
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,15"/> </StackPanel>
-            
-            <Button Content="Dashboard" Name="BtnDash" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#C3073F" Foreground="White" FontWeight="Bold"/>
-            <Button Content="Board Games" Name="BtnGames" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
-            <Button Content="Analytics" Name="BtnAnalytic" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
-            <Button Content="Settings" Name="BtnSettings" Click="OnMenuClick" Margin="10,2" HorizontalAlignment="Stretch" Background="#252525" Foreground="White"/>
+            <Button Content="Dashboard" Name="BtnDash" Classes="MenuButton" Click="OnMenuClick" Background="{StaticResource MainRedBrush}"/>
+            <Button Content="Inventory" Name="BtnGames" Classes="MenuButton" Click="OnMenuClick"/>
+            <Button Content="Analytics" Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick"/>
+            <Button Content="Settings" Name="BtnSettings" Classes="MenuButton" Click="OnMenuClick"/>
         </StackPanel>
 
-        <ContentControl Name="MainContentArea" Grid.Column="1" Grid.Row="0" Margin="20"/>
+        <Grid Grid.Column="1">
+            <TransitioningContentControl Name="MainContentArea">
+                <TransitioningContentControl.PageTransition>
+                    <CrossFade Duration="0:0:0.25" />
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
 
-        <Border Grid.Column="1" Grid.Row="1" Background="#1A1A1A" BorderBrush="#252525" BorderThickness="0,1,0,0">
-            <DockPanel Margin="15,0">
-                <TextBlock Name="StatusDisplay" 
-                           Text="System Status: Ready" 
-                           Foreground="#666666" 
-                           FontSize="11" 
-                           VerticalAlignment="Center"/>
-            </DockPanel>
-        </Border>
-        
+            <Border VerticalAlignment="Bottom" Background="{StaticResource DarkBgBrush}" Height="30" Padding="15,0">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Text="Store Management System Online" Foreground="{StaticResource StatusGreen}" FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="v1.0.5-final-ui" Foreground="{StaticResource TextDimBrush}" FontSize="11" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

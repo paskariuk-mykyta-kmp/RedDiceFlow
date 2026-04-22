@@ -2,43 +2,80 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="RedDiceFlow.Views.SettingsView">
     
-    <StackPanel Margin="30" Spacing="25">
-        <TextBlock Text="System Settings" Foreground="White" FontSize="32" FontWeight="Heavy"/>
+    <ScrollViewer>
+        <StackPanel Margin="30" Spacing="25">
+            <TextBlock Text="System Settings" Classes="Header"/>
 
-        <Border Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1" MaxWidth="600" HorizontalAlignment="Left">
-            <StackPanel Spacing="15">
-                <TextBlock Text="Manager Profile" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                <Grid ColumnDefinitions="Auto, 20, *">
-                    <Border Grid.Column="0" Width="60" Height="60" Background="#C3073F" CornerRadius="30">
-                        <TextBlock Text="AD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
-                    </Border>
-                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <TextBlock Text="Admin Mode" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock Text="reddice_admin@flow.com" Foreground="#888888" FontSize="12"/>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </Border>
+            <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="20" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" MaxWidth="650" HorizontalAlignment="Left">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Manager Account" Classes="SubHeader"/>
+                    <Grid ColumnDefinitions="Auto, 20, *, Auto">
+                        <Border Grid.Column="0" Width="60" Height="60" Background="{StaticResource MainRedBrush}" CornerRadius="30">
+                            <TextBlock Text="RD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+                        </Border>
+                        
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                            <TextBlock Text="Administrator Mode" Foreground="White" FontWeight="Bold"/>
+                            <TextBlock Text="session_admin_01@reddice.flow" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        </StackPanel>
 
-        <Border Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1" MaxWidth="600" HorizontalAlignment="Left">
-            <StackPanel Spacing="20">
-                <TextBlock Text="General Preferences" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                
-                <Grid ColumnDefinitions="*, Auto">
-                    <TextBlock Grid.Column="0" Text="Dark Mode (Always On)" Foreground="#888888" VerticalAlignment="Center"/>
-                    <ToggleSwitch Grid.Column="1" IsChecked="True" IsEnabled="False"/>
-                </Grid>
+                        <Button Grid.Column="3" Content="Logout" Classes="MenuButton" Width="100" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
 
-                <Grid ColumnDefinitions="*, Auto">
-                    <TextBlock Grid.Column="0" Text="Enable Auto-Save" Foreground="#888888" VerticalAlignment="Center"/>
-                    <ToggleSwitch Grid.Column="1" IsChecked="True"/>
-                </Grid>
+            <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="20" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" MaxWidth="650" HorizontalAlignment="Left">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="General Preferences" Classes="SubHeader"/>
+                    
+                    <Grid ColumnDefinitions="*, 150">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="Interface Language" Foreground="White" FontWeight="SemiBold"/>
+                            <TextBlock Text="Current: English (United States)" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="Change" Classes="MenuButton" HorizontalAlignment="Right"/>
+                    </Grid>
 
-                <Grid ColumnDefinitions="*, Auto">
-                    <TextBlock Grid.Column="0" Text="System Notifications" Foreground="#888888" VerticalAlignment="Center"/>
-                    <ToggleSwitch Grid.Column="1" IsChecked="False"/>
-                </Grid>
-            </StackPanel>
-        </Border>
-    </StackPanel>
+                    <Separator Background="{StaticResource GrayBorderBrush}"/>
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Dark Theme" Foreground="White" FontWeight="SemiBold"/>
+                            <TextBlock Text="Switch between dark and light modes" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsChecked="True" OnContent="On" OffContent="Off"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="20" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" MaxWidth="650" HorizontalAlignment="Left">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Automation &amp; Alerts" Classes="SubHeader"/>
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <TextBlock Text="Enable Auto-Save" Foreground="White" VerticalAlignment="Center"/>
+                        <ToggleSwitch Grid.Column="1" IsChecked="True"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <TextBlock Text="Desktop Notifications" Foreground="White" VerticalAlignment="Center"/>
+                        <ToggleSwitch Grid.Column="1" IsChecked="False"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, Auto">
+                        <TextBlock Text="Database Backup (Daily)" Foreground="White" VerticalAlignment="Center"/>
+                        <ToggleSwitch Grid.Column="1" IsChecked="True"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Button Content="Save All Changes" 
+                    Background="{StaticResource MainRedBrush}" 
+                    Foreground="White" 
+                    FontWeight="Bold" 
+                    Padding="30,15" 
+                    HorizontalAlignment="Left"/>
+
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

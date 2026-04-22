@@ -4,33 +4,92 @@
     
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="30">
-            <TextBlock Text="Performance Analytics" Foreground="White" FontSize="32" FontWeight="Heavy"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Business Intelligence" Classes="Header"/>
+                    <TextBlock Text="Real-time sales performance and store metrics" Foreground="{StaticResource TextDimBrush}" FontSize="14"/>
+                </StackPanel>
+                
+                <Border Grid.Column="1" Background="{StaticResource DarkBgBrush}" CornerRadius="20" Padding="15,5" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Last 30 Days" Foreground="White" VerticalAlignment="Center" FontSize="12"/>
+                        <TextBlock Text="▼" Foreground="{StaticResource MainRedBrush}" VerticalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
 
-            <Grid ColumnDefinitions="*, 20, *" RowDefinitions="300, 20, 300">
-                <Border Grid.Row="0" Grid.Column="0" Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1">
-                    <StackPanel Spacing="10">
-                        <TextBlock Text="Revenue Overview" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                        <TextBlock Text="Monthly earnings tracking" Foreground="#888888" FontSize="12"/>
-                        <Separator Background="#252525" Margin="0,10"/>
-                        <TextBlock Text="[ LINE CHART PLACEHOLDER ]" Foreground="#2A1015" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50" FontSize="20"/>
+            <Grid ColumnDefinitions="*, 20, *, 20, *, 20, *">
+                <Border Grid.Column="0" Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="15" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Conversion Rate" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <TextBlock Text="3.42%" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Text="+0.5% vs last month" Foreground="#4CAF50" FontSize="10"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="15" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Avg. Order Value" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <TextBlock Text="$142.50" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Text="+12% increase" Foreground="#4CAF50" FontSize="10"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="4" Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="15" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Customer LTV" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <TextBlock Text="$890.00" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Text="Steady growth" Foreground="{StaticResource TextDimBrush}" FontSize="10"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="6" Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="15" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Store Visits" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <TextBlock Text="12.4K" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,5"/>
+                        <TextBlock Text="-2% spike" Foreground="#C3073F" FontSize="10"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="2*, 20, *">
+                <Border Grid.Column="0" Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="25" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Revenue Trend" Classes="SubHeader"/>
+                        <Canvas Height="200" Margin="0,20">
+                            <Line StartPoint="0,0" EndPoint="600,0" Stroke="#252525" StrokeThickness="1"/>
+                            <Line StartPoint="0,50" EndPoint="600,50" Stroke="#252525" StrokeThickness="1"/>
+                            <Line StartPoint="0,100" EndPoint="600,100" Stroke="#252525" StrokeThickness="1"/>
+                            <Line StartPoint="0,150" EndPoint="600,150" Stroke="#252525" StrokeThickness="1"/>
+                            <Line StartPoint="0,200" EndPoint="600,200" Stroke="#444444" StrokeThickness="2"/>
+                            
+                            <Path Data="M 0,180 L 100,150 L 200,160 L 300,80 L 400,100 L 500,40 L 600,60" 
+                                  Stroke="{StaticResource MainRedBrush}" 
+                                  StrokeThickness="4" 
+                                  StrokeJoin="Round"/>
+                        </Canvas>
+                        <TextBlock Text="Total Sales Performance (USD)" Foreground="{StaticResource TextDimBrush}" HorizontalAlignment="Center" FontSize="12"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="0" Grid.Column="2" Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1">
-                    <StackPanel Spacing="10">
-                        <TextBlock Text="Popular Categories" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                        <TextBlock Text="Sales distribution by genre" Foreground="#888888" FontSize="12"/>
-                        <Separator Background="#252525" Margin="0,10"/>
-                        <TextBlock Text="[ PIE CHART PLACEHOLDER ]" Foreground="#2A1015" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50" FontSize="20"/>
-                    </StackPanel>
-                </Border>
+                <Border Grid.Column="2" Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="25" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1">
+                    <StackPanel Spacing="20" HorizontalAlignment="Center">
+                        <TextBlock Text="Sales by Genre" Classes="SubHeader" HorizontalAlignment="Left"/>
+                        
+                        <Grid>
+                            <Ellipse Width="150" Height="150" Stroke="#252525" StrokeThickness="15"/>
+                            <Arc Width="150" Height="150" Stroke="{StaticResource MainRedBrush}" StrokeThickness="15" StartAngle="0" SweepAngle="140"/>
+                            <Arc Width="150" Height="150" Stroke="#4CAF50" StrokeThickness="15" StartAngle="145" SweepAngle="80"/>
+                            <Arc Width="150" Height="150" Stroke="White" StrokeThickness="15" StartAngle="230" SweepAngle="120"/>
+                        </Grid>
 
-                <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#1A1A1A" CornerRadius="12" Padding="20" BorderBrush="#252525" BorderThickness="1">
-                    <StackPanel Spacing="10">
-                        <TextBlock Text="Loan Traffic" Foreground="White" FontSize="18" FontWeight="Bold"/>
-                        <TextBlock Text="Peak hours for board game rentals" Foreground="#888888" FontSize="12"/>
-                        <Separator Background="#252525" Margin="0,10"/>
-                        <TextBlock Text="[ BAR CHART PLACEHOLDER ]" Foreground="#2A1015" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50" FontSize="20"/>
+                        <StackPanel Spacing="5" Margin="0,10,0,0">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Ellipse Width="10" Height="10" Fill="{StaticResource MainRedBrush}"/>
+                                <TextBlock Text="Strategy (45%)" Foreground="White" FontSize="12"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Ellipse Width="10" Height="10" Fill="#4CAF50"/>
+                                <TextBlock Text="RPG / D&amp;D (30%)" Foreground="White" FontSize="12"/>
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>
