@@ -1,37 +1,54 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
     <Styles.Resources>
-        <Color x:Key="MainRed">#C3073F</Color>
-        <Color x:Key="DarkBg">#1A1A1A</Color>
-        <Color x:Key="DeepBg">#121212</Color>
-        <Color x:Key="GrayBorder">#252525</Color>
-        <Color x:Key="TextWhite">#FFFFFF</Color>
-        <Color x:Key="TextDim">#888888</Color>
-        <Color x:Key="StatusGreen">#4CAF50</Color>
+        <!-- Темна тема за замовчуванням -->
+        <Color x:Key="MainAccent">#C3073F</Color>
+        <Color x:Key="AppBg">#121212</Color>
+        <Color x:Key="PanelBg">#1A1A1A</Color>
+        <Color x:Key="BorderCol">#252525</Color>
+        <Color x:Key="BorderCol2">#333333</Color>
+        <Color x:Key="TextPrimary">#FFFFFF</Color>
+        <Color x:Key="TextSecondary">#666666</Color>
+        <Color x:Key="TextDimCol">#888888</Color>
+        <Color x:Key="AccentGreen">#00FF41</Color>
+        <Color x:Key="TableHeaderBg">#252525</Color>
+        <Color x:Key="HoverBg">#1F1F1F</Color>
+        <Color x:Key="BadgeBg">#252525</Color>
 
-        <SolidColorBrush x:Key="MainRedBrush" Color="{StaticResource MainRed}"/>
-        <SolidColorBrush x:Key="DarkBgBrush" Color="{StaticResource DarkBg}"/>
-        <SolidColorBrush x:Key="DeepBgBrush" Color="{StaticResource DeepBg}"/>
-        <SolidColorBrush x:Key="GrayBorderBrush" Color="{StaticResource GrayBorder}"/>
-        <SolidColorBrush x:Key="TextDimBrush" Color="{StaticResource TextDim}"/>
+        <SolidColorBrush x:Key="MainAccentBrush"    Color="{DynamicResource MainAccent}"/>
+        <SolidColorBrush x:Key="AppBgBrush"         Color="{DynamicResource AppBg}"/>
+        <SolidColorBrush x:Key="PanelBgBrush"       Color="{DynamicResource PanelBg}"/>
+        <SolidColorBrush x:Key="BorderBrush2"       Color="{DynamicResource BorderCol}"/>
+        <SolidColorBrush x:Key="BorderBrush3"       Color="{DynamicResource BorderCol2}"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush"   Color="{DynamicResource TextPrimary}"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="{DynamicResource TextSecondary}"/>
+        <SolidColorBrush x:Key="TextDimBrush"       Color="{DynamicResource TextDimCol}"/>
+        <SolidColorBrush x:Key="AccentGreenBrush"   Color="{DynamicResource AccentGreen}"/>
+        <SolidColorBrush x:Key="TableHeaderBgBrush" Color="{DynamicResource TableHeaderBg}"/>
+        <SolidColorBrush x:Key="HoverBgBrush"       Color="{DynamicResource HoverBg}"/>
+        <SolidColorBrush x:Key="BadgeBgBrush"       Color="{DynamicResource BadgeBg}"/>
+
+        <!-- Аліаси для старого коду -->
+        <SolidColorBrush x:Key="MainRedBrush"    Color="{DynamicResource MainAccent}"/>
+        <SolidColorBrush x:Key="DarkBgBrush"     Color="{DynamicResource PanelBg}"/>
+        <SolidColorBrush x:Key="DeepBgBrush"     Color="{DynamicResource AppBg}"/>
+        <SolidColorBrush x:Key="GrayBorderBrush" Color="{DynamicResource BorderCol}"/>
     </Styles.Resources>
 
     <Style Selector="TextBlock.Header">
         <Setter Property="FontSize" Value="32"/>
         <Setter Property="FontWeight" Value="Heavy"/>
-        <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
     </Style>
-
     <Style Selector="TextBlock.SubHeader">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
     </Style>
 
     <Style Selector="Button.MenuButton">
-        <Setter Property="Background" Value="{StaticResource GrayBorder}"/>
-        <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+        <Setter Property="Background" Value="{DynamicResource BorderBrush2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
         <Setter Property="Padding" Value="20,12"/>
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -41,15 +58,14 @@
             </Transitions>
         </Setter>
     </Style>
-
     <Style Selector="Button.MenuButton:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{StaticResource MainRed}"/>
+        <Setter Property="Background" Value="{DynamicResource MainAccentBrush}"/>
     </Style>
 
     <Style Selector="TextBox.Modern">
-        <Setter Property="Background" Value="{StaticResource DarkBg}"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="{StaticResource GrayBorder}"/>
+        <Setter Property="Background" Value="{DynamicResource PanelBgBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush2}"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="CornerRadius" Value="5"/>
     </Style>
@@ -62,9 +78,7 @@
             </Transitions>
         </Setter>
     </Style>
-
     <Style Selector="Border.TableRow:pointerover">
-        <Setter Property="Background" Value="#1f1f1f"/>
+        <Setter Property="Background" Value="{DynamicResource HoverBgBrush}"/>
     </Style>
-
 </Styles>

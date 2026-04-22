@@ -1,80 +1,175 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="RedDiceFlow.Views.SettingsView">
-    
+             xmlns:vm="using:RedDiceFlow.ViewModels"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="RedDiceFlow.Views.SettingsView"
+             x:DataType="vm:MainWindowViewModel">
+
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="25">
-            <TextBlock Text="System Settings" Classes="Header"/>
 
-            <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="20" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" MaxWidth="650" HorizontalAlignment="Left">
+            <!-- Заголовок -->
+            <StackPanel Spacing="5">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="Cog" Width="28" Height="28"
+                                     Foreground="{DynamicResource MainAccentBrush}"
+                                     VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_SettingsHeader}" Classes="Header" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Акаунт -->
+            <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" Padding="20"
+                    BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1"
+                    MaxWidth="650" HorizontalAlignment="Left">
                 <StackPanel Spacing="15">
-                    <TextBlock Text="Manager Account" Classes="SubHeader"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <mi:MaterialIcon Kind="AccountCircleOutline" Width="20" Height="20"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_SettAccount}" Classes="SubHeader" VerticalAlignment="Center"/>
+                    </StackPanel>
+
                     <Grid ColumnDefinitions="Auto, 20, *, Auto">
-                        <Border Grid.Column="0" Width="60" Height="60" Background="{StaticResource MainRedBrush}" CornerRadius="30">
-                            <TextBlock Text="RD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+                        <Border Grid.Column="0" Width="60" Height="60"
+                                Background="{DynamicResource MainAccentBrush}" CornerRadius="30">
+                            <TextBlock Text="RD" Foreground="White" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
                         </Border>
-                        
-                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                            <TextBlock Text="Administrator Mode" Foreground="White" FontWeight="Bold"/>
-                            <TextBlock Text="session_admin_01@reddice.flow" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="3">
+                            <TextBlock Text="{Binding L_SettAdmin}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <mi:MaterialIcon Kind="EmailOutline" Width="13" Height="13"
+                                                 Foreground="{DynamicResource TextDimBrush}"
+                                                 VerticalAlignment="Center"/>
+                                <TextBlock Text="session_admin_01@reddice.flow"
+                                           Foreground="{DynamicResource TextDimBrush}" FontSize="12"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
                         </StackPanel>
 
-                        <Button Grid.Column="3" Content="Logout" Classes="MenuButton" Width="100" VerticalAlignment="Center"/>
+                        <Button Grid.Column="3" Classes="MenuButton" Width="110" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                <mi:MaterialIcon Kind="LogoutVariant" Width="16" Height="16"/>
+                                <TextBlock Text="{Binding L_SettLogout}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="20" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" MaxWidth="650" HorizontalAlignment="Left">
+            <!-- Загальні -->
+            <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" Padding="20"
+                    BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1"
+                    MaxWidth="650" HorizontalAlignment="Left">
                 <StackPanel Spacing="20">
-                    <TextBlock Text="General Preferences" Classes="SubHeader"/>
-                    
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <mi:MaterialIcon Kind="TuneVariant" Width="20" Height="20"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_SettGeneral}" Classes="SubHeader" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Мова -->
                     <Grid ColumnDefinitions="*, 150">
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="Interface Language" Foreground="White" FontWeight="SemiBold"/>
-                            <TextBlock Text="Current: English (United States)" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="3">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <mi:MaterialIcon Kind="Translate" Width="16" Height="16"
+                                                 Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="{Binding L_SettLangLabel}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding L_SettLangCurrent}"
+                                       Foreground="{DynamicResource TextDimBrush}" FontSize="12"/>
                         </StackPanel>
-                        <Button Grid.Column="1" Content="Change" Classes="MenuButton" HorizontalAlignment="Right"/>
+                        <Button Grid.Column="1" Command="{Binding ToggleLanguage}"
+                                Classes="MenuButton" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                <mi:MaterialIcon Kind="SwapHorizontal" Width="16" Height="16"/>
+                                <TextBlock Text="{Binding L_SettChangeBtn}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
 
-                    <Separator Background="{StaticResource GrayBorderBrush}"/>
+                    <Separator Background="{DynamicResource BorderBrush2}"/>
 
+                    <!-- Тема -->
                     <Grid ColumnDefinitions="*, Auto">
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Dark Theme" Foreground="White" FontWeight="SemiBold"/>
-                            <TextBlock Text="Switch between dark and light modes" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="3">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <mi:MaterialIcon Kind="WeatherSunny" Width="16" Height="16"
+                                                 Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="{Binding L_SettThemeLabel}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding L_SettThemeSub}"
+                                       Foreground="{DynamicResource TextDimBrush}" FontSize="12"/>
                         </StackPanel>
-                        <ToggleSwitch Grid.Column="1" IsChecked="True" OnContent="On" OffContent="Off"/>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding IsLightTheme}"
+                                      OnContent="Light"
+                                      OffContent="Dark"/>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" Padding="20" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" MaxWidth="650" HorizontalAlignment="Left">
+            <!-- Автоматизація -->
+            <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" Padding="20"
+                    BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1"
+                    MaxWidth="650" HorizontalAlignment="Left">
                 <StackPanel Spacing="20">
-                    <TextBlock Text="Automation &amp; Alerts" Classes="SubHeader"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <mi:MaterialIcon Kind="RobotOutline" Width="20" Height="20"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_SettAuto}" Classes="SubHeader" VerticalAlignment="Center"/>
+                    </StackPanel>
 
                     <Grid ColumnDefinitions="*, Auto">
-                        <TextBlock Text="Enable Auto-Save" Foreground="White" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <mi:MaterialIcon Kind="ContentSaveOutline" Width="16" Height="16"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_SettAutoSave}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
                         <ToggleSwitch Grid.Column="1" IsChecked="True"/>
                     </Grid>
 
                     <Grid ColumnDefinitions="*, Auto">
-                        <TextBlock Text="Desktop Notifications" Foreground="White" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <mi:MaterialIcon Kind="BellOutline" Width="16" Height="16"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_SettNotify}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
                         <ToggleSwitch Grid.Column="1" IsChecked="False"/>
                     </Grid>
 
                     <Grid ColumnDefinitions="*, Auto">
-                        <TextBlock Text="Database Backup (Daily)" Foreground="White" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <mi:MaterialIcon Kind="DatabaseExportOutline" Width="16" Height="16"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_SettBackup}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
                         <ToggleSwitch Grid.Column="1" IsChecked="True"/>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <Button Content="Save All Changes" 
-                    Background="{StaticResource MainRedBrush}" 
-                    Foreground="White" 
-                    FontWeight="Bold" 
-                    Padding="30,15" 
-                    HorizontalAlignment="Left"/>
+            <!-- Зберегти -->
+            <Button Background="{DynamicResource MainAccentBrush}"
+                    Foreground="White" FontWeight="Bold"
+                    Padding="30,15" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <mi:MaterialIcon Kind="ContentSaveCheckOutline" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_SettSaveAll}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
 
         </StackPanel>
     </ScrollViewer>

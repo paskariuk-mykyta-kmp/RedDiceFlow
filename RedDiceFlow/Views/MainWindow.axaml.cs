@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using RedDiceFlow.ViewModels;
 
 namespace RedDiceFlow.Views;
 
@@ -9,6 +10,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        DataContext = new MainWindowViewModel();
 
         MainContentArea.Content = new DashboardView();
         BtnDash.Background = Avalonia.Media.Brush.Parse("#C3073F");
@@ -18,16 +20,13 @@ public partial class MainWindow : Window
     {
         if (sender is Button button)
         {
-            
             BtnDash.Background = Avalonia.Media.Brush.Parse("#252525");
             BtnGames.Background = Avalonia.Media.Brush.Parse("#252525");
             BtnAnalytic.Background = Avalonia.Media.Brush.Parse("#252525");
             BtnSettings.Background = Avalonia.Media.Brush.Parse("#252525");
 
-            
             button.Background = Avalonia.Media.Brush.Parse("#C3073F");
 
-            
             switch (button.Name)
             {
                 case "BtnDash": MainContentArea.Content = new DashboardView(); break;

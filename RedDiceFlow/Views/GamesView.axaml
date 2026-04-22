@@ -1,58 +1,156 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="RedDiceFlow.Views.GamesView">
-    
+             xmlns:vm="using:RedDiceFlow.ViewModels"
+             xmlns:models="using:RedDiceFlow.Models"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="RedDiceFlow.Views.GamesView"
+             x:DataType="vm:MainWindowViewModel">
+
     <StackPanel Margin="30" Spacing="25">
-        <Grid ColumnDefinitions="*, Auto, 20, Auto">
-            <StackPanel Grid.Column="0">
-                <TextBlock Text="Product Inventory" Classes="Header"/>
-                <TextBlock Text="Manage prices and stock levels" Foreground="{StaticResource TextDimBrush}" FontSize="14"/>
+
+        <!-- Заголовок + сортування + пошук -->
+        <Grid ColumnDefinitions="*, Auto, 10, Auto">
+            <StackPanel Grid.Column="0" Spacing="5">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="PackageVariantClosed" Width="28" Height="28"
+                                     Foreground="{DynamicResource MainAccentBrush}"
+                                     VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_InventoryHeader}" Classes="Header" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Text="{Binding L_InventorySub}"
+                           Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14"/>
             </StackPanel>
-            <TextBox Grid.Column="1" Width="300" Watermark="Search by SKU..." Classes="Modern" VerticalAlignment="Bottom"/>
-            <Button Grid.Column="3" Content="+ Add Item" Background="{StaticResource MainRedBrush}" Padding="15,8" CornerRadius="6" VerticalAlignment="Bottom"/>
+
+            <Button Grid.Column="1" Command="{Binding SortByGenre}"
+                    Background="{DynamicResource PanelBgBrush}"
+                    BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1"
+                    VerticalAlignment="Bottom" Padding="14,8">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <mi:MaterialIcon Kind="SortAlphabeticalAscending" Width="16" Height="16"
+                                     Foreground="{DynamicResource MainAccentBrush}"/>
+                    <TextBlock Text="{Binding L_SortBtn}"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <TextBox Grid.Column="3" Width="250"
+                     Watermark="{Binding L_SearchWatermark}"
+                     Text="{Binding SearchText}"
+                     Classes="Modern" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <Border Background="{StaticResource DarkBgBrush}" CornerRadius="12" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="1" ClipToBounds="True">
+        <!-- Таблиця -->
+        <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
+                BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1" ClipToBounds="True">
             <StackPanel>
-                <Border Background="{StaticResource GrayBorderBrush}" Padding="20,12">
+
+                <!-- Заголовок таблиці -->
+                <Border Background="{DynamicResource TableHeaderBgBrush}" Padding="20,12">
                     <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 100">
-                        <TextBlock Grid.Column="0" Text="PRODUCT" Foreground="{StaticResource TextDimBrush}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="1" Text="PRICE" Foreground="{StaticResource TextDimBrush}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="2" Text="STOCK" Foreground="{StaticResource TextDimBrush}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="3" Text="STATUS" Foreground="{StaticResource TextDimBrush}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="4" Text="EDIT" Foreground="{StaticResource TextDimBrush}" FontSize="11" FontWeight="Heavy" HorizontalAlignment="Center"/>
-                    </Grid>
-                </Border>
-                
-                <Border Classes="TableRow" Padding="20,15" BorderBrush="{StaticResource GrayBorderBrush}" BorderThickness="0,0,0,1">
-                    <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 100">
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Cyberpunk 2077: Board Game" Foreground="White" FontWeight="Bold"/>
-                            <TextBlock Text="SKU: RD-7721" Foreground="{StaticResource TextDimBrush}" FontSize="10"/>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
+                            <mi:MaterialIcon Kind="CardTextOutline" Width="13" Height="13"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_TableProduct}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBlock Grid.Column="1" Text="$89.99" Foreground="White" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="14 pcs" Foreground="{StaticResource TextDimBrush}" VerticalAlignment="Center"/>
-                        <Border Grid.Column="3" Background="#1A3A1A" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock Text="In Stock" Foreground="#4CAF50" FontSize="11" FontWeight="Bold"/>
-                        </Border>
-                        <Button Grid.Column="4" Content="✏️" Background="Transparent" HorizontalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                            <mi:MaterialIcon Kind="CurrencyUsd" Width="13" Height="13"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_TablePrice}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6">
+                            <mi:MaterialIcon Kind="PackageVariant" Width="13" Height="13"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_TableStock}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="6">
+                            <mi:MaterialIcon Kind="CheckboxMarkedCircleOutline" Width="13" Height="13"
+                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{Binding L_TableStatus}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <mi:MaterialIcon Grid.Column="4" Kind="TrashCanOutline" Width="13" Height="13"
+                                         Foreground="{DynamicResource TextSecondaryBrush}"
+                                         HorizontalAlignment="Center"/>
                     </Grid>
                 </Border>
 
-                <Border Classes="TableRow" Padding="20,15">
-                    <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 100">
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="D&amp;D Starter Set" Foreground="White" FontWeight="Bold"/>
-                            <TextBlock Text="SKU: RD-9005" Foreground="{StaticResource TextDimBrush}" FontSize="10"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" Text="$25.00" Foreground="White" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="2 pcs" Foreground="#C3073F" VerticalAlignment="Center" FontWeight="Bold"/>
-                        <Border Grid.Column="3" Background="#3A1A1A" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock Text="Low Stock" Foreground="#C3073F" FontSize="11" FontWeight="Bold"/>
-                        </Border>
-                        <Button Grid.Column="4" Content="✏️" Background="Transparent" HorizontalAlignment="Center"/>
-                    </Grid>
-                </Border>
+                <!-- Рядки -->
+                <ItemsControl ItemsSource="{Binding FilteredProducts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:Product">
+                            <Border Padding="20,15"
+                                    BorderBrush="{DynamicResource BorderBrush2}"
+                                    BorderThickness="0,0,0,1"
+                                    Classes="TableRow">
+                                <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 100">
+
+                                    <StackPanel Grid.Column="0" Spacing="2">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <mi:MaterialIcon Kind="TagOutline" Width="11" Height="11"
+                                                             Foreground="{DynamicResource MainAccentBrush}"/>
+                                            <TextBlock Text="{Binding Genre}" FontSize="10"
+                                                       Foreground="{DynamicResource MainAccentBrush}"
+                                                       FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4"
+                                                VerticalAlignment="Center">
+                                        <mi:MaterialIcon Kind="CurrencyUsd" Width="13" Height="13"
+                                                         Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="{Binding Price, StringFormat='{}{0:N2}'}"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
+                                                VerticalAlignment="Center">
+                                        <mi:MaterialIcon Kind="CubeOutline" Width="13" Height="13"
+                                                         Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="{Binding Stock, StringFormat='{}{0} pcs'}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="3" Background="{DynamicResource BadgeBgBrush}"
+                                            CornerRadius="4" Padding="8,3"
+                                            HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <mi:MaterialIcon Kind="CheckCircleOutline" Width="11" Height="11"
+                                                             Foreground="{DynamicResource AccentGreenBrush}"/>
+                                            <TextBlock Text="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).L_StatusOk}"
+                                                       Foreground="{DynamicResource AccentGreenBrush}"
+                                                       FontSize="10" FontWeight="Bold"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Grid.Column="4"
+                                            Command="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).RemoveProduct}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent"
+                                            HorizontalAlignment="Center"
+                                            ToolTip.Tip="Delete">
+                                        <mi:MaterialIcon Kind="TrashCanOutline" Width="18" Height="18"
+                                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                                    </Button>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
             </StackPanel>
         </Border>
     </StackPanel>
