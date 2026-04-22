@@ -8,28 +8,33 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        
+        MainContentArea.Content = new DashboardView();
     }
 
     private void OnMenuClick(object? sender, RoutedEventArgs e)
     {
         if (sender is Button button)
         {
+            switch (button.Name)
+            {
+                case "BtnDash":
+                    MainContentArea.Content = new DashboardView();
+                    break;
+                case "BtnGames":
+                    MainContentArea.Content = new GamesView();
+                    break;
+                case "BtnAnalytic":
+                    MainContentArea.Content = new AnalyticsView();
+                    break;
+                case "BtnSettings":
+                    MainContentArea.Content = new SettingsView();
+                    break;
+            }
+
+            
             StatusDisplay.Text = "Розділ: " + button.Content;
-        }
-    }
-
-    private void OnAddRecordClick(object? sender, RoutedEventArgs e)
-    {
-        string note = QuickNoteInput.Text ?? "";
-
-        if (string.IsNullOrWhiteSpace(note))
-        {
-            StatusDisplay.Text = "Помилка: Поле порожнє";
-        }
-        else
-        {
-            StatusDisplay.Text = "Запис '" + note + "' додано";
-            QuickNoteInput.Text = "";
         }
     }
 }

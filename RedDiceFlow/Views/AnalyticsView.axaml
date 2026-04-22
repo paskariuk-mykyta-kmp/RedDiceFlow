@@ -1,0 +1,8 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="RedDiceFlow.Views.AnalyticsView">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+    <TextBlock Text="ANALYTICS &amp; VIBES" FontSize="24" Foreground="#C3073F" FontWeight="Bold"/>
+        <TextBlock Text="Coming soon: Шикарні графіки та неонова статистика" Foreground="Gray" HorizontalAlignment="Center"/>
+    </StackPanel>
+</UserControl>

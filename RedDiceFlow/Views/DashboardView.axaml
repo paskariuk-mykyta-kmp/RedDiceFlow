@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="RedDiceFlow.Views.DashboardView">
+    
+    <StackPanel Margin="40" Spacing="25">
+        <TextBlock Text="Вітаємо в системі менеджменту" 
+                   Foreground="White" 
+                   FontSize="28" 
+                   FontWeight="Bold"/>
+            
+        <StackPanel Spacing="10">
+            <Label Content="Швидкий запис для менеджера:" Foreground="#888888"/>
+            <TextBox Name="QuickNoteInput" 
+                     Width="400" 
+                     HorizontalAlignment="Left" 
+                     Watermark="Введіть назву гри..."/>
+        </StackPanel>
+
+        <Button Content="Додати запис" 
+                Background="#C3073F" 
+                Foreground="White" 
+                Padding="20,10"
+                Click="OnAddRecordClick"/>
+    </StackPanel>
+    
+</UserControl>
