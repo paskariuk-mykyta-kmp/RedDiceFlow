@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using RedDiceFlow.ViewModels;
 
 namespace RedDiceFlow.Views;
@@ -9,24 +10,16 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
         DataContext = new MainWindowViewModel();
-
         MainContentArea.Content = new DashboardView();
-        BtnDash.Background = Avalonia.Media.Brush.Parse("#C3073F");
+        SetActiveButton(BtnDash);
     }
 
     private void OnMenuClick(object? sender, RoutedEventArgs e)
     {
         if (sender is Button button)
         {
-            BtnDash.Background = Avalonia.Media.Brush.Parse("#252525");
-            BtnGames.Background = Avalonia.Media.Brush.Parse("#252525");
-            BtnAnalytic.Background = Avalonia.Media.Brush.Parse("#252525");
-            BtnSettings.Background = Avalonia.Media.Brush.Parse("#252525");
-
-            button.Background = Avalonia.Media.Brush.Parse("#C3073F");
-
+            SetActiveButton(button);
             switch (button.Name)
             {
                 case "BtnDash": MainContentArea.Content = new DashboardView(); break;
@@ -35,5 +28,24 @@ public partial class MainWindow : Window
                 case "BtnSettings": MainContentArea.Content = new SettingsView(); break;
             }
         }
+    }
+
+    private void SetActiveButton(Button active)
+    {
+        foreach (var btn in new[] { BtnDash, BtnGames, BtnAnalytic, BtnSettings })
+        {
+            
+            var inactiveColor = this.TryFindResource("BorderCol", out var res) && res is Color c
+                ? new SolidColorBrush(c)
+                : new SolidColorBrush(Color.Parse("#252525"));
+
+            btn.Background = inactiveColor;
+        }
+
+        var activeColor = this.TryFindResource("MainAccent", out var accent) && accent is Color ac
+            ? new SolidColorBrush(ac)
+            : new SolidColorBrush(Color.Parse("#C3073F"));
+
+        active.Background = activeColor;
     }
 }

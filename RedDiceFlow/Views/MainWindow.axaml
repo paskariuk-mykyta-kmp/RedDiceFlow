@@ -1,41 +1,82 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:RedDiceFlow.ViewModels"
+        xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="RedDiceFlow.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Red Dice Flow - Store Manager"
-        Background="{StaticResource DeepBgBrush}"
+        Background="{DynamicResource AppBgBrush}"
         Width="1200" Height="800"
         WindowStartupLocation="CenterScreen">
+        
+    <Window.Styles>
+        <Style Selector="Button.MenuButton">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.MenuButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource HoverBgBrush}"/>
+        </Style>
+    </Window.Styles>
 
     <Grid ColumnDefinitions="260, *">
-        <StackPanel Grid.Column="0" Background="{StaticResource DarkBgBrush}">
+        <StackPanel Grid.Column="0" Background="{DynamicResource PanelBgBrush}">
             <StackPanel Margin="10,25">
                 <Image Source="avares://RedDiceFlow/Assets/logo.png" Width="180" Height="180"/>
-                <TextBlock Text="RED DICE FLOW" 
-                           Foreground="{StaticResource MainRedBrush}" 
+                <TextBlock Text="RED DICE FLOW"
+                           Foreground="{DynamicResource MainAccentBrush}"
                            FontSize="22" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
             </StackPanel>
-            
-            <Button Content="{Binding L_MenuDashboard}" Name="BtnDash" Classes="MenuButton" Click="OnMenuClick" Background="{StaticResource MainRedBrush}"/>
-            <Button Content="{Binding L_MenuInventory}" Name="BtnGames" Classes="MenuButton" Click="OnMenuClick"/>
-            <Button Content="{Binding L_MenuAnalytics}" Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick"/>
-            <Button Content="{Binding L_MenuSettings}" Name="BtnSettings" Classes="MenuButton" Click="OnMenuClick"/>
+
+            <Button Name="BtnDash" Classes="MenuButton" Click="OnMenuClick"
+                    Background="{DynamicResource MainAccentBrush}">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="ViewDashboard" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_MenuDashboard}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button Name="BtnGames" Classes="MenuButton" Click="OnMenuClick">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="PackageVariantClosed" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_MenuInventory}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="ChartBar" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_MenuAnalytics}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button Name="BtnSettings" Classes="MenuButton" Click="OnMenuClick">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="Cog" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_MenuSettings}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <Grid Grid.Column="1">
             <TransitioningContentControl Name="MainContentArea">
                 <TransitioningContentControl.PageTransition>
-                    <CrossFade Duration="0:0:0.25" />
+                    <CrossFade Duration="0:0:0.25"/>
                 </TransitioningContentControl.PageTransition>
             </TransitioningContentControl>
-
-            <Border VerticalAlignment="Bottom" Background="{StaticResource DarkBgBrush}" Height="30" Padding="15,0">
+            <Border VerticalAlignment="Bottom" Background="{DynamicResource PanelBgBrush}"
+                    Height="30" Padding="15,0">
                 <Grid ColumnDefinitions="*, Auto">
-                    <TextBlock Text="{Binding StatusMessage}" 
-                               Foreground="{StaticResource StatusGreen}" 
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                        <mi:MaterialIcon Kind="CheckCircle" Width="13" Height="13"
+                                         Foreground="{DynamicResource AccentGreenBrush}"/>
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="{DynamicResource AccentGreenBrush}"
+                                   FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="v1.0.5-final-ui"
+                               Foreground="{DynamicResource TextDimBrush}"
                                FontSize="11" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="v1.0.5-final-ui" Foreground="{StaticResource TextDimBrush}" FontSize="11" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
         </Grid>

@@ -6,151 +6,122 @@
              x:Class="RedDiceFlow.Views.GamesView"
              x:DataType="vm:MainWindowViewModel">
 
+    <UserControl.Styles>
+        <Style Selector="Border.TableRow">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.TableRow:pointerover">
+            <Setter Property="Background" Value="{DynamicResource HoverBg}"/>
+        </Style>
+
+        <Style Selector="TextBox.ModernInput">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Background" Value="{DynamicResource AppBg}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderCol2}"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+
     <StackPanel Margin="30" Spacing="25">
 
-        <!-- Заголовок + сортування + пошук -->
         <Grid ColumnDefinitions="*, Auto, 10, Auto">
             <StackPanel Grid.Column="0" Spacing="5">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="PackageVariantClosed" Width="28" Height="28"
-                                     Foreground="{DynamicResource MainAccentBrush}"
+                                     Foreground="{DynamicResource MainAccent}"
                                      VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding L_InventoryHeader}" Classes="Header" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_InventoryHeader}" Classes="Header" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
                 </StackPanel>
-                <TextBlock Text="{Binding L_InventorySub}"
-                           Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14"/>
+                <TextBlock Text="{Binding L_InventorySub}" Foreground="{DynamicResource TextSecondary}" FontSize="14"/>
             </StackPanel>
 
-            <Button Grid.Column="1" Command="{Binding SortByGenre}"
-                    Background="{DynamicResource PanelBgBrush}"
-                    BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1"
-                    VerticalAlignment="Bottom" Padding="14,8">
+            <Button Grid.Column="1" Command="{Binding SortByGenre}" Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource BorderCol2}" BorderThickness="1" VerticalAlignment="Bottom" Padding="14,8">
                 <StackPanel Orientation="Horizontal" Spacing="7">
-                    <mi:MaterialIcon Kind="SortAlphabeticalAscending" Width="16" Height="16"
-                                     Foreground="{DynamicResource MainAccentBrush}"/>
-                    <TextBlock Text="{Binding L_SortBtn}"
-                               Foreground="{DynamicResource TextPrimaryBrush}"
-                               VerticalAlignment="Center"/>
+                    <mi:MaterialIcon Kind="SortAlphabeticalAscending" Width="16" Height="16" Foreground="{DynamicResource MainAccent}"/>
+                    <TextBlock Text="{Binding L_SortBtn}" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
-            <TextBox Grid.Column="3" Width="250"
-                     Watermark="{Binding L_SearchWatermark}"
-                     Text="{Binding SearchText}"
-                     Classes="Modern" VerticalAlignment="Bottom"/>
+            <TextBox Grid.Column="3" Width="250" Watermark="{Binding L_SearchWatermark}" Text="{Binding SearchText}" Classes="Modern" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <!-- Таблиця -->
-        <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1" ClipToBounds="True">
-            <StackPanel>
+        <Border Background="{DynamicResource PanelBg}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2}" BorderThickness="1" Padding="20">
+            <StackPanel Spacing="15">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="PlusCircleOutline" Foreground="{DynamicResource MainAccent}" Width="20" Height="20"/>
+                    <TextBlock Text="{Binding L_QuickAdd}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                <!-- Заголовок таблиці -->
-                <Border Background="{DynamicResource TableHeaderBgBrush}" Padding="20,12">
+                <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 1*, Auto" ColumnSpacing="15">
+                    <StackPanel Grid.Column="0" Spacing="5">
+                        <TextBlock Text="{Binding L_NameLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBox Classes="ModernInput" Text="{Binding NewName}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Spacing="5">
+                        <TextBlock Text="{Binding L_SkuLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBox Classes="ModernInput" Text="{Binding NewSku}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Spacing="5">
+                        <TextBlock Text="{Binding L_PriceLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBox Classes="ModernInput" Text="{Binding NewPrice}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Spacing="5">
+                        <TextBlock Text="{Binding L_StockLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBox Classes="ModernInput" Text="{Binding NewStock}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Spacing="5">
+                        <TextBlock Text="Genre" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBox Classes="ModernInput" Text="{Binding NewGenre}"/>
+                    </StackPanel>
+                    
+                    <Button Grid.Column="5" Command="{Binding AddProduct}" 
+                            VerticalAlignment="Bottom" Height="35" Padding="20,0"
+                            Background="{DynamicResource MainAccent}" Foreground="White" 
+                            Content="{Binding L_ConfirmBtn}" FontWeight="Bold"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Border Background="{DynamicResource PanelBg}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2}" BorderThickness="1" ClipToBounds="True">
+            <StackPanel>
+                <Border Background="{DynamicResource TableHeaderBg}" Padding="20,12">
                     <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 100">
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="CardTextOutline" Width="13" Height="13"
-                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
-                            <TextBlock Text="{Binding L_TableProduct}"
-                                       Foreground="{DynamicResource TextSecondaryBrush}"
-                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="CurrencyUsd" Width="13" Height="13"
-                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
-                            <TextBlock Text="{Binding L_TablePrice}"
-                                       Foreground="{DynamicResource TextSecondaryBrush}"
-                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="PackageVariant" Width="13" Height="13"
-                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
-                            <TextBlock Text="{Binding L_TableStock}"
-                                       Foreground="{DynamicResource TextSecondaryBrush}"
-                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="CheckboxMarkedCircleOutline" Width="13" Height="13"
-                                             Foreground="{DynamicResource TextSecondaryBrush}"/>
-                            <TextBlock Text="{Binding L_TableStatus}"
-                                       Foreground="{DynamicResource TextSecondaryBrush}"
-                                       FontSize="11" FontWeight="Heavy" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <mi:MaterialIcon Grid.Column="4" Kind="TrashCanOutline" Width="13" Height="13"
-                                         Foreground="{DynamicResource TextSecondaryBrush}"
-                                         HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Text="{Binding L_TableProduct}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="1" Text="{Binding L_TablePrice}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="2" Text="{Binding L_TableStock}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="3" Text="{Binding L_TableStatus}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="4" Text="{Binding L_TableDel}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy" HorizontalAlignment="Center"/>
                     </Grid>
                 </Border>
 
-                <!-- Рядки -->
                 <ItemsControl ItemsSource="{Binding FilteredProducts}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Product">
-                            <Border Padding="20,15"
-                                    BorderBrush="{DynamicResource BorderBrush2}"
-                                    BorderThickness="0,0,0,1"
-                                    Classes="TableRow">
+                            <Border Padding="20,15" Background="Transparent" BorderBrush="{DynamicResource BorderCol}" BorderThickness="0,0,0,1" Classes="TableRow">
                                 <Grid ColumnDefinitions="2*, 1*, 1*, 1*, 100">
-
-                                    <StackPanel Grid.Column="0" Spacing="2">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"
-                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                        <StackPanel Orientation="Horizontal" Spacing="4">
-                                            <mi:MaterialIcon Kind="TagOutline" Width="11" Height="11"
-                                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                                            <TextBlock Text="{Binding Genre}" FontSize="10"
-                                                       Foreground="{DynamicResource MainAccentBrush}"
-                                                       FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
+                                        <TextBlock Text="{Binding Genre}" FontSize="10" Foreground="{DynamicResource MainAccent}"/>
                                     </StackPanel>
-
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4"
-                                                VerticalAlignment="Center">
-                                        <mi:MaterialIcon Kind="CurrencyUsd" Width="13" Height="13"
-                                                         Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                        <TextBlock Text="{Binding Price, StringFormat='{}{0:N2}'}"
-                                                   Foreground="{DynamicResource TextPrimaryBrush}"
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
-                                                VerticalAlignment="Center">
-                                        <mi:MaterialIcon Kind="CubeOutline" Width="13" Height="13"
-                                                         Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                        <TextBlock Text="{Binding Stock, StringFormat='{}{0} pcs'}"
-                                                   Foreground="{DynamicResource TextSecondaryBrush}"
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-
-                                    <Border Grid.Column="3" Background="{DynamicResource BadgeBgBrush}"
-                                            CornerRadius="4" Padding="8,3"
-                                            HorizontalAlignment="Left" VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal" Spacing="4">
-                                            <mi:MaterialIcon Kind="CheckCircleOutline" Width="11" Height="11"
-                                                             Foreground="{DynamicResource AccentGreenBrush}"/>
-                                            <TextBlock Text="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).L_StatusOk}"
-                                                       Foreground="{DynamicResource AccentGreenBrush}"
-                                                       FontSize="10" FontWeight="Bold"
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='{}{0:N2}'}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Stock, StringFormat='{}{0} pcs'}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                                    <Border Grid.Column="3" Background="{DynamicResource BadgeBg}" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <TextBlock Text="OK" Foreground="{DynamicResource AccentGreen}" FontSize="10" FontWeight="Bold"/>
                                     </Border>
-
-                                    <Button Grid.Column="4"
-                                            Command="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).RemoveProduct}"
-                                            CommandParameter="{Binding}"
-                                            Background="Transparent"
-                                            HorizontalAlignment="Center"
-                                            ToolTip.Tip="Delete">
-                                        <mi:MaterialIcon Kind="TrashCanOutline" Width="18" Height="18"
-                                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                                    <Button Grid.Column="4" Command="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).RemoveProduct}" CommandParameter="{Binding}" Background="Transparent" HorizontalAlignment="Center">
+                                        <mi:MaterialIcon Kind="TrashCanOutline" Foreground="{DynamicResource MainAccent}"/>
                                     </Button>
-
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-
             </StackPanel>
         </Border>
     </StackPanel>

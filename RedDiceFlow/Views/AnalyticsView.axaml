@@ -6,7 +6,7 @@
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="30">
 
-            <!-- Заголовок -->
+            
             <Grid ColumnDefinitions="*, Auto">
                 <StackPanel Grid.Column="0" Spacing="5">
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -35,7 +35,7 @@
                 </Border>
             </Grid>
 
-            <!-- Картки метрик -->
+            
             <Grid ColumnDefinitions="*, 20, *, 20, *, 20, *">
                 <Border Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
                         Padding="18" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
@@ -126,7 +126,7 @@
                 </Border>
             </Grid>
 
-            <!-- Графіки -->
+            
             <Grid ColumnDefinitions="2*, 20, *">
                 <Border Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
                         Padding="25" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">

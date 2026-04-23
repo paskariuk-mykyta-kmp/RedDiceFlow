@@ -8,7 +8,7 @@
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="25">
 
-            <!-- Заголовок -->
+            
             <StackPanel Spacing="5">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="Cog" Width="28" Height="28"
@@ -18,7 +18,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <!-- Акаунт -->
+            
             <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" Padding="20"
                     BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1"
                     MaxWidth="650" HorizontalAlignment="Left">
@@ -59,7 +59,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Загальні -->
+            
             <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" Padding="20"
                     BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1"
                     MaxWidth="650" HorizontalAlignment="Left">
@@ -70,7 +70,7 @@
                         <TextBlock Text="{Binding L_SettGeneral}" Classes="SubHeader" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <!-- Мова -->
+                    
                     <Grid ColumnDefinitions="*, 150">
                         <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="3">
                             <StackPanel Orientation="Horizontal" Spacing="6">
@@ -94,7 +94,7 @@
 
                     <Separator Background="{DynamicResource BorderBrush2}"/>
 
-                    <!-- Тема -->
+                    
                     <Grid ColumnDefinitions="*, Auto">
                         <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="3">
                             <StackPanel Orientation="Horizontal" Spacing="6">
@@ -115,7 +115,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Автоматизація -->
+            
             <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" Padding="20"
                     BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1"
                     MaxWidth="650" HorizontalAlignment="Left">
@@ -161,7 +161,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Зберегти -->
+            
             <Button Background="{DynamicResource MainAccentBrush}"
                     Foreground="White" FontWeight="Bold"
                     Padding="30,15" HorizontalAlignment="Left">
