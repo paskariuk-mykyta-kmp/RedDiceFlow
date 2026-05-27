@@ -1,51 +1,61 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using RedDiceFlow.ViewModels;
 
-namespace RedDiceFlow.Views;
-
-public partial class MainWindow : Window
+namespace RedDiceFlow.Views
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
-        DataContext = new MainWindowViewModel();
-        MainContentArea.Content = new DashboardView();
-        SetActiveButton(BtnDash);
-    }
-
-    private void OnMenuClick(object? sender, RoutedEventArgs e)
-    {
-        if (sender is Button button)
+        public MainWindow()
         {
+            InitializeComponent();
+            MainContentArea.Content = new DashboardView();
+            SetActiveButton(BtnDash);
+        }
+
+        private void OnMenuClick(object? sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button)
+                return;
+
             SetActiveButton(button);
+
             switch (button.Name)
             {
-                case "BtnDash": MainContentArea.Content = new DashboardView(); break;
-                case "BtnGames": MainContentArea.Content = new GamesView(); break;
-                case "BtnAnalytic": MainContentArea.Content = new AnalyticsView(); break;
-                case "BtnSettings": MainContentArea.Content = new SettingsView(); break;
+                case "BtnDash":
+                    MainContentArea.Content = new DashboardView();
+                    break;
+                case "BtnGames":
+                    MainContentArea.Content = new GamesView();
+                    break;
+                case "BtnSales":
+                    MainContentArea.Content = new SalesView();
+                    break;
+                case "BtnAnalytic":
+                    MainContentArea.Content = new AnalyticsView();
+                    break;
+                case "BtnSettings":
+                    MainContentArea.Content = new SettingsView();
+                    break;
             }
         }
-    }
 
-    private void SetActiveButton(Button active)
-    {
-        foreach (var btn in new[] { BtnDash, BtnGames, BtnAnalytic, BtnSettings })
+        private void SetActiveButton(Button active)
         {
-            
-            var inactiveColor = this.TryFindResource("BorderCol", out var res) && res is Color c
-                ? new SolidColorBrush(c)
-                : new SolidColorBrush(Color.Parse("#252525"));
+            foreach (var btn in new[] { BtnDash, BtnGames, BtnSales, BtnAnalytic, BtnSettings })
+            {
+                var inactiveColor = this.TryFindResource("BorderCol", out var res) && res is Color c
+                    ? new SolidColorBrush(c)
+                    : new SolidColorBrush(Color.Parse("#252525"));
 
-            btn.Background = inactiveColor;
+                btn.Background = inactiveColor;
+            }
+
+            var activeColor = this.TryFindResource("MainAccent", out var accent) && accent is Color ac
+                ? new SolidColorBrush(ac)
+                : new SolidColorBrush(Color.Parse("#C3073F"));
+
+            active.Background = activeColor;
         }
-
-        var activeColor = this.TryFindResource("MainAccent", out var accent) && accent is Color ac
-            ? new SolidColorBrush(ac)
-            : new SolidColorBrush(Color.Parse("#C3073F"));
-
-        active.Background = activeColor;
     }
 }

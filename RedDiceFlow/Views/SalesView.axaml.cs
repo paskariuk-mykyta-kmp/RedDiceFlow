@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace RedDiceFlow.Views
 {
-    public partial class AnalyticsView : UserControl
+    public partial class SalesView : UserControl
     {
-        public AnalyticsView()
+        public SalesView()
         {
             InitializeComponent();
         }

@@ -8,7 +8,7 @@
         Background="{DynamicResource AppBgBrush}"
         Width="1200" Height="800"
         WindowStartupLocation="CenterScreen">
-        
+
     <Window.Styles>
         <Style Selector="Button.MenuButton">
             <Setter Property="Transitions">
@@ -28,55 +28,84 @@
                 <Image Source="avares://RedDiceFlow/Assets/logo.png" Width="180" Height="180"/>
                 <TextBlock Text="RED DICE FLOW"
                            Foreground="{DynamicResource MainAccentBrush}"
-                           FontSize="22" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                           FontSize="22"
+                           FontWeight="ExtraBold"
+                           HorizontalAlignment="Center"/>
             </StackPanel>
 
-            <Button Name="BtnDash" Classes="MenuButton" Click="OnMenuClick"
+            <Button x:Name="BtnDash" Classes="MenuButton" Click="OnMenuClick"
                     Background="{DynamicResource MainAccentBrush}">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="ViewDashboard" Width="18" Height="18"/>
-                    <TextBlock Text="{Binding L_MenuDashboard}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_MenuDashboard}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </StackPanel>
             </Button>
-            <Button Name="BtnGames" Classes="MenuButton" Click="OnMenuClick">
+
+            <Button x:Name="BtnGames" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="PackageVariantClosed" Width="18" Height="18"/>
-                    <TextBlock Text="{Binding L_MenuInventory}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_MenuInventory}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </StackPanel>
             </Button>
-            <Button Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick">
+
+            <Button x:Name="BtnSales" Classes="MenuButton" Click="OnMenuClick">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="CashRegister" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_MenuSales}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="ChartBar" Width="18" Height="18"/>
-                    <TextBlock Text="{Binding L_MenuAnalytics}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_MenuAnalytics}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </StackPanel>
             </Button>
-            <Button Name="BtnSettings" Classes="MenuButton" Click="OnMenuClick">
+
+            <Button x:Name="BtnSettings" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="Cog" Width="18" Height="18"/>
-                    <TextBlock Text="{Binding L_MenuSettings}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding L_MenuSettings}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </StackPanel>
             </Button>
         </StackPanel>
 
         <Grid Grid.Column="1">
-            <TransitioningContentControl Name="MainContentArea">
+            <TransitioningContentControl x:Name="MainContentArea">
                 <TransitioningContentControl.PageTransition>
                     <CrossFade Duration="0:0:0.25"/>
                 </TransitioningContentControl.PageTransition>
             </TransitioningContentControl>
-            <Border VerticalAlignment="Bottom" Background="{DynamicResource PanelBgBrush}"
-                    Height="30" Padding="15,0">
+
+            <Border VerticalAlignment="Bottom"
+                    Background="{DynamicResource PanelBgBrush}"
+                    Height="30"
+                    Padding="15,0">
                 <Grid ColumnDefinitions="*, Auto">
                     <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
                         <mi:MaterialIcon Kind="CheckCircle" Width="13" Height="13"
                                          Foreground="{DynamicResource AccentGreenBrush}"/>
                         <TextBlock Text="{Binding StatusMessage}"
                                    Foreground="{DynamicResource AccentGreenBrush}"
-                                   FontSize="11" VerticalAlignment="Center"/>
+                                   FontSize="11"
+                                   VerticalAlignment="Center"/>
                     </StackPanel>
-                    <TextBlock Grid.Column="1" Text="v1.0.5-final-ui"
+
+                    <TextBlock Grid.Column="1"
+                               Text="v1.0.5-final-ui"
                                Foreground="{DynamicResource TextDimBrush}"
-                               FontSize="11" VerticalAlignment="Center"/>
+                               FontSize="11"
+                               VerticalAlignment="Center"/>
                 </Grid>
             </Border>
         </Grid>

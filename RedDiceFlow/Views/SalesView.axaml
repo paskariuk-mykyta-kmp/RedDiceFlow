@@ -1,0 +1,129 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RedDiceFlow.ViewModels"
+             xmlns:models="using:RedDiceFlow.Models"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="RedDiceFlow.Views.SalesView"
+             x:DataType="vm:MainWindowViewModel"
+             Background="{DynamicResource AppBgBrush}">
+
+    <ScrollViewer>
+        <StackPanel Margin="30" Spacing="25">
+            <StackPanel Spacing="5">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="CashRegister" Width="28" Height="28"
+                                     Foreground="{DynamicResource MainAccentBrush}"/>
+                    <TextBlock Text="{Binding L_SalesHeader}"
+                               Classes="Header"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+                <TextBlock Text="{Binding L_SalesSub}"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+
+            <Border Background="{DynamicResource PanelBgBrush}"
+                    CornerRadius="12"
+                    BorderBrush="{DynamicResource BorderBrush2}"
+                    BorderThickness="1"
+                    Padding="20">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="{Binding L_RegisterSale}"
+                               FontWeight="Bold"
+                               FontSize="18"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <TextBlock Text="{Binding L_SelectProduct}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               FontSize="12"/>
+
+                    <Grid ColumnDefinitions="2*, 120, Auto" ColumnSpacing="15">
+                        <ComboBox Grid.Column="0"
+                                  ItemsSource="{Binding Products}"
+                                  SelectedItem="{Binding SelectedProductForSale}"
+                                  Background="{DynamicResource PanelBgBrush}"
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  BorderBrush="{DynamicResource BorderBrush2}"
+                                  Height="38">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:Product">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock Text="{Binding Name}"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="{Binding Stock, StringFormat='{}{0} pcs'}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding SaleQuantity}"
+                                 Watermark="{Binding L_Quantity}"
+                                 Background="{DynamicResource PanelBgBrush}"
+                                 Foreground="{DynamicResource TextPrimaryBrush}"
+                                 BorderBrush="{DynamicResource BorderBrush2}"
+                                 Height="38"/>
+
+                        <Button Grid.Column="2"
+                                Command="{Binding SellSelectedProduct}"
+                                Background="{DynamicResource MainAccentBrush}"
+                                Foreground="White"
+                                Padding="24,0"
+                                Height="38">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <mi:MaterialIcon Kind="CashRegister" Width="18" Height="18" Foreground="White"/>
+                                <TextBlock Text="{Binding L_SellButton}" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource PanelBgBrush}"
+                    CornerRadius="12"
+                    BorderBrush="{DynamicResource BorderBrush2}"
+                    BorderThickness="1"
+                    Padding="20">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="{Binding L_RecentSales}"
+                               FontWeight="Bold"
+                               FontSize="18"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <TextBlock Text="{Binding L_NoSales}"
+                               IsVisible="{Binding HasNoSales}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                    <ItemsControl ItemsSource="{Binding RecentSales}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:Sale">
+                                <Border BorderBrush="{DynamicResource BorderBrush2}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="0,8">
+                                    <Grid ColumnDefinitions="2*, 1*, 1*, 1*" ColumnSpacing="10">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding ProductName}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Quantity, StringFormat='{}{0} pcs'}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding TotalPrice, StringFormat='{}{0:N2} $'}"
+                                                   Foreground="{DynamicResource AccentGreenBrush}"/>
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding SoldAt, StringFormat='{}{0:dd.MM HH:mm}'}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

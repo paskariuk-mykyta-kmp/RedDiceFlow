@@ -1,212 +1,197 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:RedDiceFlow.ViewModels"
+             xmlns:models="using:RedDiceFlow.Models"
              xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             x:Class="RedDiceFlow.Views.AnalyticsView">
+             x:Class="RedDiceFlow.Views.AnalyticsView"
+             x:DataType="vm:MainWindowViewModel"
+             Background="{DynamicResource AppBgBrush}">
+
+    <UserControl.Styles>
+        <Style Selector="ProgressBar">
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="Foreground" Value="{DynamicResource MainAccentBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource BorderBrush2}"/>
+        </Style>
+    </UserControl.Styles>
 
     <ScrollViewer>
-        <StackPanel Margin="30" Spacing="30">
-
-            
+        <StackPanel Margin="30" Spacing="25">
             <Grid ColumnDefinitions="*, Auto">
                 <StackPanel Grid.Column="0" Spacing="5">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <mi:MaterialIcon Kind="TrendingUp" Width="28" Height="28"
-                                         Foreground="{DynamicResource MainAccentBrush}"
-                                         VerticalAlignment="Center"/>
-                        <TextBlock Text="Business Intelligence" Classes="Header" VerticalAlignment="Center"/>
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_AnalyticsHeader}" Classes="Header"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                     </StackPanel>
-                    <TextBlock Text="Real-time sales performance and store metrics"
-                               Foreground="{DynamicResource TextDimBrush}" FontSize="14"/>
+                    <TextBlock Text="{Binding L_AnalyticsSub}"
+                               Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14"/>
                 </StackPanel>
 
-                <Border Grid.Column="1" Background="{DynamicResource PanelBgBrush}" CornerRadius="20"
-                        Padding="15,8" BorderBrush="{DynamicResource BorderBrush2}"
-                        BorderThickness="1" VerticalAlignment="Center">
+                <Button Grid.Column="1"
+                        Command="{Binding CreateManagerReport}"
+                        Background="{DynamicResource MainAccentBrush}"
+                        Foreground="White"
+                        Padding="22,10"
+                        VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <mi:MaterialIcon Kind="CalendarRange" Width="16" Height="16"
-                                         Foreground="{DynamicResource MainAccentBrush}"
-                                         VerticalAlignment="Center"/>
-                        <TextBlock Text="Last 30 Days" Foreground="{DynamicResource TextPrimaryBrush}"
-                                   VerticalAlignment="Center" FontSize="12"/>
-                        <mi:MaterialIcon Kind="ChevronDown" Width="14" Height="14"
-                                         Foreground="{DynamicResource MainAccentBrush}"
-                                         VerticalAlignment="Center"/>
+                        <mi:MaterialIcon Kind="FilePdfBox" Width="18" Height="18" Foreground="White"/>
+                        <TextBlock Text="{Binding L_CreatePdf}" Foreground="White"/>
                     </StackPanel>
-                </Border>
+                </Button>
             </Grid>
 
-            
-            <Grid ColumnDefinitions="*, 20, *, 20, *, 20, *">
+            <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="20">
                 <Border Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="18" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
-                    <StackPanel Spacing="6">
-                        <StackPanel Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="PercentOutline" Width="16" Height="16"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Conversion Rate"
-                                       Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="3.42%" Foreground="{DynamicResource TextPrimaryBrush}"
-                                   FontSize="24" FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal" Spacing="4">
-                            <mi:MaterialIcon Kind="TrendingUp" Width="13" Height="13"
-                                             Foreground="{DynamicResource AccentGreenBrush}"/>
-                            <TextBlock Text="+0.5% vs last month"
-                                       Foreground="{DynamicResource AccentGreenBrush}" FontSize="10"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        Padding="18" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="PackageVariantClosed" Width="22" Height="22"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_ProductsMetric}" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding TotalProducts}" FontSize="28" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
+                        Padding="18" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="Warehouse" Width="22" Height="22"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_StockMetric}" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding TotalStock}" FontSize="28" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="2" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="18" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
-                    <StackPanel Spacing="6">
-                        <StackPanel Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="CartOutline" Width="16" Height="16"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Avg. Order Value"
-                                       Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="$142.50" Foreground="{DynamicResource TextPrimaryBrush}"
-                                   FontSize="24" FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal" Spacing="4">
-                            <mi:MaterialIcon Kind="TrendingUp" Width="13" Height="13"
-                                             Foreground="{DynamicResource AccentGreenBrush}"/>
-                            <TextBlock Text="+12% increase"
-                                       Foreground="{DynamicResource AccentGreenBrush}" FontSize="10"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        Padding="18" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="CartCheck" Width="22" Height="22"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_SoldMetric}" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding SoldItems}" FontSize="28" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="4" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="18" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
-                    <StackPanel Spacing="6">
-                        <StackPanel Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="AccountHeartOutline" Width="16" Height="16"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Customer LTV"
-                                       Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="$890.00" Foreground="{DynamicResource TextPrimaryBrush}"
-                                   FontSize="24" FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal" Spacing="4">
-                            <mi:MaterialIcon Kind="ArrowRight" Width="13" Height="13"
-                                             Foreground="{DynamicResource TextDimBrush}"/>
-                            <TextBlock Text="Steady growth"
-                                       Foreground="{DynamicResource TextDimBrush}" FontSize="10"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="6" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="18" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
-                    <StackPanel Spacing="6">
-                        <StackPanel Orientation="Horizontal" Spacing="6">
-                            <mi:MaterialIcon Kind="StoreOutline" Width="16" Height="16"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Store Visits"
-                                       Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="12.4K" Foreground="{DynamicResource TextPrimaryBrush}"
-                                   FontSize="24" FontWeight="Bold"/>
-                        <StackPanel Orientation="Horizontal" Spacing="4">
-                            <mi:MaterialIcon Kind="TrendingDown" Width="13" Height="13"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="-2% this period"
-                                       Foreground="{DynamicResource MainAccentBrush}" FontSize="10"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                <Border Grid.Column="3" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
+                        Padding="18" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="CashMultiple" Width="22" Height="22"
+                                         Foreground="{DynamicResource AccentGreenBrush}"/>
+                        <TextBlock Text="{Binding L_RevenueMetric}" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding SalesTotal, StringFormat='{}{0:N2} $'}"
+                                   FontSize="28" FontWeight="Bold"
+                                   Foreground="{DynamicResource AccentGreenBrush}"/>
                     </StackPanel>
                 </Border>
             </Grid>
 
-            
-            <Grid ColumnDefinitions="2*, 20, *">
+            <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
+                    Padding="20" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                <StackPanel Spacing="18">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <mi:MaterialIcon Kind="ChartTimelineVariant" Width="22" Height="22"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="{Binding L_Infographic}" FontSize="18" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    </StackPanel>
+
+                    <Grid ColumnDefinitions="160, *, 60" ColumnSpacing="12">
+                        <TextBlock Grid.Column="0" Text="{Binding L_StockLoad}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <ProgressBar Grid.Column="1" Minimum="0" Maximum="100"
+                                     Value="{Binding StockLoadPercent}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding StockLoadPercent, StringFormat='{}{0:N0}%'}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="160, *, 60" ColumnSpacing="12">
+                        <TextBlock Grid.Column="0" Text="{Binding L_SalesProgress}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <ProgressBar Grid.Column="1" Minimum="0" Maximum="100"
+                                     Value="{Binding SalesProgressPercent}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding SalesProgressPercent, StringFormat='{}{0:N0}%'}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="160, *, 60" ColumnSpacing="12">
+                        <TextBlock Grid.Column="0" Text="{Binding L_LowStockRisk}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                        <ProgressBar Grid.Column="1" Minimum="0" Maximum="100"
+                                     Value="{Binding LowStockRiskPercent}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding LowStockRiskPercent, StringFormat='{}{0:N0}%'}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="20">
                 <Border Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="25" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
-                    <StackPanel Spacing="20">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <mi:MaterialIcon Kind="ChartLine" Width="22" Height="22"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Revenue Trend" Classes="SubHeader" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <Canvas Height="200" Margin="0,10">
-                            <Line StartPoint="0,0"   EndPoint="600,0"   Stroke="{DynamicResource BorderBrush2}" StrokeThickness="1"/>
-                            <Line StartPoint="0,50"  EndPoint="600,50"  Stroke="{DynamicResource BorderBrush2}" StrokeThickness="1"/>
-                            <Line StartPoint="0,100" EndPoint="600,100" Stroke="{DynamicResource BorderBrush2}" StrokeThickness="1"/>
-                            <Line StartPoint="0,150" EndPoint="600,150" Stroke="{DynamicResource BorderBrush2}" StrokeThickness="1"/>
-                            <Line StartPoint="0,200" EndPoint="600,200" Stroke="{DynamicResource BorderBrush3}" StrokeThickness="2"/>
-                            <Path Data="M 0,180 L 100,150 L 200,160 L 300,80 L 400,100 L 500,40 L 600,60"
-                                  Stroke="{DynamicResource MainAccentBrush}"
-                                  StrokeThickness="3"
-                                  StrokeJoin="Round"/>
-                        </Canvas>
-                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
-                            <mi:MaterialIcon Kind="InformationOutline" Width="13" Height="13"
-                                             Foreground="{DynamicResource TextDimBrush}"/>
-                            <TextBlock Text="Total Sales Performance (USD)"
-                                       Foreground="{DynamicResource TextDimBrush}" FontSize="12"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        Padding="20" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="{Binding L_RecentSales}" FontSize="18" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <TextBlock Text="{Binding L_NoSales}"
+                                   IsVisible="{Binding HasNoSales}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                        <ItemsControl ItemsSource="{Binding RecentSales}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:Sale">
+                                    <Grid ColumnDefinitions="2*, 1*, 1*" Margin="0,6" ColumnSpacing="8">
+                                        <TextBlock Grid.Column="0" Text="{Binding ProductName}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat='{}{0} pcs'}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding TotalPrice, StringFormat='{}{0:N2} $'}"
+                                                   Foreground="{DynamicResource AccentGreenBrush}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="25" BorderBrush="{DynamicResource BorderBrush3}" BorderThickness="1">
-                    <StackPanel Spacing="20">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <mi:MaterialIcon Kind="ChartDonut" Width="22" Height="22"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Sales by Genre" Classes="SubHeader" VerticalAlignment="Center"/>
-                        </StackPanel>
+                <Border Grid.Column="1" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
+                        Padding="20" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="{Binding L_LowStock}" FontSize="18" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-                        <Grid HorizontalAlignment="Center">
-                            <Ellipse Width="150" Height="150"
-                                     Stroke="{DynamicResource BorderBrush2}" StrokeThickness="15"/>
-                            <Arc Width="150" Height="150"
-                                 Stroke="{DynamicResource MainAccentBrush}"
-                                 StrokeThickness="15" StartAngle="0" SweepAngle="140"/>
-                            <Arc Width="150" Height="150"
-                                 Stroke="{DynamicResource AccentGreenBrush}"
-                                 StrokeThickness="15" StartAngle="145" SweepAngle="80"/>
-                            <Arc Width="150" Height="150"
-                                 Stroke="{DynamicResource TextDimBrush}"
-                                 StrokeThickness="15" StartAngle="230" SweepAngle="120"/>
-                        </Grid>
-
-                        <StackPanel Spacing="8" Margin="0,5,0,0">
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <mi:MaterialIcon Kind="Circle" Width="10" Height="10"
-                                                 Foreground="{DynamicResource MainAccentBrush}"/>
-                                <TextBlock Text="Strategy (45%)"
-                                           Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <mi:MaterialIcon Kind="Circle" Width="10" Height="10"
-                                                 Foreground="{DynamicResource AccentGreenBrush}"/>
-                                <TextBlock Text="RPG / D&amp;D (30%)"
-                                           Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <mi:MaterialIcon Kind="Circle" Width="10" Height="10"
-                                                 Foreground="{DynamicResource TextDimBrush}"/>
-                                <TextBlock Text="Other (25%)"
-                                           Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding LowStockProducts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:Product">
+                                    <Grid ColumnDefinitions="2*, 1*" Margin="0,6">
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Stock, StringFormat='{}{0} left'}"
+                                                   Foreground="{DynamicResource MainAccentBrush}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </Border>
             </Grid>
 
+            <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
+                    Padding="20" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding L_StockValue}" FontSize="18" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="{Binding TotalStockValue, StringFormat='{}{0:N2} $'}"
+                               FontSize="26" FontWeight="Bold"
+                               Foreground="{DynamicResource MainAccentBrush}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

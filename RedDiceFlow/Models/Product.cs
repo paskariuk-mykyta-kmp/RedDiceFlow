@@ -1,16 +1,26 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace RedDiceFlow.Models
 {
     public class Product : INotifyPropertyChanged
     {
+        private int _id;
         private string _name = string.Empty;
         private double _price;
         private int _stock;
         private string _sku = string.Empty;
-        private string _genre = string.Empty; 
+        private string _genre = string.Empty;
+
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Name
         {
@@ -51,20 +61,8 @@ namespace RedDiceFlow.Models
                 OnPropertyChanged();
             }
         }
-        
-        private int _id;
 
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                _id = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Genre 
+        public string Genre
         {
             get => _genre;
             set
