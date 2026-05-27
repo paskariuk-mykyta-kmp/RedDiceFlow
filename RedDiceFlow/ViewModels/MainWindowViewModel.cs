@@ -2,20 +2,23 @@
 using RedDiceFlow.Models;
 using System.Linq;
 using System.Collections.Generic;
+using RedDiceFlow.Services;
+using System.Globalization;
 
 namespace RedDiceFlow.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly DatabaseService _databaseService = new();
         private bool _isUkrainian = false;
 
-        
+
         public string L_MenuDashboard { get; set; }
         public string L_MenuInventory { get; set; }
         public string L_MenuAnalytics { get; set; }
         public string L_MenuSettings { get; set; }
 
-        
+
         public string L_DashWelcome { get; set; }
         public string L_DashSales { get; set; }
         public string L_DashSalesSub { get; set; }
@@ -28,7 +31,7 @@ namespace RedDiceFlow.ViewModels
         public string L_DashBtnSync { get; set; }
         public string L_DashBtnUpdate { get; set; }
 
-        
+
         public string L_InventoryHeader { get; set; }
         public string L_InventorySub { get; set; }
         public string L_QuickAdd { get; set; }
@@ -46,7 +49,7 @@ namespace RedDiceFlow.ViewModels
         public string L_StatusOk { get; set; }
         public string L_SortBtn { get; set; }
 
-        
+
         public string L_SettingsHeader { get; set; }
         public string L_SettAccount { get; set; }
         public string L_SettAdmin { get; set; }
@@ -104,23 +107,23 @@ namespace RedDiceFlow.ViewModels
 
         public MainWindowViewModel()
         {
-            
-            Products = new ObservableCollection<Product>
-{
-    new Product { Name = "Catan", Price = 45.00, Stock = 10, Sku = "RD-1011", Genre = "Strategy" },
-    new Product { Name = "Dixit", Price = 30.00, Stock = 20, Sku = "RD-5566", Genre = "Party" },
-    new Product { Name = "Munchkin", Price = 15.50, Stock = 24, Sku = "RD-2002", Genre = "Card Game" },
-    new Product { Name = "Terraforming Mars", Price = 65.00, Stock = 8, Sku = "RD-3344", Genre = "Sci-Fi" },
-    new Product { Name = "Ticket to Ride", Price = 48.00, Stock = 12, Sku = "RD-4455", Genre = "Family" },
-    new Product { Name = "Scythe", Price = 95.00, Stock = 4, Sku = "RD-6677", Genre = "Strategy" },
-    new Product { Name = "7 Wonders", Price = 40.00, Stock = 9, Sku = "RD-7788", Genre = "Strategy" },
-    new Product { Name = "Carcassonne", Price = 35.00, Stock = 15, Sku = "RD-8899", Genre = "Tile" },
-    new Product { Name = "Azul", Price = 38.00, Stock = 11, Sku = "RD-9900", Genre = "Abstract" },
-    new Product { Name = "Gloomhaven", Price = 120.00, Stock = 3, Sku = "RD-1122", Genre = "RPG" },
-    new Product { Name = "Exploding Kittens", Price = 20.00, Stock = 18, Sku = "RD-2233", Genre = "Party" },
-    new Product { Name = "Pandemic", Price = 50.00, Stock = 7, Sku = "RD-3345", Genre = "Co-op" }
-};
 
+            Products = new ObservableCollection<Product>(_databaseService.GetProducts());
+
+            if (Products.Count == 0)
+            {
+                var demoProducts = new[]
+                {
+        new Product { Name = "Catan", Price = 45.00, Stock = 10, Sku = "RD-1011", Genre = "Strategy" },
+        new Product { Name = "Dixit", Price = 30.00, Stock = 20, Sku = "RD-5566", Genre = "Party" }
+    };
+
+                foreach (var product in demoProducts)
+                {
+                    product.Id = _databaseService.AddProduct(product);
+                    Products.Add(product);
+                }
+            }
             SetLanguage();
         }
 
@@ -229,14 +232,23 @@ namespace RedDiceFlow.ViewModels
         {
             if (string.IsNullOrWhiteSpace(NewName)) return;
 
-            Products.Add(new Product
+            if (!double.TryParse(NewPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out var price))
+                return;
+
+            if (!int.TryParse(NewStock, out var stock))
+                return;
+
+            var product = new Product
             {
                 Name = NewName,
                 Sku = NewSku,
-                Price = double.Parse(NewPrice),
-                Stock = int.Parse(NewStock),
+                Price = price,
+                Stock = stock,
                 Genre = NewGenre
-            });
+            };
+
+            product.Id = _databaseService.AddProduct(product);
+            Products.Add(product);
 
             NewName = string.Empty;
             NewSku = string.Empty;
@@ -249,8 +261,10 @@ namespace RedDiceFlow.ViewModels
 
         public void RemoveProduct(Product product)
         {
-            if (product != null)
-                Products.Remove(product);
+            if (product == null) return;
+
+            _databaseService.DeleteProduct(product.Id);
+            Products.Remove(product);
 
             OnPropertyChanged(nameof(FilteredProducts));
         }

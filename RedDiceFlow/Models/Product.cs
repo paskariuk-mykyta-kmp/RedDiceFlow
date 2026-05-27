@@ -51,6 +51,18 @@ namespace RedDiceFlow.Models
                 OnPropertyChanged();
             }
         }
+        
+        private int _id;
+
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Genre 
         {
