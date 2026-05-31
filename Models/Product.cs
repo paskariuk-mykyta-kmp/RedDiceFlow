@@ -50,8 +50,13 @@ namespace RedDiceFlow.Models
             {
                 _stock = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(StockStatusText));
+                OnPropertyChanged(nameof(IsLowStock));
             }
         }
+
+        public string StockStatusText => _stock <= 5 ? "LOW" : "OK";
+        public bool IsLowStock => _stock <= 5;
 
         public string Sku
         {

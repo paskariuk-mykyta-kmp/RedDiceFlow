@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace RedDiceFlow.ViewModels
@@ -51,7 +52,17 @@ namespace RedDiceFlow.ViewModels
         public string L_TableStatus { get; set; }
         public string L_TableDel { get; set; }
         public string L_StatusOk { get; set; }
+        public string L_StatusLow { get; set; }
         public string L_SortBtn { get; set; }
+        public string L_TablePlayers { get; set; }
+        public string L_TableActions { get; set; }
+        public string L_EditBtn { get; set; }
+        public string L_RestockBtn { get; set; }
+        public string L_DeleteBtn { get; set; }
+        public string L_GenreLabel { get; set; }
+        public string L_PlayersLabel { get; set; }
+        public string L_SaveBtn { get; set; }
+        public string L_CancelBtn { get; set; }
 
         public string L_SettingsHeader { get; set; }
         public string L_SettAccount { get; set; }
@@ -115,6 +126,13 @@ namespace RedDiceFlow.ViewModels
         public string L_OrderDate { get; set; }
         public string L_OrderTotal { get; set; }
 
+        public string L_ConfirmDeleteTitle { get; set; }
+        public string L_ConfirmDeleteMessage { get; set; }
+        public string L_ConfirmCancelTitle { get; set; }
+        public string L_ConfirmCancelMessage { get; set; }
+        public string L_Yes { get; set; }
+        public string L_No { get; set; }
+
         private string _statusMessage = string.Empty;
         public string StatusMessage
         {
@@ -151,6 +169,28 @@ namespace RedDiceFlow.ViewModels
         public string NewPrice { get; set; } = "0";
         public string NewStock { get; set; } = "0";
         public string NewGenre { get; set; } = string.Empty;
+        public string NewPlayersCount { get; set; } = "2";
+        private int ParsedNewPlayersCount => int.TryParse(NewPlayersCount, out var pc) ? pc : 2;
+
+        public string[] SortOptions { get; } = new[] { "Name", "Price", "Stock", "Genre" };
+        public string[] GenreOptions { get; } = new[] { "Strategy", "Party", "Abstract", "Thematic", "Card Game", "Family", "Euro", "Wargame", "Cooperative" };
+        public string[] PlayersCountOptions { get; } = new[] { "1", "2", "3", "4", "5", "6", "7", "8" };
+
+        private bool _isEditMode;
+        public bool IsEditMode { get => _isEditMode; set { _isEditMode = value; OnPropertyChanged(); } }
+
+        private Product? _editTargetProduct;
+        public Product? EditTargetProduct { get => _editTargetProduct; set { _editTargetProduct = value; OnPropertyChanged(); } }
+
+        private string _sortMode = "Name";
+        public string SortMode
+        {
+            get => _sortMode;
+            set { _sortMode = value; OnPropertyChanged(); OnPropertyChanged(nameof(FilteredProducts)); }
+        }
+
+        public event Func<Product?, Task<bool>>? ConfirmDeleteRequested;
+        public event Func<Order?, Task<bool>>? ConfirmCancelOrderRequested;
 
         public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<Order> Orders { get; set; }
@@ -262,10 +302,26 @@ namespace RedDiceFlow.ViewModels
 
         public double CartTotalPrice => CartItems.Sum(i => i.LineTotal);
 
-        public IEnumerable<Product> FilteredProducts => string.IsNullOrWhiteSpace(SearchText)
-            ? Products
-            : Products.Where(p => p.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                               || p.Sku.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+        public IEnumerable<Product> FilteredProducts
+        {
+            get
+            {
+                var query = string.IsNullOrWhiteSpace(SearchText)
+                    ? Products
+                    : Products.Where(p =>
+                           p.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                        || p.Sku.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                        || p.Genre.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+
+                return SortMode switch
+                {
+                    "Price" => query.OrderBy(p => p.Price),
+                    "Stock" => query.OrderBy(p => p.Stock),
+                    "Genre" => query.OrderBy(p => p.Genre).ThenBy(p => p.Name),
+                    _ => query.OrderBy(p => p.Name),
+                };
+            }
+        }
 
         public IEnumerable<Product> FilteredProductsForSale => string.IsNullOrWhiteSpace(SaleSearchText)
             ? Products
@@ -293,6 +349,10 @@ namespace RedDiceFlow.ViewModels
         public ICommand CancelOrderCommand { get; }
         public ICommand SearchOrdersCommand { get; }
         public ICommand ReloadOrdersCommand { get; }
+        public ICommand EditProductCommand { get; }
+        public ICommand RestockProductCommand { get; }
+        public ICommand DeleteProductCommand { get; }
+        public ICommand CancelEditCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -313,6 +373,10 @@ namespace RedDiceFlow.ViewModels
             CancelOrderCommand = new RelayCommand<Order>(CancelOrder);
             SearchOrdersCommand = new RelayCommand(SearchOrders);
             ReloadOrdersCommand = new RelayCommand(ReloadOrders);
+            EditProductCommand = new RelayCommand<Product>(EditProduct);
+            RestockProductCommand = new RelayCommand<Product>(RestockProduct);
+            DeleteProductCommand = new RelayCommand<Product>(DeleteProduct);
+            CancelEditCommand = new RelayCommand(CancelEdit);
 
             SetLanguage();
         }
@@ -321,9 +385,11 @@ namespace RedDiceFlow.ViewModels
         {
             var demoProducts = new[]
             {
-                new Product { Name = "Catan", Price = 45.00, Stock = 10, Sku = "RD-1011", Genre = "Strategy" },
-                new Product { Name = "Dixit", Price = 30.00, Stock = 20, Sku = "RD-5566", Genre = "Party" },
-                
+                new Product { Name = "Catan", Price = 45.00, Stock = 10, Sku = "RD-1011", Genre = "Strategy", PlayersCount = 3 },
+                new Product { Name = "Dixit", Price = 30.00, Stock = 20, Sku = "RD-5566", Genre = "Party", PlayersCount = 6 },
+                new Product { Name = "Ticket to Ride", Price = 50.00, Stock = 5, Sku = "RD-2020", Genre = "Strategy", PlayersCount = 5 },
+                new Product { Name = "Codenames", Price = 20.00, Stock = 15, Sku = "RD-3030", Genre = "Party", PlayersCount = 8 },
+                new Product { Name = "Azul", Price = 35.00, Stock = 2, Sku = "RD-4040", Genre = "Abstract", PlayersCount = 4 },
             };
 
             foreach (var product in demoProducts)
@@ -333,15 +399,9 @@ namespace RedDiceFlow.ViewModels
             }
         }
 
-        public void SortByGenre()
+        public void SortBy(string mode)
         {
-            var sortedList = Products.OrderBy(p => p.Genre).ToList();
-            Products.Clear();
-
-            foreach (var item in sortedList)
-                Products.Add(item);
-
-            OnPropertyChanged(nameof(FilteredProducts));
+            SortMode = mode;
         }
 
         public void ToggleLanguage()
@@ -367,7 +427,11 @@ namespace RedDiceFlow.ViewModels
                 L_NameLabel = "Назва"; L_SkuLabel = "Артикул"; L_PriceLabel = "Ціна"; L_StockLabel = "Склад";
                 L_ConfirmBtn = "Додати"; L_SearchWatermark = "Пошук..."; L_TableProduct = "ТОВАР";
                 L_TablePrice = "ЦІНА"; L_TableStock = "ЗАЛИШОК"; L_TableStatus = "СТАТУС"; L_TableDel = "ВИД.";
-                L_StatusOk = "OK"; L_SortBtn = "Сортувати за жанром";
+                L_StatusOk = "OK"; L_StatusLow = "МАЛО"; L_SortBtn = "Сортувати за жанром";
+                L_TablePlayers = "ГРАВЦІ"; L_TableActions = "ДІЇ";
+                L_EditBtn = "✎"; L_RestockBtn = "+1"; L_DeleteBtn = "✕";
+                L_GenreLabel = "Жанр"; L_PlayersLabel = "Гравці";
+                L_SaveBtn = "Зберегти"; L_CancelBtn = "Скасувати";
 
                 L_SettingsHeader = "Налаштування"; L_SettAccount = "Акаунт"; L_SettAdmin = "Адмін"; L_SettLogout = "Вийти";
                 L_SettGeneral = "Загальні"; L_SettLangLabel = "Мова"; L_SettLangCurrent = "Українська"; L_SettChangeBtn = "Змінити";
@@ -405,6 +469,13 @@ namespace RedDiceFlow.ViewModels
                 L_OrderDate = "Дата";
                 L_OrderTotal = "Сума";
 
+                L_ConfirmDeleteTitle = "Підтвердження";
+                L_ConfirmDeleteMessage = "Ви впевнені, що хочете видалити \"{0}\"?";
+                L_ConfirmCancelTitle = "Підтвердження";
+                L_ConfirmCancelMessage = "Скасувати це замовлення?";
+                L_Yes = "Так";
+                L_No = "Ні";
+
                 StatusMessage = "Система онлайн";
             }
             else
@@ -421,7 +492,11 @@ namespace RedDiceFlow.ViewModels
                 L_NameLabel = "Name"; L_SkuLabel = "SKU"; L_PriceLabel = "Price"; L_StockLabel = "Stock";
                 L_ConfirmBtn = "Add"; L_SearchWatermark = "Search..."; L_TableProduct = "PRODUCT";
                 L_TablePrice = "PRICE"; L_TableStock = "STOCK"; L_TableStatus = "STATUS"; L_TableDel = "DEL";
-                L_StatusOk = "OK"; L_SortBtn = "Sort by Genre";
+                L_StatusOk = "OK"; L_StatusLow = "LOW"; L_SortBtn = "Sort by Genre";
+                L_TablePlayers = "PLAYERS"; L_TableActions = "ACTIONS";
+                L_EditBtn = "✎"; L_RestockBtn = "+1"; L_DeleteBtn = "✕";
+                L_GenreLabel = "Genre"; L_PlayersLabel = "Players";
+                L_SaveBtn = "Save"; L_CancelBtn = "Cancel";
 
                 L_SettingsHeader = "Settings"; L_SettAccount = "Account"; L_SettAdmin = "Admin"; L_SettLogout = "Logout";
                 L_SettGeneral = "General"; L_SettLangLabel = "Language"; L_SettLangCurrent = "English"; L_SettChangeBtn = "Change";
@@ -459,6 +534,13 @@ namespace RedDiceFlow.ViewModels
                 L_OrderDate = "Date";
                 L_OrderTotal = "Total";
 
+                L_ConfirmDeleteTitle = "Confirm";
+                L_ConfirmDeleteMessage = "Are you sure you want to delete \"{0}\"?";
+                L_ConfirmCancelTitle = "Confirm";
+                L_ConfirmCancelMessage = "Cancel this order?";
+                L_Yes = "Yes";
+                L_No = "No";
+
                 StatusMessage = "System Online";
             }
         }
@@ -466,17 +548,43 @@ namespace RedDiceFlow.ViewModels
         public void AddProduct()
         {
             if (string.IsNullOrWhiteSpace(NewName))
-                return;
-
-            if (!double.TryParse(NewPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out var price))
             {
-                StatusMessage = "Invalid price";
+                StatusMessage = _isUkrainian ? "Введіть назву" : "Enter name";
                 return;
             }
 
-            if (!int.TryParse(NewStock, out var stock))
+            if (!double.TryParse(NewPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out var price) || price <= 0)
             {
-                StatusMessage = "Invalid stock";
+                StatusMessage = _isUkrainian ? "Некоректна ціна" : "Invalid price";
+                return;
+            }
+
+            if (!int.TryParse(NewStock, out var stock) || stock < 0)
+            {
+                StatusMessage = _isUkrainian ? "Некоректна кількість" : "Invalid stock";
+                return;
+            }
+
+            if (IsEditMode && EditTargetProduct != null)
+            {
+                EditTargetProduct.Name = NewName;
+                EditTargetProduct.Sku = NewSku;
+                EditTargetProduct.Price = price;
+                EditTargetProduct.Stock = stock;
+                EditTargetProduct.Genre = NewGenre;
+                EditTargetProduct.PlayersCount = ParsedNewPlayersCount;
+                _databaseService.UpdateProduct(EditTargetProduct);
+
+                var idx = Products.IndexOf(EditTargetProduct);
+                if (idx >= 0)
+                {
+                    Products.RemoveAt(idx);
+                    EditTargetProduct.PropertyChanged += OnProductChanged;
+                    Products.Insert(idx, EditTargetProduct);
+                }
+
+                CancelEdit();
+                RefreshAnalytics();
                 return;
             }
 
@@ -486,7 +594,8 @@ namespace RedDiceFlow.ViewModels
                 Sku = NewSku,
                 Price = price,
                 Stock = stock,
-                Genre = NewGenre
+                Genre = NewGenre,
+                PlayersCount = ParsedNewPlayersCount
             };
 
             product.Id = _databaseService.AddProduct(product);
@@ -498,15 +607,23 @@ namespace RedDiceFlow.ViewModels
             NewPrice = "0";
             NewStock = "0";
             NewGenre = string.Empty;
+            NewPlayersCount = "2";
 
             OnPropertyChanged((string?)null);
             RefreshAnalytics();
         }
 
-        public void RemoveProduct(Product product)
+        public async void DeleteProduct(Product? product)
         {
             if (product == null)
                 return;
+
+            if (ConfirmDeleteRequested != null)
+            {
+                var confirmed = await ConfirmDeleteRequested(product);
+                if (!confirmed)
+                    return;
+            }
 
             try
             {
@@ -514,13 +631,56 @@ namespace RedDiceFlow.ViewModels
                 _databaseService.DeleteProduct(product.Id);
                 Products.Remove(product);
 
+                if (EditTargetProduct?.Id == product.Id)
+                    CancelEdit();
+
                 OnPropertyChanged(nameof(FilteredProducts));
                 RefreshAnalytics();
+                StatusMessage = _isUkrainian ? "Товар видалено" : "Product deleted";
             }
             catch (Exception ex)
             {
                 StatusMessage = ex.Message;
             }
+        }
+
+        public void EditProduct(Product? product)
+        {
+            if (product == null)
+                return;
+
+            IsEditMode = true;
+            EditTargetProduct = product;
+            NewName = product.Name;
+            NewSku = product.Sku;
+            NewPrice = product.Price.ToString("F2", CultureInfo.InvariantCulture);
+            NewStock = product.Stock.ToString();
+            NewGenre = product.Genre ?? string.Empty;
+            NewPlayersCount = product.PlayersCount.ToString();
+        }
+
+        public void RestockProduct(Product? product)
+        {
+            if (product == null)
+                return;
+
+            product.Stock += 1;
+            _databaseService.UpdateProduct(product);
+            StatusMessage = _isUkrainian ? $"Додано 1 шт до {product.Name}" : $"Added 1 to {product.Name}";
+            RefreshAnalytics();
+        }
+
+        public void CancelEdit()
+        {
+            IsEditMode = false;
+            EditTargetProduct = null;
+            NewName = string.Empty;
+            NewSku = string.Empty;
+            NewPrice = "0";
+            NewStock = "0";
+            NewGenre = string.Empty;
+            NewPlayersCount = "2";
+            OnPropertyChanged((string?)null);
         }
 
         public void AddToCart(Product product)
@@ -579,8 +739,11 @@ namespace RedDiceFlow.ViewModels
             StatusMessage = _isUkrainian ? "Товар додано в кошик" : "Product added to cart";
         }
 
-        public void RemoveFromCart(OrderItem item)
+        public void RemoveFromCart(OrderItem? item)
         {
+            if (item == null)
+                return;
+
             CartItems.Remove(item);
             OnPropertyChanged(nameof(CartTotalPrice));
             OnPropertyChanged(nameof(CartItems));
@@ -665,8 +828,18 @@ namespace RedDiceFlow.ViewModels
             }
         }
 
-        public void CancelOrder(Order order)
+        public async void CancelOrder(Order? order)
         {
+            if (order == null)
+                return;
+
+            if (ConfirmCancelOrderRequested != null)
+            {
+                var confirmed = await ConfirmCancelOrderRequested(order);
+                if (!confirmed)
+                    return;
+            }
+
             try
             {
                 _databaseService.CancelOrder(order.Id);
