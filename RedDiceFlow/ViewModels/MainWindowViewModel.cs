@@ -196,7 +196,12 @@ namespace RedDiceFlow.ViewModels
         public ObservableCollection<Order> Orders { get; set; }
         public ObservableCollection<OrderItem> SelectedOrderItems { get; set; } = new();
         public ObservableCollection<OrderItem> CartItems { get; set; } = new();
-        public ObservableCollection<Customer> FoundCustomers { get; set; } = new();
+        private ObservableCollection<Customer> _foundCustomers = new();
+        public ObservableCollection<Customer> FoundCustomers
+        {
+            get => _foundCustomers;
+            set { _foundCustomers = value; OnPropertyChanged(); }
+        }
 
         private string _orderSearchPhone = string.Empty;
         public string OrderSearchPhone
@@ -247,7 +252,13 @@ namespace RedDiceFlow.ViewModels
         public Product? SelectedProductForCart
         {
             get => _selectedProductForCart;
-            set { _selectedProductForCart = value; OnPropertyChanged(); }
+            set
+            {
+                _selectedProductForCart = value;
+                OnPropertyChanged();
+                if (value != null)
+                    CartQuantity = "1";
+            }
         }
 
         private bool _isUpdatingCustomer;
@@ -353,6 +364,7 @@ namespace RedDiceFlow.ViewModels
         public ICommand RestockProductCommand { get; }
         public ICommand DeleteProductCommand { get; }
         public ICommand CancelEditCommand { get; }
+        public ICommand AddSelectedToCartCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -377,6 +389,7 @@ namespace RedDiceFlow.ViewModels
             RestockProductCommand = new RelayCommand<Product>(RestockProduct);
             DeleteProductCommand = new RelayCommand<Product>(DeleteProduct);
             CancelEditCommand = new RelayCommand(CancelEdit);
+            AddSelectedToCartCommand = new RelayCommand(AddSelectedToCart);
 
             SetLanguage();
         }
@@ -739,6 +752,16 @@ namespace RedDiceFlow.ViewModels
             StatusMessage = _isUkrainian ? "Товар додано в кошик" : "Product added to cart";
         }
 
+        public void AddSelectedToCart()
+        {
+            AddToCart(SelectedProductForCart!);
+            if (SelectedProductForCart != null)
+            {
+                SaleSearchText = string.Empty;
+                SelectedProductForCart = null;
+            }
+        }
+
         public void RemoveFromCart(OrderItem? item)
         {
             if (item == null)
@@ -760,10 +783,9 @@ namespace RedDiceFlow.ViewModels
 
         public void SearchCustomer()
         {
-            FoundCustomers.Clear();
-
             if (string.IsNullOrWhiteSpace(CustomerSearchText))
             {
+                FoundCustomers = new ObservableCollection<Customer>();
                 SelectedFoundCustomer = null;
                 NewCustomerName = string.Empty;
                 OnPropertyChanged(nameof(HasFoundCustomer));
@@ -771,14 +793,9 @@ namespace RedDiceFlow.ViewModels
             }
 
             var results = _databaseService.SearchCustomersFuzzy(CustomerSearchText);
-            foreach (var c in results)
-                FoundCustomers.Add(c);
+            FoundCustomers = new ObservableCollection<Customer>(results);
 
-            if (FoundCustomers.Count > 0)
-            {
-                SelectedFoundCustomer = FoundCustomers[0];
-            }
-            else
+            if (FoundCustomers.Count == 0)
             {
                 SelectedFoundCustomer = null;
                 OnPropertyChanged(nameof(HasFoundCustomer));

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System;
 using Avalonia.Controls;
 using RedDiceFlow.ViewModels;
 
@@ -20,7 +20,7 @@ namespace RedDiceFlow.Views
             }
         }
 
-        private async Task<bool> OnConfirmCancelOrder(Models.Order? order)
+        private async System.Threading.Tasks.Task<bool> OnConfirmCancelOrder(Models.Order? order)
         {
             var vm = DataContext as MainWindowViewModel;
             if (vm == null) return false;
