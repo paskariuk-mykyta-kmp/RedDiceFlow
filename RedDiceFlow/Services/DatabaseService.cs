@@ -422,21 +422,7 @@ namespace RedDiceFlow.Services
                 WHERE OrderId = @OrderId;
             ", new { OrderId = orderId }, transaction).AsList();
 
-            foreach (var item in items)
-            {
-                if (item.ProductId == null)
-                    continue;
-
-                connection.Execute(@"
-                    UPDATE Products
-                    SET Stock = Stock + @Quantity
-                    WHERE Id = @ProductId;
-                ", new
-                {
-                    ProductId = item.ProductId,
-                    item.Quantity
-                }, transaction);
-            }
+            RestoreStock(connection, transaction, items);
 
             connection.Execute("UPDATE Orders SET Status = 'cancelled' WHERE Id = @Id;",
                 new { Id = orderId }, transaction);
@@ -457,6 +443,19 @@ namespace RedDiceFlow.Services
                 WHERE OrderId = @OrderId;
             ", new { OrderId = orderId }, transaction).AsList();
 
+            RestoreStock(connection, transaction, items);
+
+            connection.Execute("DELETE FROM OrderItems WHERE OrderId = @OrderId;",
+                new { OrderId = orderId }, transaction);
+
+            connection.Execute("DELETE FROM Orders WHERE Id = @Id;",
+                new { Id = orderId }, transaction);
+
+            transaction.Commit();
+        }
+
+        private static void RestoreStock(SqliteConnection connection, SqliteTransaction transaction, IList<OrderItem> items)
+        {
             foreach (var item in items)
             {
                 if (item.ProductId == null)
@@ -472,14 +471,6 @@ namespace RedDiceFlow.Services
                     item.Quantity
                 }, transaction);
             }
-
-            connection.Execute("DELETE FROM OrderItems WHERE OrderId = @OrderId;",
-                new { OrderId = orderId }, transaction);
-
-            connection.Execute("DELETE FROM Orders WHERE Id = @Id;",
-                new { Id = orderId }, transaction);
-
-            transaction.Commit();
         }
 
         public void UpdateOrderStatus(int orderId, string status)

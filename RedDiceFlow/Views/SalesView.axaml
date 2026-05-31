@@ -12,12 +12,14 @@
             <StackPanel Spacing="5">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="CashRegister" Width="28" Height="28"
-                                     Foreground="{DynamicResource MainAccentBrush}"/>
+                                     Foreground="{DynamicResource MainAccentBrush}"
+                                     VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_SalesHeader}"
                                Classes="Header"
                                FontSize="24"
                                FontWeight="Bold"
-                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"/>
                 </StackPanel>
                 <TextBlock Text="{DynamicResource L_SalesSub}"
                            Foreground="{DynamicResource TextSecondaryBrush}"
@@ -86,9 +88,9 @@
                                                         Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                                         CommandParameter="{Binding}">
                                                     <StackPanel Orientation="Horizontal" Spacing="4">
-                                                        <mi:MaterialIcon Kind="CartPlus" Width="16" Height="16" Foreground="White"/>
+                                                        <mi:MaterialIcon Kind="CartPlus" Width="16" Height="16" Foreground="White" VerticalAlignment="Center"/>
                                                         <TextBlock Text="{DynamicResource L_AddToCart}"
-                                                                   Foreground="White"/>
+                                                                   Foreground="White" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Button>
                                             </Grid>
@@ -234,8 +236,8 @@
                                 Height="44"
                                 Padding="12,0">
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <mi:MaterialIcon Kind="CashRegister" Width="20" Height="20" Foreground="White"/>
-                                <TextBlock Text="{DynamicResource L_PlaceOrder}" Foreground="White" FontSize="15"/>
+                                <mi:MaterialIcon Kind="CashRegister" Width="20" Height="20" Foreground="White" VerticalAlignment="Center"/>
+                                <TextBlock Text="{DynamicResource L_PlaceOrder}" Foreground="White" FontSize="15" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>

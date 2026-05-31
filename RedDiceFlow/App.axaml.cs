@@ -35,31 +35,30 @@ namespace RedDiceFlow
         {
             var app = (App)Current!;
             var dicts = app.Resources.MergedDictionaries;
-            dicts.Clear();
-
-            var uri = isLight
+            var themeUri = isLight
                 ? new Uri("avares://RedDiceFlow/Resources/LightTheme.axaml")
                 : new Uri("avares://RedDiceFlow/Resources/DarkTheme.axaml");
 
-            dicts.Add(new ResourceInclude(uri) { Source = uri });
+            var newDict = new ResourceInclude(themeUri) { Source = themeUri };
+            if (dicts.Count > 0)
+                dicts[0] = newDict;
+            else
+                dicts.Add(newDict);
         }
 
         public static void SwitchLanguage(bool isUkrainian)
         {
             var app = (App)Current!;
-            var uri = isUkrainian
+            var dicts = app.Resources.MergedDictionaries;
+            var langUri = isUkrainian
                 ? new Uri("avares://RedDiceFlow/Resources/Lang_ua.axaml")
                 : new Uri("avares://RedDiceFlow/Resources/Lang_en.axaml");
 
-            var langDict = new ResourceInclude(uri) { Source = uri };
-
-            // Find and replace the language dictionary (second merged dict after theme)
-            var dicts = app.Resources.MergedDictionaries;
-            var themeDict = dicts.Count > 0 ? dicts[0] : null;
-            dicts.Clear();
-            if (themeDict != null)
-                dicts.Add(themeDict);
-            dicts.Add(langDict);
+            var newDict = new ResourceInclude(langUri) { Source = langUri };
+            if (dicts.Count > 1)
+                dicts[1] = newDict;
+            else
+                dicts.Add(newDict);
         }
     }
 }

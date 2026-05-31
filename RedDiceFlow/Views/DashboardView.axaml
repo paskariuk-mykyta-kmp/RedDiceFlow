@@ -63,7 +63,7 @@
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <mi:MaterialIcon Kind="PackageVariantClosed" Width="18" Height="18"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
+                                             Foreground="{DynamicResource MainAccentBrush}" VerticalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource L_DashStock}"
                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -73,7 +73,7 @@
                                    FontSize="32" FontWeight="Black"/>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <mi:MaterialIcon Kind="AlertCircleOutline" Width="13" Height="13"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
+                                             Foreground="{DynamicResource MainAccentBrush}" VerticalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource L_DashStockSub}"
                                        Foreground="{DynamicResource MainAccentBrush}"
                                        FontSize="11" VerticalAlignment="Center"/>
@@ -86,7 +86,7 @@
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <mi:MaterialIcon Kind="Cart" Width="18" Height="18"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
+                                             Foreground="{DynamicResource MainAccentBrush}" VerticalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource L_DashSales}"
                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -96,7 +96,7 @@
                                    FontSize="32" FontWeight="Black"/>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <mi:MaterialIcon Kind="TrendingUp" Width="13" Height="13"
-                                             Foreground="{DynamicResource MainAccentBrush}"/>
+                                             Foreground="{DynamicResource MainAccentBrush}" VerticalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource L_DashSalesSub}"
                                        Foreground="{DynamicResource MainAccentBrush}"
                                        FontSize="11" VerticalAlignment="Center"/>
@@ -109,7 +109,7 @@
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <mi:MaterialIcon Kind="CurrencyUsd" Width="18" Height="18"
-                                             Foreground="{DynamicResource AccentGreenBrush}"/>
+                                             Foreground="{DynamicResource AccentGreenBrush}" VerticalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource L_DashActiveStock}"
                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -119,7 +119,7 @@
                                    FontSize="32" FontWeight="Black"/>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <mi:MaterialIcon Kind="CheckCircle" Width="13" Height="13"
-                                             Foreground="{DynamicResource AccentGreenBrush}"/>
+                                             Foreground="{DynamicResource AccentGreenBrush}" VerticalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource L_StatusOk}"
                                        Foreground="{DynamicResource AccentGreenBrush}"
                                        FontSize="11" VerticalAlignment="Center"/>
@@ -235,7 +235,7 @@
                 <StackPanel Spacing="15">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <mi:MaterialIcon Kind="Trophy" Width="20" Height="20"
-                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                                         Foreground="{DynamicResource MainAccentBrush}" VerticalAlignment="Center"/>
                         <TextBlock Text="{DynamicResource L_DashTopGames}" FontWeight="Bold"
                                    Foreground="{DynamicResource MainAccentBrush}" FontSize="18"
                                    VerticalAlignment="Center"/>

@@ -108,12 +108,14 @@
     <sys:String x:Key="L_OrderDate">Date</sys:String>
     <sys:String x:Key="L_OrderTotal">Total</sys:String>
 
-    <sys:String x:Key="L_ConfirmDeleteTitle">Confirm</sys:String>
-    <sys:String x:Key="L_ConfirmDeleteMessage">Are you sure you want to delete "{0}"?</sys:String>
     <sys:String x:Key="L_ConfirmCancelTitle">Confirm</sys:String>
     <sys:String x:Key="L_ConfirmCancelMessage">Cancel this order?</sys:String>
     <sys:String x:Key="L_Yes">Yes</sys:String>
     <sys:String x:Key="L_No">No</sys:String>
+    <sys:String x:Key="L_ConfirmDeleteTitle">Delete Order</sys:String>
+    <sys:String x:Key="L_ConfirmDeleteMessage">Permanently delete order #{0}? This will restore stock and remove the order history.</sys:String>
+    <sys:String x:Key="L_Delete">Delete</sys:String>
+    <sys:String x:Key="L_Cancel">Cancel</sys:String>
 
     <sys:String x:Key="L_StatusSold">Sold</sys:String>
     <sys:String x:Key="L_StatusShipped">Shipped</sys:String>

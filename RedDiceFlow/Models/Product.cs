@@ -1,98 +1,37 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RedDiceFlow.Models
 {
-    public class Product : INotifyPropertyChanged
+    public partial class Product : ObservableObject
     {
+        [ObservableProperty]
         private int _id;
+
+        [ObservableProperty]
         private string _name = string.Empty;
+
+        [ObservableProperty]
         private double _price;
+
+        [ObservableProperty]
         private int _stock;
+
+        [ObservableProperty]
         private string _sku = string.Empty;
+
+        [ObservableProperty]
         private string _genre = string.Empty;
+
+        [ObservableProperty]
         private int _playersCount = 2;
 
-        public int Id
+        public string StockStatusText => Stock <= 5 ? "LOW" : "OK";
+        public bool IsLowStock => Stock <= 5;
+
+        partial void OnStockChanged(int value)
         {
-            get => _id;
-            set
-            {
-                _id = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double Price
-        {
-            get => _price;
-            set
-            {
-                _price = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int Stock
-        {
-            get => _stock;
-            set
-            {
-                _stock = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(StockStatusText));
-                OnPropertyChanged(nameof(IsLowStock));
-            }
-        }
-
-        public string StockStatusText => _stock <= 5 ? "LOW" : "OK";
-        public bool IsLowStock => _stock <= 5;
-
-        public string Sku
-        {
-            get => _sku;
-            set
-            {
-                _sku = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Genre
-        {
-            get => _genre;
-            set
-            {
-                _genre = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int PlayersCount
-        {
-            get => _playersCount;
-            set
-            {
-                _playersCount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            OnPropertyChanged(nameof(StockStatusText));
+            OnPropertyChanged(nameof(IsLowStock));
         }
     }
 }

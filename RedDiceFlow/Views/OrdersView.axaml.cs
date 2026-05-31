@@ -51,9 +51,9 @@ namespace RedDiceFlow.Views
             var topLevel = TopLevel.GetTopLevel(this);
             if (topLevel is Window owner)
             {
-                dialog.Title = "Delete Order";
-                dialog.SetMessage($"Permanently delete order #{order?.Id}? This will restore stock and remove the order history.");
-                dialog.SetButtonTexts("Delete", "Cancel");
+                dialog.Title = Res("L_ConfirmDeleteTitle");
+                dialog.SetMessage(string.Format(Res("L_ConfirmDeleteMessage"), order?.Id));
+                dialog.SetButtonTexts(Res("L_Delete"), Res("L_Cancel"));
                 return await dialog.ShowDialog(owner);
             }
             return false;

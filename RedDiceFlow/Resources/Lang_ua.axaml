@@ -108,12 +108,14 @@
     <sys:String x:Key="L_OrderDate">Дата</sys:String>
     <sys:String x:Key="L_OrderTotal">Сума</sys:String>
 
-    <sys:String x:Key="L_ConfirmDeleteTitle">Підтвердження</sys:String>
-    <sys:String x:Key="L_ConfirmDeleteMessage">Ви впевнені, що хочете видалити "{0}"?</sys:String>
     <sys:String x:Key="L_ConfirmCancelTitle">Підтвердження</sys:String>
     <sys:String x:Key="L_ConfirmCancelMessage">Скасувати це замовлення?</sys:String>
     <sys:String x:Key="L_Yes">Так</sys:String>
     <sys:String x:Key="L_No">Ні</sys:String>
+    <sys:String x:Key="L_ConfirmDeleteTitle">Видалити замовлення</sys:String>
+    <sys:String x:Key="L_ConfirmDeleteMessage">Назавжди видалити замовлення #{0}? Склад буде відновлено, історію замовлення буде видалено.</sys:String>
+    <sys:String x:Key="L_Delete">Видалити</sys:String>
+    <sys:String x:Key="L_Cancel">Скасувати</sys:String>
 
     <sys:String x:Key="L_StatusSold">Продано</sys:String>
     <sys:String x:Key="L_StatusShipped">Відправлено</sys:String>

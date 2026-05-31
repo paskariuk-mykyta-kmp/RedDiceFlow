@@ -36,7 +36,7 @@
             <Button x:Name="BtnDash" Classes="MenuButton" Click="OnMenuClick"
                     Background="{DynamicResource MainAccentBrush}">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="ViewDashboard" Width="18" Height="18"/>
+                    <mi:MaterialIcon Kind="ViewDashboard" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuDashboard}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -45,7 +45,7 @@
 
             <Button x:Name="BtnGames" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="PackageVariantClosed" Width="18" Height="18"/>
+                    <mi:MaterialIcon Kind="PackageVariantClosed" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuInventory}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -54,7 +54,7 @@
 
             <Button x:Name="BtnSales" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="CashRegister" Width="18" Height="18"/>
+                    <mi:MaterialIcon Kind="CashRegister" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuSales}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -63,7 +63,7 @@
 
             <Button x:Name="BtnOrders" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="ClipboardListOutline" Width="18" Height="18"/>
+                    <mi:MaterialIcon Kind="ClipboardListOutline" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuOrders}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -72,7 +72,7 @@
 
             <Button x:Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="ChartBar" Width="18" Height="18"/>
+                    <mi:MaterialIcon Kind="ChartBar" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuAnalytics}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -81,7 +81,7 @@
 
             <Button x:Name="BtnSettings" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="Cog" Width="18" Height="18"/>
+                    <mi:MaterialIcon Kind="Cog" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuSettings}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -103,7 +103,7 @@
                 <Grid ColumnDefinitions="*, Auto">
                     <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
                         <mi:MaterialIcon Kind="CheckCircle" Width="13" Height="13"
-                                         Foreground="{DynamicResource AccentGreenBrush}"/>
+                                         Foreground="{DynamicResource AccentGreenBrush}" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding StatusMessage}"
                                    Foreground="{DynamicResource AccentGreenBrush}"
                                    FontSize="11"

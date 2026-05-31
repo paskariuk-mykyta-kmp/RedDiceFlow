@@ -8,6 +8,8 @@ using System.Text;
 
 namespace RedDiceFlow.Services
 {
+    internal record ReportLine(string Text, int FontSize, bool Bold, int LineHeight);
+
     public class ReportService
     {
         private static readonly CultureInfo Money = CultureInfo.GetCultureInfo("en-US");
@@ -43,7 +45,7 @@ namespace RedDiceFlow.Services
             };
         }
 
-        private static List<List<string>> BuildPages(List<Product> products, List<Order> allOrders,
+        private static List<List<ReportLine>> BuildPages(List<Product> products, List<Order> allOrders,
             List<Order> periodOrders, List<Order> deliveredOrders, string period, DateTime now)
         {
             var periodLabel = period switch
@@ -61,41 +63,40 @@ namespace RedDiceFlow.Services
             var salesTotal = deliveredOrders.Sum(o => o.TotalPrice);
             var lowStockItems = products.Where(p => p.Stock <= 5).ToList();
 
-            var lines = new List<string>();
+            var lines = new List<ReportLine>();
 
-            lines.Add("RED DICE FLOW");
-            lines.Add("Manager Report");
-            lines.Add($"Period: {periodLabel}  |  {now:yyyy-MM-dd HH:mm}");
-            lines.Add("");
+            lines.Add(new("RED DICE FLOW", 24, true, 38));
+            lines.Add(new($"Manager Report  |  {periodLabel}  |  {now:yyyy-MM-dd HH:mm}", 13, false, 22));
+            lines.Add(new("", 0, false, 10));
 
-            lines.Add("SUMMARY");
-            lines.Add($"  Products:        {totalProducts}");
-            lines.Add($"  Total Stock:     {totalStock} units");
-            lines.Add($"  Stock Value:     {stockValue.ToString("N2", Money)}$");
-            lines.Add($"  Orders (period): {periodOrders.Count}");
-            lines.Add($"  Delivered:       {deliveredCount}");
-            lines.Add($"  Revenue:         {salesTotal.ToString("N2", Money)}$");
-            lines.Add("");
+            lines.Add(new("SUMMARY", 14, true, 22));
+            lines.Add(new($"  Products:        {totalProducts}", 10, false, 16));
+            lines.Add(new($"  Total Stock:     {totalStock} units", 10, false, 16));
+            lines.Add(new($"  Stock Value:     {stockValue.ToString("N2", Money)}$", 10, false, 16));
+            lines.Add(new($"  Orders (period): {periodOrders.Count}", 10, false, 16));
+            lines.Add(new($"  Delivered:       {deliveredCount}", 10, false, 16));
+            lines.Add(new($"  Revenue:         {salesTotal.ToString("N2", Money)}$", 10, false, 16));
+            lines.Add(new("", 0, false, 10));
 
-            lines.Add("INVENTORY");
-            lines.Add("  Name                          SKU            Genre           Stock  Price");
-            
+            lines.Add(new("INVENTORY", 14, true, 22));
+            lines.Add(new("  Name                          SKU            Genre           Stock  Price", 9, true, 14));
+            lines.Add(new("  ----------------------------- ------------- ---------------- ----- ------", 9, true, 14));
 
             foreach (var p in products)
             {
                 var name = p.Name.Length > 29 ? p.Name[..27] + ".." : p.Name;
                 var sku = (p.Sku ?? "").Length > 11 ? (p.Sku ?? "")[..11] : (p.Sku ?? "");
                 var genre = (p.Genre ?? "").Length > 14 ? (p.Genre ?? "")[..14] : (p.Genre ?? "");
-                lines.Add($"  {name,-29} {sku,-13} {genre,-16} {p.Stock,5} {p.Price,7:N2}$");
+                lines.Add(new($"  {name,-29} {sku,-13} {genre,-16} {p.Stock,5} {p.Price,7:N2}$", 9, false, 14));
             }
 
-            lines.Add("");
+            lines.Add(new("", 0, false, 10));
 
             if (periodOrders.Count > 0)
             {
-                lines.Add("ORDERS");
-                lines.Add("  Order#        Customer                      Total      Status      Date");
-                
+                lines.Add(new("ORDERS", 14, true, 22));
+                lines.Add(new("  Order#        Customer                      Total      Status      Date", 9, true, 14));
+                lines.Add(new("  ------------ ----------------------------- ---------- ----------- ---------------", 9, true, 14));
 
                 foreach (var o in periodOrders.Take(40))
                 {
@@ -104,31 +105,31 @@ namespace RedDiceFlow.Services
                         : (o.CustomerName ?? o.CustomerPhone ?? "");
                     var status = (o.Status ?? "").Length > 9 ? (o.Status ?? "")[..9] : (o.Status ?? "");
                     var date = o.CreatedAt.ToString("yyyy-MM-dd HH:mm");
-                    lines.Add($"  {o.OrderNumber,-12} {customer,-29} {o.TotalPrice,9:N2}$ {status,-11} {date}");
+                    lines.Add(new($"  {o.OrderNumber,-12} {customer,-29} {o.TotalPrice,9:N2}$ {status,-11} {date}", 9, false, 14));
                 }
 
-                lines.Add("");
+                lines.Add(new("", 0, false, 10));
             }
 
-            lines.Add("LOW STOCK");
+            lines.Add(new("LOW STOCK", 14, true, 22));
             if (lowStockItems.Count == 0)
-                lines.Add("  No low stock items.");
+                lines.Add(new("  No low stock items.", 10, false, 16));
             else
                 foreach (var p in lowStockItems)
-                    lines.Add($"  {p.Name,-35} only {p.Stock} left");
+                    lines.Add(new($"  {p.Name,-35} only {p.Stock} left", 10, false, 16));
 
             return SplitPages(lines, 55);
         }
 
-        private static List<List<string>> SplitPages(List<string> lines, int maxPerPage)
+        private static List<List<ReportLine>> SplitPages(List<ReportLine> lines, int maxPerPage)
         {
-            var pages = new List<List<string>>();
+            var pages = new List<List<ReportLine>>();
             for (int i = 0; i < lines.Count; i += maxPerPage)
                 pages.Add(lines.GetRange(i, Math.Min(maxPerPage, lines.Count - i)));
             return pages;
         }
 
-        private static void WritePdf(string path, List<List<string>> pages)
+        private static void WritePdf(string path, List<List<ReportLine>> pages)
         {
             var pageObjs = new List<string>();
             var streamObjs = new List<string>();
@@ -137,92 +138,20 @@ namespace RedDiceFlow.Services
             {
                 var content = new StringBuilder();
                 content.AppendLine("BT");
-                content.AppendLine("/F1 18 Tf");
                 content.AppendLine("40 800 Td");
 
-                var y = 800;
-                var bigFont = true;
                 foreach (var line in pages[p])
                 {
-                    if (line == "RED DICE FLOW")
+                    if (string.IsNullOrEmpty(line.Text))
                     {
-                        content.AppendLine("/F2 24 Tf");
-                        content.AppendLine($"({Escape(line)}) Tj");
-                        content.AppendLine("0 -30 Td");
-                        y -= 30;
-                        bigFont = true;
+                        content.AppendLine("0 -10 Td");
                         continue;
                     }
 
-                    if (line == "Manager Report")
-                    {
-                        content.AppendLine("/F1 14 Tf");
-                        content.AppendLine($"({Escape(line)}) Tj");
-                        content.AppendLine("0 -22 Td");
-                        y -= 22;
-                        bigFont = true;
-                        continue;
-                    }
-
-                    if (line.EndsWith("  |  ") || line == "" || line == "SUMMARY" || line == "INVENTORY" ||
-                        line == "ORDERS" || line == "LOW STOCK")
-                    {
-                        if (line == "SUMMARY" || line == "INVENTORY" || line == "ORDERS" || line == "LOW STOCK")
-                        {
-                            content.AppendLine("/F2 13 Tf");
-                            content.AppendLine($"({Escape(line)}) Tj");
-                            content.AppendLine("0 -20 Td");
-                            y -= 20;
-                        }
-                        else
-                        {
-                            var fontSize = line == "" || line.EndsWith("  |  ") ? 12 : 10;
-                            content.AppendLine($"/F1 {fontSize} Tf");
-                            if (!string.IsNullOrEmpty(line))
-                                content.AppendLine($"({Escape(line)}) Tj");
-                            content.AppendLine("0 -16 Td");
-                            y -= 16;
-                        }
-                        bigFont = true;
-                        continue;
-                    }
-
-                    if (line.StartsWith("  "))
-                    {
-                        content.AppendLine("/F1 9 Tf");
-
-                        if (line.Contains("-----") || line.Contains("Order#"))
-                        {
-                            content.AppendLine("/F2 9 Tf");
-                            content.AppendLine($"({Escape(line)}) Tj");
-                            content.AppendLine("0 -14 Td");
-                            y -= 14;
-                        }
-                        else
-                        {
-                            content.AppendLine($"({Escape(line)}) Tj");
-                            content.AppendLine("0 -14 Td");
-                            y -= 14;
-                        }
-                        bigFont = false;
-                        continue;
-                    }
-
-                    if (!bigFont)
-                    {
-                        content.AppendLine("/F1 10 Tf");
-                        content.AppendLine($"({Escape(line)}) Tj");
-                        content.AppendLine("0 -16 Td");
-                        y -= 16;
-                    }
-                    else
-                    {
-                        content.AppendLine($"({Escape(line)}) Tj");
-                        content.AppendLine("0 -16 Td");
-                        y -= 16;
-                    }
-
-                    bigFont = false;
+                    var font = line.Bold ? "/F2" : "/F1";
+                    content.AppendLine($"{font} {line.FontSize} Tf");
+                    content.AppendLine($"({Escape(line.Text)}) Tj");
+                    content.AppendLine($"0 -{line.LineHeight} Td");
                 }
 
                 content.AppendLine("ET");
@@ -231,7 +160,6 @@ namespace RedDiceFlow.Services
                 pageObjs.Add($"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents {6 + 2 * p} 0 R >>");
             }
 
-            
             var objects = new List<string>
             {
                 $"<< /Type /Catalog /Pages 2 0 R >>",

@@ -45,7 +45,7 @@
         <Border Background="{DynamicResource PanelBg}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2}" BorderThickness="1" Padding="20">
             <StackPanel Spacing="15">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="PlusCircleOutline" Foreground="{DynamicResource MainAccent}" Width="20" Height="20"/>
+                    <mi:MaterialIcon Kind="PlusCircleOutline" Foreground="{DynamicResource MainAccent}" Width="20" Height="20" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_QuickAdd}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding EditTargetProduct.Name, StringFormat='? {0}'}" FontWeight="Bold" FontSize="16"
                                Foreground="{DynamicResource MainAccent}" IsVisible="{Binding IsEditMode}"/>

@@ -18,10 +18,12 @@
     <SolidColorBrush x:Key="PanelBgBrush"       Color="#FFFFFF"/>
     <SolidColorBrush x:Key="BorderBrush2"       Color="#E0E0E0"/>
     <SolidColorBrush x:Key="BorderBrush3"       Color="#CCCCCC"/>
+    <SolidColorBrush x:Key="BorderCol2Brush"    Color="#E0E0E0"/>
     <SolidColorBrush x:Key="TextPrimaryBrush"   Color="#1A1A1A"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#757575"/>
-    <SolidColorBrush x:Key="TextDimBrush"       Color="#9E9E9E"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#555555"/>
+    <SolidColorBrush x:Key="TextDimBrush"       Color="#777777"/>
     <SolidColorBrush x:Key="AccentGreenBrush"   Color="#2E7D32"/>
+    <SolidColorBrush x:Key="AccentRedBrush"     Color="#D32F2F"/>
     <SolidColorBrush x:Key="TableHeaderBgBrush" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="HoverBgBrush"       Color="#EEF2FF"/>
     <SolidColorBrush x:Key="BadgeBgBrush"       Color="#E8F5E9"/>

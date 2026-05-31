@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -387,36 +388,26 @@ namespace RedDiceFlow.ViewModels
 
             try
             {
-                var lines = File.ReadAllLines(_configPath);
-                foreach (var line in lines)
-                {
-                    var parts = line.Split('=', 2);
-                    if (parts.Length != 2) continue;
-                    var value = parts[1].Trim().Equals("true", StringComparison.OrdinalIgnoreCase);
+                var json = File.ReadAllText(_configPath);
+                var data = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                if (data == null) return;
 
-                    if (parts[0].Trim() == "IsUkrainian" && value)
-                    {
-                        _isUkrainian = true;
-                        App.IsUkrainianStatic = true;
-                        App.SwitchLanguage(true);
-                    }
-                    else if (parts[0].Trim() == "IsLightTheme" && value)
-                    {
-                        _isLightTheme = true;
-                        OnPropertyChanged(nameof(IsLightTheme));
-                        App.SwitchTheme(true);
-                    }
-                    else if (parts[0].Trim() == "StockLoadGoal")
-                    {
-                        if (double.TryParse(parts[1].Trim(), out var goal))
-                            StockLoadGoal = goal;
-                    }
-                    else if (parts[0].Trim() == "SalesProgressGoal")
-                    {
-                        if (double.TryParse(parts[1].Trim(), out var goal))
-                            SalesProgressGoal = goal;
-                    }
+                if (data.TryGetValue("IsUkrainian", out var ua) && ua.Equals("true", StringComparison.OrdinalIgnoreCase))
+                {
+                    _isUkrainian = true;
+                    App.IsUkrainianStatic = true;
+                    App.SwitchLanguage(true);
                 }
+                if (data.TryGetValue("IsLightTheme", out var lt) && lt.Equals("true", StringComparison.OrdinalIgnoreCase))
+                {
+                    _isLightTheme = true;
+                    OnPropertyChanged(nameof(IsLightTheme));
+                    App.SwitchTheme(true);
+                }
+                if (data.TryGetValue("StockLoadGoal", out var slg) && double.TryParse(slg, out var loadGoal))
+                    StockLoadGoal = loadGoal;
+                if (data.TryGetValue("SalesProgressGoal", out var spg) && double.TryParse(spg, out var salesGoal))
+                    SalesProgressGoal = salesGoal;
             }
             catch { }
         }
@@ -429,13 +420,14 @@ namespace RedDiceFlow.ViewModels
                 if (dir != null && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                File.WriteAllLines(_configPath, new[]
+                var data = new Dictionary<string, string>
                 {
-                    $"IsUkrainian={_isUkrainian}",
-                    $"IsLightTheme={_isLightTheme}",
-                    $"StockLoadGoal={_stockLoadGoal}",
-                    $"SalesProgressGoal={_salesProgressGoal}",
-                });
+                    ["IsUkrainian"] = _isUkrainian.ToString().ToLowerInvariant(),
+                    ["IsLightTheme"] = _isLightTheme.ToString().ToLowerInvariant(),
+                    ["StockLoadGoal"] = _stockLoadGoal.ToString(CultureInfo.InvariantCulture),
+                    ["SalesProgressGoal"] = _salesProgressGoal.ToString(CultureInfo.InvariantCulture),
+                };
+                File.WriteAllText(_configPath, JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true }));
             }
             catch { }
         }
@@ -916,24 +908,7 @@ namespace RedDiceFlow.ViewModels
 
         private void RefreshAnalytics()
         {
-            OnPropertyChanged(nameof(TotalProducts));
-            OnPropertyChanged(nameof(TotalStock));
-            OnPropertyChanged(nameof(TotalStockValue));
-            OnPropertyChanged(nameof(SoldItems));
-            OnPropertyChanged(nameof(SalesTotal));
-            OnPropertyChanged(nameof(SalesToday));
-            OnPropertyChanged(nameof(DashboardSalesToday));
-            OnPropertyChanged(nameof(SalesThisWeek));
-            OnPropertyChanged(nameof(SalesThisMonth));
-            OnPropertyChanged(nameof(LowStockCount));
-            OnPropertyChanged(nameof(HasNoRecentOrders));
-            OnPropertyChanged(nameof(RecentOrders));
-            OnPropertyChanged(nameof(LowStockProducts));
-            OnPropertyChanged(nameof(StockLoadPercent));
-            OnPropertyChanged(nameof(SalesProgressPercent));
-            OnPropertyChanged(nameof(LowStockRiskPercent));
-            OnPropertyChanged(nameof(FilteredProducts));
-            OnPropertyChanged(nameof(FilteredProductsForSale));
+            OnPropertyChanged((string?)null);
             RefreshTopSellingGames();
         }
 
