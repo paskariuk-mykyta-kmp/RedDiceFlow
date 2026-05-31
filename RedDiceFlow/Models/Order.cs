@@ -12,5 +12,7 @@ namespace RedDiceFlow.Models
         public DateTime CreatedAt { get; set; }
         public int ItemsCount { get; set; }
         public int DisplayNumber { get; set; }
+        public string Status { get; set; } = "sold";
+        public string OrderNumber => $"#ORD-{Id:D5}";
     }
 }

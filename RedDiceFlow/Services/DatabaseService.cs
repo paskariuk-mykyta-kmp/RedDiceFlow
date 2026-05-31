@@ -44,6 +44,14 @@ namespace RedDiceFlow.Services
             connection.Execute("PRAGMA foreign_keys = ON;");
 
             connection.Execute(@"
+                CREATE TABLE IF NOT EXISTS Genres
+                (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Name TEXT NOT NULL UNIQUE
+                );
+            ");
+
+            connection.Execute(@"
                 CREATE TABLE IF NOT EXISTS Products
                 (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -115,6 +123,9 @@ namespace RedDiceFlow.Services
 
             if (!columns.Contains("CustomerId"))
                 connection.Execute("ALTER TABLE Orders ADD COLUMN CustomerId INTEGER NULL;");
+
+            if (!columns.Contains("Status"))
+                connection.Execute("ALTER TABLE Orders ADD COLUMN Status TEXT NOT NULL DEFAULT 'sold';");
         }
 
         private void MigrateSalesIfNeeded()
@@ -330,11 +341,12 @@ namespace RedDiceFlow.Services
                        o.CustomerPhone,
                        o.TotalPrice,
                        o.CreatedAt,
+                       o.Status,
                        COUNT(oi.Id) AS ItemsCount
                 FROM Orders o
                 LEFT JOIN OrderItems oi ON oi.OrderId = o.Id
                 LEFT JOIN Customers c ON c.Id = o.CustomerId
-                GROUP BY o.Id, o.CustomerId, c.FullName, o.CustomerPhone, o.TotalPrice, o.CreatedAt
+                GROUP BY o.Id, o.CustomerId, c.FullName, o.CustomerPhone, o.TotalPrice, o.CreatedAt, o.Status
                 ORDER BY datetime(o.CreatedAt) DESC;
             ").AsList();
         }
@@ -350,15 +362,27 @@ namespace RedDiceFlow.Services
                        o.CustomerPhone,
                        o.TotalPrice,
                        o.CreatedAt,
+                       o.Status,
                        COUNT(oi.Id) AS ItemsCount
                 FROM Orders o
                 LEFT JOIN OrderItems oi ON oi.OrderId = o.Id
                 LEFT JOIN Customers c ON c.Id = o.CustomerId
                 WHERE o.CustomerPhone LIKE @Phone
                    OR c.FullName LIKE @Phone
-                GROUP BY o.Id, o.CustomerId, c.FullName, o.CustomerPhone, o.TotalPrice, o.CreatedAt
+                GROUP BY o.Id, o.CustomerId, c.FullName, o.CustomerPhone, o.TotalPrice, o.CreatedAt, o.Status
                 ORDER BY datetime(o.CreatedAt) DESC;
             ", new { Phone = $"%{customerPhone.Trim()}%" }).AsList();
+        }
+
+        public IReadOnlyList<OrderItem> GetAllOrderItems()
+        {
+            using var connection = CreateConnection();
+
+            return connection.Query<OrderItem>(@"
+                SELECT Id, OrderId, ProductId, ProductName, Sku, Genre, Quantity, UnitPrice, LineTotal
+                FROM OrderItems
+                ORDER BY OrderId;
+            ").AsList();
         }
 
         public IReadOnlyList<OrderItem> GetOrderItems(int orderId)
@@ -378,7 +402,7 @@ namespace RedDiceFlow.Services
             using var connection = CreateConnection();
 
             return connection.Query<Order>(@"
-                SELECT Id, CustomerId, CustomerPhone, TotalPrice, CreatedAt, 0 AS ItemsCount
+                SELECT Id, CustomerId, CustomerPhone, TotalPrice, CreatedAt, Status, 0 AS ItemsCount
                 FROM Orders
                 WHERE CustomerId = @Id
                 ORDER BY datetime(CreatedAt) DESC;
@@ -414,10 +438,73 @@ namespace RedDiceFlow.Services
                 }, transaction);
             }
 
+            connection.Execute("UPDATE Orders SET Status = 'cancelled' WHERE Id = @Id;",
+                new { Id = orderId }, transaction);
+
+            transaction.Commit();
+        }
+
+        public void HardDeleteOrder(int orderId)
+        {
+            using var connection = CreateConnection();
+            connection.Open();
+
+            using var transaction = connection.BeginTransaction();
+
+            var items = connection.Query<OrderItem>(@"
+                SELECT Id, OrderId, ProductId, ProductName, Sku, Genre, Quantity, UnitPrice, LineTotal
+                FROM OrderItems
+                WHERE OrderId = @OrderId;
+            ", new { OrderId = orderId }, transaction).AsList();
+
+            foreach (var item in items)
+            {
+                if (item.ProductId == null)
+                    continue;
+
+                connection.Execute(@"
+                    UPDATE Products
+                    SET Stock = Stock + @Quantity
+                    WHERE Id = @ProductId;
+                ", new
+                {
+                    ProductId = item.ProductId,
+                    item.Quantity
+                }, transaction);
+            }
+
+            connection.Execute("DELETE FROM OrderItems WHERE OrderId = @OrderId;",
+                new { OrderId = orderId }, transaction);
+
             connection.Execute("DELETE FROM Orders WHERE Id = @Id;",
                 new { Id = orderId }, transaction);
 
             transaction.Commit();
+        }
+
+        public void UpdateOrderStatus(int orderId, string status)
+        {
+            using var connection = CreateConnection();
+            connection.Execute("UPDATE Orders SET Status = @Status WHERE Id = @Id;",
+                new { Id = orderId, Status = status });
+        }
+
+        public List<string> GetGenres()
+        {
+            using var connection = CreateConnection();
+            connection.Open();
+            return connection.Query<string>("SELECT Name FROM Genres ORDER BY Name;").ToList();
+        }
+
+        public void AddGenre(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            using var connection = CreateConnection();
+            connection.Open();
+            connection.Execute("INSERT OR IGNORE INTO Genres (Name) VALUES (@Name);",
+                new { Name = name.Trim() });
         }
 
         public int AddOrder(string customerPhone, IReadOnlyList<OrderItem> items, string? customerName = null)

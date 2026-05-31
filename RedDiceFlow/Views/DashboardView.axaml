@@ -1,9 +1,16 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:RedDiceFlow.ViewModels"
+             xmlns:models="using:RedDiceFlow.Models"
+             xmlns:views="using:RedDiceFlow.Views"
              xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:Class="RedDiceFlow.Views.DashboardView"
-             x:DataType="vm:MainWindowViewModel">
+             x:CompileBindings="False">
+
+    <UserControl.Resources>
+        <views:StatusToColorConverter x:Key="StatusToColor"/>
+        <views:StatusToDisplayConverter x:Key="StatusToDisplay"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <Style Selector="Border.StatCard">
@@ -14,7 +21,6 @@
                 </Transitions>
             </Setter>
         </Style>
-        
         <Style Selector="Border.StatCard:pointerover">
             <Setter Property="BorderBrush" Value="{DynamicResource MainAccentBrush}"/>
             <Setter Property="BoxShadow" Value="0 8 24 0 #40000000"/>
@@ -28,12 +34,10 @@
                 </Transitions>
             </Setter>
         </Style>
-
         <Style Selector="Button.ActionBtn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource MainAccentBrush}"/>
             <Setter Property="TextBlock.Foreground" Value="White"/>
         </Style>
-
         <Style Selector="Button.ActionBtn:pointerover mi|MaterialIcon">
             <Setter Property="Foreground" Value="White"/>
         </Style>
@@ -64,7 +68,8 @@
                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBlock Text="12 Games" Foreground="{DynamicResource TextPrimaryBrush}"
+                        <TextBlock Text="{Binding TotalProducts, StringFormat='{}{0} Games'}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
                                    FontSize="32" FontWeight="Black"/>
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <mi:MaterialIcon Kind="AlertCircleOutline" Width="13" Height="13"
@@ -82,13 +87,20 @@
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <mi:MaterialIcon Kind="Cart" Width="18" Height="18"
                                              Foreground="{DynamicResource MainAccentBrush}"/>
-                            <TextBlock Text="Orders Today"
+                            <TextBlock Text="{Binding L_DashSales}"
                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBlock Text="24" Foreground="{DynamicResource MainAccentBrush}"
+                        <TextBlock Text="{Binding DashboardSalesToday, StringFormat='{}{0:N2} $'}"
+                                   Foreground="{DynamicResource AccentGreenBrush}"
                                    FontSize="32" FontWeight="Black"/>
-                        <TextBlock Text="Last update: Just now" Foreground="{DynamicResource TextDimBrush}" FontSize="11"/>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <mi:MaterialIcon Kind="TrendingUp" Width="13" Height="13"
+                                             Foreground="{DynamicResource MainAccentBrush}"/>
+                            <TextBlock Text="{Binding L_DashSalesSub}"
+                                       Foreground="{DynamicResource MainAccentBrush}"
+                                       FontSize="11" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
@@ -98,16 +110,17 @@
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <mi:MaterialIcon Kind="CurrencyUsd" Width="18" Height="18"
                                              Foreground="{DynamicResource AccentGreenBrush}"/>
-                            <TextBlock Text="{Binding L_DashSales}"
+                            <TextBlock Text="{Binding L_DashActiveStock}"
                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBlock Text="$12,450" Foreground="{DynamicResource AccentGreenBrush}"
+                        <TextBlock Text="{Binding TotalStock, StringFormat='{}{0} units'}"
+                                   Foreground="{DynamicResource AccentGreenBrush}"
                                    FontSize="32" FontWeight="Black"/>
                         <StackPanel Orientation="Horizontal" Spacing="4">
-                            <mi:MaterialIcon Kind="TrendingUp" Width="13" Height="13"
+                            <mi:MaterialIcon Kind="CheckCircle" Width="13" Height="13"
                                              Foreground="{DynamicResource AccentGreenBrush}"/>
-                            <TextBlock Text="{Binding L_DashSalesSub}"
+                            <TextBlock Text="{Binding L_StatusOk}"
                                        Foreground="{DynamicResource AccentGreenBrush}"
                                        FontSize="11" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -119,70 +132,143 @@
                 <Border Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
                         BorderBrush="{DynamicResource BorderCol2Brush}" BorderThickness="1" Padding="25">
                     <StackPanel Spacing="15">
-                        <TextBlock Text="Quick Order Search" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding L_DashQuickSearch}" FontWeight="Bold" FontSize="18"/>
                         <StackPanel Spacing="8">
-                            <TextBlock Text="Enter Order ID or SKU:" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                            <TextBox Watermark="e.g. #ORD-7721" Classes="Modern"/>
+                            <TextBlock Text="{Binding L_DashQuickSearchSub}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <Grid ColumnDefinitions="*, Auto" ColumnSpacing="8">
+                                <TextBox Grid.Column="0" PlaceholderText="{Binding L_DashQuickSearchPlaceholder}"
+                                         Text="{Binding QuickSearchText}"
+                                         Background="{DynamicResource PanelBgBrush}"
+                                         Foreground="{DynamicResource TextPrimaryBrush}"
+                                         BorderBrush="{DynamicResource BorderBrush2}"
+                                         Height="38"/>
+                                <Button Grid.Column="1"
+                                        Command="{Binding QuickSearchOrderCommand}"
+                                        Content="{Binding L_OrderSearchButton}"
+                                        Background="{DynamicResource MainAccentBrush}"
+                                        Foreground="White"
+                                        Height="38"
+                                        Padding="16,0"/>
+                            </Grid>
                         </StackPanel>
-                        <Button Content="Check Status" HorizontalAlignment="Stretch" 
-                                Background="{DynamicResource MainAccentBrush}" Foreground="White"
-                                Height="40" CornerRadius="6" FontWeight="SemiBold"/>
+
+                        <ItemsControl ItemsSource="{Binding QuickSearchResults}"
+                                      IsVisible="{Binding HasQuickSearchResult}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource BorderBrush2}"
+                                            BorderThickness="0,0,0,1" Padding="0,8">
+                                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <Border CornerRadius="4" Padding="6,2"
+                                                        Background="{Binding Status, Converter={StaticResource StatusToColor}}">
+                                                    <TextBlock Text="{Binding Status, Converter={StaticResource StatusToDisplay}}"
+                                                               FontSize="11" FontWeight="Bold" Foreground="White"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding OrderNumber}"
+                                                           FontWeight="SemiBold" FontSize="13"
+                                                           Foreground="{DynamicResource MainAccentBrush}"/>
+                                                <TextBlock Text="{Binding CustomerName}"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2"
+                                                       Text="{Binding TotalPrice, StringFormat='{}{0:N2} $'}"
+                                                       Foreground="{DynamicResource AccentGreenBrush}"
+                                                       FontWeight="Bold" FontSize="13"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="1" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
                         BorderBrush="{DynamicResource BorderCol2Brush}" BorderThickness="1" Padding="25">
-                    <StackPanel Spacing="15">
-                        <TextBlock Text="Recent Sales" FontWeight="Bold" FontSize="18"/>
-                        <StackPanel Spacing="12">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <mi:MaterialIcon Kind="CreditCardOutline" Foreground="{DynamicResource MainAccentBrush}" Width="14"/>
-                                <TextBlock Text="Order #1024 paid ($89.00)" FontSize="12"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <mi:MaterialIcon Kind="PackageVariant" Foreground="{DynamicResource TextDimBrush}" Width="14"/>
-                                <TextBlock Text="Order #1022 shipped" FontSize="12"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <mi:MaterialIcon Kind="CloseCircleOutline" Foreground="{DynamicResource MainAccentBrush}" Width="14"/>
-                                <TextBlock Text="Order #1019 cancelled" FontSize="12" Foreground="{DynamicResource MainAccentBrush}"/>
-                            </StackPanel>
-                        </StackPanel>
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="{Binding L_RecentOrders}" FontWeight="Bold" FontSize="18"/>
+
+                        <ItemsControl ItemsSource="{Binding RecentOrders}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource BorderBrush2}"
+                                            BorderThickness="0,0,0,1" Padding="0,10,0,10">
+                                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <Border CornerRadius="4" Padding="6,2"
+                                                        Background="{Binding Status, Converter={StaticResource StatusToColor}}">
+                                                    <TextBlock Text="{Binding Status, Converter={StaticResource StatusToDisplay}}"
+                                                               FontSize="11" FontWeight="Bold" Foreground="White"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding OrderNumber}"
+                                                           FontWeight="SemiBold" FontSize="13"
+                                                           Foreground="{DynamicResource MainAccentBrush}"/>
+                                                <TextBlock Text="{Binding CustomerName}"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                                           FontSize="12"/>
+                                                <TextBlock Text="{Binding CustomerPhone}"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           FontSize="11"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="{Binding L_NoRecentOrders}"
+                                   IsVisible="{Binding HasNoRecentOrders}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontSize="13"/>
                     </StackPanel>
                 </Border>
             </Grid>
 
             <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                    BorderBrush="{DynamicResource BorderCol2Brush}" BorderThickness="1" Padding="25">
-                <StackPanel Spacing="20">
+                    BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1" Padding="25">
+                <StackPanel Spacing="15">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <mi:MaterialIcon Kind="LightningBolt" Width="20" Height="20"
+                        <mi:MaterialIcon Kind="Trophy" Width="20" Height="20"
                                          Foreground="{DynamicResource MainAccentBrush}"/>
-                        <TextBlock Text="{Binding L_DashQuickActions}" FontWeight="Bold"
+                        <TextBlock Text="{Binding L_DashTopGames}" FontWeight="Bold"
                                    Foreground="{DynamicResource MainAccentBrush}" FontSize="18"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
-                    
-                    <WrapPanel Orientation="Horizontal">
-                        <Button Classes="ActionBtn" Margin="0,0,15,0" Width="180" Height="45">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <mi:MaterialIcon Kind="FileChart" Width="18" Height="18" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="{Binding L_DashBtnReport}" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Classes="ActionBtn" Margin="0,0,15,0" Width="180" Height="45">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <mi:MaterialIcon Kind="Sync" Width="18" Height="18" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="{Binding L_DashBtnSync}" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Classes="ActionBtn" Margin="0,0,15,0" Width="180" Height="45">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <mi:MaterialIcon Kind="Refresh" Width="18" Height="18" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <TextBlock Text="{Binding L_DashBtnUpdate}" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            </StackPanel>
-                        </Button>
-                    </WrapPanel>
+
+                    <ItemsControl ItemsSource="{Binding TopSellingGames}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource BorderBrush2}"
+                                        BorderThickness="0,0,0,1" Padding="0,8">
+                                    <Grid ColumnDefinitions="Auto, *, Auto, Auto" ColumnSpacing="15">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding TotalSold, StringFormat='x{0}'}"
+                                                   Foreground="{DynamicResource MainAccentBrush}"
+                                                   FontWeight="Bold" FontSize="14"
+                                                   VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding Genre}"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                                       FontSize="11"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding TotalRevenue, StringFormat='{}{0:N2} $'}"
+                                                   Foreground="{DynamicResource AccentGreenBrush}"
+                                                   FontWeight="Bold" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </Border>
         </StackPanel>

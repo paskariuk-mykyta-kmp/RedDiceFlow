@@ -31,6 +31,9 @@ namespace RedDiceFlow.Views
                 case "BtnSales":
                     MainContentArea.Content = new SalesView();
                     break;
+                case "BtnOrders":
+                    MainContentArea.Content = new OrdersView();
+                    break;
                 case "BtnAnalytic":
                     MainContentArea.Content = new AnalyticsView();
                     break;
@@ -42,7 +45,7 @@ namespace RedDiceFlow.Views
 
         private void SetActiveButton(Button active)
         {
-            foreach (var btn in new[] { BtnDash, BtnGames, BtnSales, BtnAnalytic, BtnSettings })
+            foreach (var btn in new[] { BtnDash, BtnGames, BtnSales, BtnOrders, BtnAnalytic, BtnSettings })
             {
                 var inactiveColor = this.TryFindResource("BorderCol", out var res) && res is Color c
                     ? new SolidColorBrush(c)

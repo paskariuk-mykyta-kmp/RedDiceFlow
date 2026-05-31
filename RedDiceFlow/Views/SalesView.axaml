@@ -25,7 +25,7 @@
             </StackPanel>
 
             <Grid ColumnDefinitions="1.5*, 1*" ColumnSpacing="20">
-                <!-- Left: Product search & selection -->
+                
                 <Border Grid.Column="0"
                         Background="{DynamicResource PanelBgBrush}"
                         CornerRadius="12"
@@ -100,7 +100,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Right: Cart panel -->
+                
                 <Border Grid.Column="1"
                         Background="{DynamicResource PanelBgBrush}"
                         CornerRadius="12"
@@ -222,6 +222,12 @@
                                  BorderBrush="{DynamicResource BorderBrush2}"
                                  Height="38"/>
 
+                        <CheckBox IsChecked="{Binding IsInStoreSale}"
+                                  Content="In-store sale"
+                                  Foreground="{DynamicResource TextPrimaryBrush}"
+                                  FontSize="13"
+                                  Margin="0,4,0,0"/>
+
                         <Button Command="{Binding PlaceOrderCommand}"
                                 Background="{DynamicResource MainAccentBrush}"
                                 Foreground="White"
@@ -236,7 +242,7 @@
                 </Border>
             </Grid>
 
-            <!-- Recent Orders -->
+            
             <Border Background="{DynamicResource PanelBgBrush}"
                     CornerRadius="12"
                     BorderBrush="{DynamicResource BorderBrush2}"

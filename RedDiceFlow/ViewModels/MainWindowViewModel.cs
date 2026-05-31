@@ -17,6 +17,7 @@ namespace RedDiceFlow.ViewModels
         private readonly DatabaseService _databaseService = new();
         private readonly ReportService _reportService = new();
         private bool _isUkrainian = false;
+        public static bool IsUkrainianStatic { get; set; }
 
         public string L_MenuDashboard { get; set; }
         public string L_MenuInventory { get; set; }
@@ -133,6 +134,22 @@ namespace RedDiceFlow.ViewModels
         public string L_Yes { get; set; }
         public string L_No { get; set; }
 
+        public string L_StatusSold { get; set; }
+        public string L_StatusShipped { get; set; }
+        public string L_StatusDelivered { get; set; }
+        public string L_StatusCancelled { get; set; }
+
+        public string L_DashQuickSearch { get; set; }
+        public string L_DashQuickSearchSub { get; set; }
+        public string L_DashQuickSearchPlaceholder { get; set; }
+        public string L_DashActiveStock { get; set; }
+        public string L_DashTopGames { get; set; }
+
+        public string L_ShipBtn { get; set; }
+        public string L_DeliverBtn { get; set; }
+        public string L_DeleteOrderBtn { get; set; }
+        public string L_OrderTotalLabel { get; set; }
+
         private string _statusMessage = string.Empty;
         public string StatusMessage
         {
@@ -173,7 +190,7 @@ namespace RedDiceFlow.ViewModels
         private int ParsedNewPlayersCount => int.TryParse(NewPlayersCount, out var pc) ? pc : 2;
 
         public string[] SortOptions { get; } = new[] { "Name", "Price", "Stock", "Genre" };
-        public string[] GenreOptions { get; } = new[] { "Strategy", "Party", "Abstract", "Thematic", "Card Game", "Family", "Euro", "Wargame", "Cooperative" };
+        public ObservableCollection<string> GenreOptions { get; } = new();
         public string[] PlayersCountOptions { get; } = new[] { "1", "2", "3", "4", "5", "6", "7", "8" };
 
         private bool _isEditMode;
@@ -181,6 +198,9 @@ namespace RedDiceFlow.ViewModels
 
         private Product? _editTargetProduct;
         public Product? EditTargetProduct { get => _editTargetProduct; set { _editTargetProduct = value; OnPropertyChanged(); } }
+
+        private bool _isInStoreSale = true;
+        public bool IsInStoreSale { get => _isInStoreSale; set { _isInStoreSale = value; OnPropertyChanged(); } }
 
         private string _sortMode = "Name";
         public string SortMode
@@ -191,6 +211,7 @@ namespace RedDiceFlow.ViewModels
 
         public event Func<Product?, Task<bool>>? ConfirmDeleteRequested;
         public event Func<Order?, Task<bool>>? ConfirmCancelOrderRequested;
+        public event Func<Order?, Task<bool>>? ConfirmDeleteOrderRequested;
 
         public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<Order> Orders { get; set; }
@@ -213,6 +234,26 @@ namespace RedDiceFlow.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private string _quickSearchText = string.Empty;
+        public string QuickSearchText
+        {
+            get => _quickSearchText;
+            set
+            {
+                _quickSearchText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Order> _quickSearchResults = new();
+        public ObservableCollection<Order> QuickSearchResults
+        {
+            get => _quickSearchResults;
+            set { _quickSearchResults = value; OnPropertyChanged(); }
+        }
+
+        public bool HasQuickSearchResult => QuickSearchResults.Count > 0;
 
         private Order? _selectedOrder;
         public Order? SelectedOrder
@@ -344,15 +385,30 @@ namespace RedDiceFlow.ViewModels
         public int TotalStock => Products.Sum(p => p.Stock);
         public double TotalStockValue => Products.Sum(p => p.Stock * p.Price);
         public int LowStockCount => Products.Count(p => p.Stock <= 5);
-        public int SoldItems => Orders.Sum(o => o.ItemsCount);
-        public double SalesTotal => Orders.Sum(o => o.TotalPrice);
+        public int SoldItems => Orders.Where(o => o.Status == "delivered").Sum(o => o.ItemsCount);
+        public double SalesTotal => Orders.Where(o => o.Status == "delivered").Sum(o => o.TotalPrice);
+        public double SalesToday => Orders.Where(o => o.Status == "delivered" && o.CreatedAt.Date == DateTime.Today).Sum(o => o.TotalPrice);
+        public double DashboardSalesToday => Orders.Where(o => o.Status != "cancelled" && o.CreatedAt.Date == DateTime.Today).Sum(o => o.TotalPrice);
+        public double SalesThisWeek => Orders.Where(o => o.Status == "delivered" && o.CreatedAt >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek)).Sum(o => o.TotalPrice);
+        public double SalesThisMonth => Orders.Where(o => o.Status == "delivered" && o.CreatedAt.Year == DateTime.Today.Year && o.CreatedAt.Month == DateTime.Today.Month).Sum(o => o.TotalPrice);
         public bool HasNoRecentOrders => Orders.Count == 0;
-        public IEnumerable<Order> RecentOrders => Orders.Take(10);
+        public IEnumerable<Order> RecentOrders => Orders.Take(3);
         public IEnumerable<Product> LowStockProducts => Products.Where(p => p.Stock <= 5);
+        public ObservableCollection<TopSellingGame> TopSellingGames { get; set; } = new();
 
-        public double StockLoadPercent => Math.Min(100, TotalStock);
-        public double SalesProgressPercent => Math.Min(100, SalesTotal / 10);
+        public double StockLoadPercent => Math.Min(100, TotalStock / Math.Max(1, StockLoadGoal) * 100);
+        public double SalesProgressPercent => Math.Min(100, SalesTotal / Math.Max(1, SalesProgressGoal) * 100);
         public double LowStockRiskPercent => TotalProducts == 0 ? 0 : Math.Round((double)LowStockCount / TotalProducts * 100);
+
+        public double StockLoadGoal { get; set; } = 100;
+        public double SalesProgressGoal { get; set; } = 1000;
+
+        private string _newGenreText = string.Empty;
+        public string NewGenreText
+        {
+            get => _newGenreText;
+            set { _newGenreText = value; OnPropertyChanged(); }
+        }
 
         public ICommand AddToCartCommand { get; }
         public ICommand RemoveFromCartCommand { get; }
@@ -365,13 +421,19 @@ namespace RedDiceFlow.ViewModels
         public ICommand DeleteProductCommand { get; }
         public ICommand CancelEditCommand { get; }
         public ICommand AddSelectedToCartCommand { get; }
+        public ICommand ShipOrderCommand { get; }
+        public ICommand DeliverOrderCommand { get; }
+        public ICommand DeleteOrderCommand { get; }
+        public ICommand QuickSearchOrderCommand { get; }
+        public ICommand AddGenreCommand { get; }
 
         public MainWindowViewModel()
         {
             Products = new ObservableCollection<Product>(_databaseService.GetProducts());
 
-            if (Products.Count == 0)
-                AddDefaultProducts();
+            var genres = _databaseService.GetGenres();
+            foreach (var g in genres)
+                GenreOptions.Add(g);
 
             Orders = new ObservableCollection<Order>(_databaseService.GetOrders());
             UpdateDisplayNumbers();
@@ -379,37 +441,26 @@ namespace RedDiceFlow.ViewModels
             foreach (var product in Products)
                 product.PropertyChanged += OnProductChanged;
 
+            RefreshTopSellingGames();
+
             AddToCartCommand = new RelayCommand<Product>(AddToCart);
             RemoveFromCartCommand = new RelayCommand<OrderItem>(RemoveFromCart);
             PlaceOrderCommand = new RelayCommand(PlaceOrder);
             CancelOrderCommand = new RelayCommand<Order>(CancelOrder);
             SearchOrdersCommand = new RelayCommand(SearchOrders);
             ReloadOrdersCommand = new RelayCommand(ReloadOrders);
+            QuickSearchOrderCommand = new RelayCommand(QuickSearchOrder);
             EditProductCommand = new RelayCommand<Product>(EditProduct);
             RestockProductCommand = new RelayCommand<Product>(RestockProduct);
             DeleteProductCommand = new RelayCommand<Product>(DeleteProduct);
             CancelEditCommand = new RelayCommand(CancelEdit);
             AddSelectedToCartCommand = new RelayCommand(AddSelectedToCart);
+            ShipOrderCommand = new RelayCommand<Order>(ShipOrder);
+            DeliverOrderCommand = new RelayCommand<Order>(DeliverOrder);
+            DeleteOrderCommand = new RelayCommand<Order>(DeleteOrder);
+            AddGenreCommand = new RelayCommand(AddGenre);
 
             SetLanguage();
-        }
-
-        private void AddDefaultProducts()
-        {
-            var demoProducts = new[]
-            {
-                new Product { Name = "Catan", Price = 45.00, Stock = 10, Sku = "RD-1011", Genre = "Strategy", PlayersCount = 3 },
-                new Product { Name = "Dixit", Price = 30.00, Stock = 20, Sku = "RD-5566", Genre = "Party", PlayersCount = 6 },
-                new Product { Name = "Ticket to Ride", Price = 50.00, Stock = 5, Sku = "RD-2020", Genre = "Strategy", PlayersCount = 5 },
-                new Product { Name = "Codenames", Price = 20.00, Stock = 15, Sku = "RD-3030", Genre = "Party", PlayersCount = 8 },
-                new Product { Name = "Azul", Price = 35.00, Stock = 2, Sku = "RD-4040", Genre = "Abstract", PlayersCount = 4 },
-            };
-
-            foreach (var product in demoProducts)
-            {
-                product.Id = _databaseService.AddProduct(product);
-                Products.Add(product);
-            }
         }
 
         public void SortBy(string mode)
@@ -420,8 +471,14 @@ namespace RedDiceFlow.ViewModels
         public void ToggleLanguage()
         {
             _isUkrainian = !_isUkrainian;
+            IsUkrainianStatic = _isUkrainian;
             SetLanguage();
             OnPropertyChanged((string?)null);
+
+            var orders = Orders.ToList();
+            Orders = new ObservableCollection<Order>(orders);
+            OnPropertyChanged(nameof(Orders));
+            UpdateDisplayNumbers();
         }
 
         private void SetLanguage()
@@ -489,6 +546,18 @@ namespace RedDiceFlow.ViewModels
                 L_Yes = "Так";
                 L_No = "Ні";
 
+                L_StatusSold = "Продано"; L_StatusShipped = "Відправлено";
+                L_StatusDelivered = "Доставлено"; L_StatusCancelled = "Скасовано";
+
+                L_DashQuickSearch = "Швидкий пошук замовлень";
+                L_DashQuickSearchSub = "Введіть ID або номер замовлення:";
+                L_DashQuickSearchPlaceholder = "напр. #ORD-7721";
+                L_DashActiveStock = "Активний склад";
+                L_DashTopGames = "Найпопулярніші ігри";
+
+                L_ShipBtn = "Відправити"; L_DeliverBtn = "Доставити";
+                L_DeleteOrderBtn = "Видалити"; L_OrderTotalLabel = "Сума";
+
                 StatusMessage = "Система онлайн";
             }
             else
@@ -554,6 +623,18 @@ namespace RedDiceFlow.ViewModels
                 L_Yes = "Yes";
                 L_No = "No";
 
+                L_StatusSold = "Sold"; L_StatusShipped = "Shipped";
+                L_StatusDelivered = "Delivered"; L_StatusCancelled = "Cancelled";
+
+                L_DashQuickSearch = "Quick Order Search";
+                L_DashQuickSearchSub = "Enter Order ID or Number:";
+                L_DashQuickSearchPlaceholder = "e.g. #ORD-7721";
+                L_DashActiveStock = "Active Stock";
+                L_DashTopGames = "Top Selling Games";
+
+                L_ShipBtn = "Ship"; L_DeliverBtn = "Deliver";
+                L_DeleteOrderBtn = "Delete"; L_OrderTotalLabel = "Total";
+
                 StatusMessage = "System Online";
             }
         }
@@ -577,6 +658,9 @@ namespace RedDiceFlow.ViewModels
                 StatusMessage = _isUkrainian ? "Некоректна кількість" : "Invalid stock";
                 return;
             }
+
+            if (string.IsNullOrWhiteSpace(NewSku))
+                NewSku = GenerateSku();
 
             if (IsEditMode && EditTargetProduct != null)
             {
@@ -822,7 +906,10 @@ namespace RedDiceFlow.ViewModels
                 var name = string.IsNullOrWhiteSpace(NewCustomerName) ? null : NewCustomerName.Trim();
                 var items = CartItems.ToList();
 
-                _databaseService.AddOrder(phone, items, name);
+                var orderId = _databaseService.AddOrder(phone, items, name);
+
+                if (IsInStoreSale)
+                    _databaseService.UpdateOrderStatus(orderId, "delivered");
 
                 CartItems.Clear();
                 CustomerSearchText = string.Empty;
@@ -868,6 +955,71 @@ namespace RedDiceFlow.ViewModels
             {
                 StatusMessage = ex.Message;
             }
+        }
+
+        public void ShipOrder(Order? order)
+        {
+            if (order == null || order.Status != "sold")
+                return;
+
+            _databaseService.UpdateOrderStatus(order.Id, "shipped");
+            order.Status = "shipped";
+            RefreshRecentOrders();
+            StatusMessage = _isUkrainian ? "Замовлення відправлено" : "Order shipped";
+        }
+
+        public void DeliverOrder(Order? order)
+        {
+            if (order == null || order.Status != "shipped")
+                return;
+
+            _databaseService.UpdateOrderStatus(order.Id, "delivered");
+            order.Status = "delivered";
+            RefreshRecentOrders();
+            StatusMessage = _isUkrainian ? "Замовлення доставлено" : "Order delivered";
+        }
+
+        public async void DeleteOrder(Order? order)
+        {
+            if (order == null)
+                return;
+
+            if (ConfirmDeleteOrderRequested != null)
+            {
+                var confirmed = await ConfirmDeleteOrderRequested(order);
+                if (!confirmed)
+                    return;
+            }
+
+            try
+            {
+                _databaseService.HardDeleteOrder(order.Id);
+                RefreshRecentOrders();
+                RefreshAnalytics();
+                StatusMessage = _isUkrainian ? "Замовлення видалено" : "Order deleted";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ex.Message;
+            }
+        }
+
+        public void AddGenre()
+        {
+            var name = NewGenreText?.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            if (GenreOptions.Contains(name, StringComparer.OrdinalIgnoreCase))
+            {
+                StatusMessage = _isUkrainian ? "Жанр вже існує" : "Genre already exists";
+                return;
+            }
+
+            _databaseService.AddGenre(name);
+            GenreOptions.Add(name);
+            NewGenreText = string.Empty;
+            StatusMessage = _isUkrainian ? "Жанр додано" : "Genre added";
         }
 
         public void RefreshRecentOrders()
@@ -916,6 +1068,24 @@ namespace RedDiceFlow.ViewModels
             SearchOrders();
         }
 
+        public void QuickSearchOrder()
+        {
+            QuickSearchResults.Clear();
+
+            if (string.IsNullOrWhiteSpace(QuickSearchText))
+                return;
+
+            var query = QuickSearchText.Trim();
+            var found = Orders.Where(o =>
+                o.Id.ToString() == query ||
+                o.OrderNumber.Contains(query, StringComparison.OrdinalIgnoreCase));
+
+            foreach (var order in found)
+                QuickSearchResults.Add(order);
+
+            OnPropertyChanged(nameof(HasQuickSearchResult));
+        }
+
         private void LoadSelectedOrderItems()
         {
             SelectedOrderItems.Clear();
@@ -934,6 +1104,10 @@ namespace RedDiceFlow.ViewModels
             OnPropertyChanged(nameof(TotalStockValue));
             OnPropertyChanged(nameof(SoldItems));
             OnPropertyChanged(nameof(SalesTotal));
+            OnPropertyChanged(nameof(SalesToday));
+            OnPropertyChanged(nameof(DashboardSalesToday));
+            OnPropertyChanged(nameof(SalesThisWeek));
+            OnPropertyChanged(nameof(SalesThisMonth));
             OnPropertyChanged(nameof(LowStockCount));
             OnPropertyChanged(nameof(HasNoRecentOrders));
             OnPropertyChanged(nameof(RecentOrders));
@@ -943,6 +1117,28 @@ namespace RedDiceFlow.ViewModels
             OnPropertyChanged(nameof(LowStockRiskPercent));
             OnPropertyChanged(nameof(FilteredProducts));
             OnPropertyChanged(nameof(FilteredProductsForSale));
+            RefreshTopSellingGames();
+        }
+
+        private void RefreshTopSellingGames()
+        {
+            TopSellingGames.Clear();
+            var deliveredOrderIds = Orders.Where(o => o.Status == "delivered").Select(o => o.Id).ToHashSet();
+            var allItems = _databaseService.GetAllOrderItems().Where(i => deliveredOrderIds.Contains(i.OrderId));
+            var top = allItems
+                .GroupBy(i => new { i.ProductId, i.ProductName, i.Genre })
+                .Select(g => new TopSellingGame
+                {
+                    Name = g.Key.ProductName,
+                    Genre = g.Key.Genre ?? "",
+                    TotalSold = g.Sum(i => i.Quantity),
+                    TotalRevenue = g.Sum(i => i.LineTotal)
+                })
+                .OrderByDescending(g => g.TotalSold)
+                .Take(5);
+
+            foreach (var game in top)
+                TopSellingGames.Add(game);
         }
 
         private void OnProductChanged(object? sender, PropertyChangedEventArgs e)
@@ -952,6 +1148,12 @@ namespace RedDiceFlow.ViewModels
                 _databaseService.UpdateProduct(product);
                 RefreshAnalytics();
             }
+        }
+
+        private string GenerateSku()
+        {
+            var random = Random.Shared.Next(10000, 99999);
+            return $"RD-{random}";
         }
     }
 }

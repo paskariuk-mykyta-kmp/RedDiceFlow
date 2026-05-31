@@ -51,37 +51,33 @@
                                Foreground="{DynamicResource MainAccent}" IsVisible="{Binding IsEditMode}"/>
                 </StackPanel>
 
-                <Grid ColumnDefinitions="1.5*, 1*, 1*, 1*, 1*, 1*, Auto" ColumnSpacing="12">
+                <Grid ColumnDefinitions="1.5*, 1*, 1*, 1*, 1*, Auto" ColumnSpacing="12">
                     <StackPanel Grid.Column="0" Spacing="5">
                         <TextBlock Text="{Binding L_NameLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewName}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Spacing="5">
-                        <TextBlock Text="{Binding L_SkuLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
-                        <TextBox Classes="ModernInput" Text="{Binding NewSku}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Spacing="5">
                         <TextBlock Text="{Binding L_PriceLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewPrice}"/>
                     </StackPanel>
-                    <StackPanel Grid.Column="3" Spacing="5">
+                    <StackPanel Grid.Column="2" Spacing="5">
                         <TextBlock Text="{Binding L_StockLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewStock}"/>
                     </StackPanel>
-                    <StackPanel Grid.Column="4" Spacing="5">
+                    <StackPanel Grid.Column="3" Spacing="5">
                         <TextBlock Text="{Binding L_GenreLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <ComboBox ItemsSource="{Binding GenreOptions}" SelectedItem="{Binding NewGenre}" Height="35"
                                   Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource BorderCol2}"
                                   CornerRadius="6" VerticalContentAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Grid.Column="5" Spacing="5">
+                    <StackPanel Grid.Column="4" Spacing="5">
                         <TextBlock Text="{Binding L_PlayersLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <ComboBox ItemsSource="{Binding PlayersCountOptions}" SelectedItem="{Binding NewPlayersCount}" Height="35"
                                   Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource BorderCol2}"
                                   CornerRadius="6" VerticalContentAlignment="Center"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="6" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                    <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
                         <Button Command="{Binding AddProduct}" 
                                 Height="35" Padding="16,0"
                                 Background="{DynamicResource MainAccent}" Foreground="White" 

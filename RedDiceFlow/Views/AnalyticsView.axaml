@@ -13,6 +13,18 @@
             <Setter Property="Foreground" Value="{DynamicResource MainAccentBrush}"/>
             <Setter Property="Background" Value="{DynamicResource BorderBrush2}"/>
         </Style>
+        <Style Selector="Border.StatCard">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.25"/>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.25"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.StatCard:pointerover">
+            <Setter Property="BorderBrush" Value="{DynamicResource MainAccentBrush}"/>
+            <Setter Property="BoxShadow" Value="0 8 24 0 #40000000"/>
+        </Style>
     </UserControl.Styles>
 
     <ScrollViewer>
@@ -43,7 +55,7 @@
                 </Button>
             </Grid>
 
-            <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="20">
+            <Grid ColumnDefinitions="*, *, *" ColumnSpacing="20">
                 <Border Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
                         Padding="18" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
                     <StackPanel Spacing="8">
@@ -74,18 +86,6 @@
                         <TextBlock Text="{Binding L_SoldMetric}" Foreground="{DynamicResource TextSecondaryBrush}"/>
                         <TextBlock Text="{Binding SoldItems}" FontSize="28" FontWeight="Bold"
                                    Foreground="{DynamicResource TextPrimaryBrush}"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="3" Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                        Padding="18" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
-                    <StackPanel Spacing="8">
-                        <mi:MaterialIcon Kind="CashMultiple" Width="22" Height="22"
-                                         Foreground="{DynamicResource AccentGreenBrush}"/>
-                        <TextBlock Text="{Binding L_RevenueMetric}" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        <TextBlock Text="{Binding SalesTotal, StringFormat='{}{0:N2} $'}"
-                                   FontSize="28" FontWeight="Bold"
-                                   Foreground="{DynamicResource AccentGreenBrush}"/>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -185,16 +185,72 @@
                 </Border>
             </Grid>
 
-            <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12"
-                    Padding="20" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="{Binding L_StockValue}" FontSize="18" FontWeight="Bold"
-                               Foreground="{DynamicResource TextPrimaryBrush}"/>
-                    <TextBlock Text="{Binding TotalStockValue, StringFormat='{}{0:N2} $'}"
-                               FontSize="26" FontWeight="Bold"
-                               Foreground="{DynamicResource MainAccentBrush}"/>
-                </StackPanel>
-            </Border>
+            <Grid ColumnDefinitions="*, *, *, *, *" ColumnSpacing="15">
+                <Border Grid.Column="0" Classes="StatCard" Background="{DynamicResource PanelBgBrush}" Padding="18"
+                        CornerRadius="12" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="PackageVariantClosed" Width="22" Height="22"
+                                         Foreground="{DynamicResource AccentGreenBrush}"/>
+                        <TextBlock Text="{Binding L_StockValue}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding TotalStockValue, StringFormat='{}{0:N2} $'}"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource AccentGreenBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Classes="StatCard" Background="{DynamicResource PanelBgBrush}" Padding="18"
+                        CornerRadius="12" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="Cart" Width="22" Height="22"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="Sales Today"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SalesToday, StringFormat='{}{0:N2} $'}"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource MainAccentBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="StatCard" Background="{DynamicResource PanelBgBrush}" Padding="18"
+                        CornerRadius="12" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="CalendarWeek" Width="22" Height="22"
+                                         Foreground="{DynamicResource AccentGreenBrush}"/>
+                        <TextBlock Text="This Week"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SalesThisWeek, StringFormat='{}{0:N2} $'}"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource AccentGreenBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="3" Classes="StatCard" Background="{DynamicResource PanelBgBrush}" Padding="18"
+                        CornerRadius="12" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="CalendarMonth" Width="22" Height="22"
+                                         Foreground="{DynamicResource MainAccentBrush}"/>
+                        <TextBlock Text="This Month"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SalesThisMonth, StringFormat='{}{0:N2} $'}"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource MainAccentBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Classes="StatCard" Background="{DynamicResource PanelBgBrush}" Padding="18"
+                        CornerRadius="12" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="1">
+                    <StackPanel Spacing="8">
+                        <mi:MaterialIcon Kind="CashMultiple" Width="22" Height="22"
+                                         Foreground="{DynamicResource AccentGreenBrush}"/>
+                        <TextBlock Text="{Binding L_RevenueMetric}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SalesTotal, StringFormat='{}{0:N2} $'}"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource AccentGreenBrush}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

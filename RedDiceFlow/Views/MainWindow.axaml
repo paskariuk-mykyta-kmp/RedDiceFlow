@@ -61,6 +61,15 @@
                 </StackPanel>
             </Button>
 
+            <Button x:Name="BtnOrders" Classes="MenuButton" Click="OnMenuClick">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="ClipboardListOutline" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding L_MenuOrders}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                </StackPanel>
+            </Button>
+
             <Button x:Name="BtnAnalytic" Classes="MenuButton" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="ChartBar" Width="18" Height="18"/>

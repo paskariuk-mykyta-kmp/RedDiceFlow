@@ -2,10 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:RedDiceFlow.ViewModels"
              xmlns:models="using:RedDiceFlow.Models"
+             xmlns:views="using:RedDiceFlow.Views"
              xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:Class="RedDiceFlow.Views.OrdersView"
-             x:DataType="vm:MainWindowViewModel"
+             x:CompileBindings="False"
              Background="{DynamicResource AppBgBrush}">
+
+    <UserControl.Resources>
+        <views:StatusToColorConverter x:Key="StatusToColor"/>
+        <views:StatusToDisplayConverter x:Key="StatusToDisplay"/>
+        <views:StatusToShipVisibleConverter x:Key="StatusToShipVisible"/>
+        <views:StatusToDeliverVisibleConverter x:Key="StatusToDeliverVisible"/>
+        <views:StatusToCancelVisibleConverter x:Key="StatusToCancelVisible"/>
+    </UserControl.Resources>
 
     <ScrollViewer>
         <StackPanel Margin="30" Spacing="25">
@@ -61,110 +70,134 @@
                 </Grid>
             </Border>
 
-            <Grid ColumnDefinitions="1.1*, 1.4*" ColumnSpacing="20">
-                <Border Grid.Column="0"
-                        Background="{DynamicResource PanelBgBrush}"
-                        CornerRadius="12"
-                        BorderBrush="{DynamicResource BorderBrush2}"
-                        BorderThickness="1"
-                        Padding="20">
-                    <StackPanel Spacing="15">
-                        <TextBlock Text="{Binding L_OrderList}"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <Border Background="{DynamicResource PanelBgBrush}"
+                    CornerRadius="12"
+                    BorderBrush="{DynamicResource BorderBrush2}"
+                    BorderThickness="1">
+                <StackPanel Spacing="0">
+                    <TextBlock Text="{Binding L_OrderList}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               Margin="20,20,20,10"/>
 
-                        <ListBox ItemsSource="{Binding Orders}"
-                                 SelectedItem="{Binding SelectedOrder}"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 MaxHeight="520">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate x:DataType="models:Order">
-                                    <Border BorderBrush="{DynamicResource BorderBrush2}"
-                                            BorderThickness="0,0,0,1"
-                                            Padding="0,10">
-                                        <StackPanel Spacing="4">
-                                            <Grid ColumnDefinitions="*, Auto">
-                                                <TextBlock Grid.Column="0"
-                                                            Text="{Binding CustomerName}"
-                                                            FontWeight="Bold"
-                                                            Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                <TextBlock Grid.Column="1"
-                                                            Text="{Binding TotalPrice, StringFormat='{}{0:N2} $'}"
-                                                            Foreground="{DynamicResource AccentGreenBrush}"
-                                                            FontWeight="Bold"/>
-                                            </Grid>
-                                            <Grid ColumnDefinitions="*, Auto">
-                                                <TextBlock Grid.Column="0"
-                                                            Text="{Binding CustomerPhone}"
-                                                            Foreground="{DynamicResource TextSecondaryBrush}"
-                                                            FontSize="12"/>
-                                                <TextBlock Grid.Column="1"
-                                                            Text="{Binding ItemsCount, StringFormat='{}{0} items'}"
-                                                            Foreground="{DynamicResource TextSecondaryBrush}"
-                                                            FontSize="12"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </Border>
+                    <ListBox ItemsSource="{Binding Orders}"
+                             SelectedItem="{Binding SelectedOrder}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             MaxHeight="520">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource BorderBrush2}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="16,14">
+                                    <Grid ColumnDefinitions="50, 1.5*, 100, 100, Auto" ColumnSpacing="12">
+                                        <Border Grid.Column="0" Width="36" Height="36"
+                                                CornerRadius="18"
+                                                Background="{Binding Status, Converter={StaticResource StatusToColor}}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding DisplayNumber}"
+                                                       FontSize="14" FontWeight="Bold"
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
 
-                <Border Grid.Column="1"
-                        Background="{DynamicResource PanelBgBrush}"
-                        CornerRadius="12"
-                        BorderBrush="{DynamicResource BorderBrush2}"
-                        BorderThickness="1"
-                        Padding="20">
-                    <StackPanel Spacing="15">
-                        <TextBlock Text="{Binding L_OrderDetails}"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
-
-                        <TextBlock Text="{Binding L_OrderNoSelection}"
-                                   IsVisible="{Binding HasNoSelectedOrder}"
-                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
-
-                        <ItemsControl ItemsSource="{Binding SelectedOrderItems}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="models:OrderItem">
-                                    <Border BorderBrush="{DynamicResource BorderBrush2}"
-                                            BorderThickness="0,0,0,1"
-                                            Padding="0,10">
-                                        <Grid ColumnDefinitions="2*, 1*, 1*, 1*" ColumnSpacing="10">
-                                            <StackPanel Grid.Column="0">
-                                                <TextBlock Text="{Binding ProductName}"
-                                                           FontWeight="Bold"
-                                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                                <TextBlock Text="{Binding Genre}"
-                                                           FontSize="12"
-                                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                            </StackPanel>
-                                            <TextBlock Grid.Column="1"
-                                                       Text="{Binding Quantity, StringFormat='{}{0} pcs'}"
-                                                       VerticalAlignment="Center"
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding CustomerName}"
+                                                       FontWeight="Bold"
+                                                       FontSize="14"
                                                        Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                            <TextBlock Grid.Column="2"
-                                                       Text="{Binding UnitPrice, StringFormat='{}{0:N2} $'}"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                            <TextBlock Grid.Column="3"
-                                                       Text="{Binding LineTotal, StringFormat='{}{0:N2} $'}"
-                                                       VerticalAlignment="Center"
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <TextBlock Text="{Binding CustomerPhone}"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           FontSize="12"/>
+                                                <TextBlock Text="{Binding ItemsCount, StringFormat='{}{0} items'}"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding DataContext.L_OrderTotalLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                                       FontSize="11"/>
+                                            <TextBlock Text="{Binding TotalPrice, StringFormat='{}{0:N2} $'}"
                                                        Foreground="{DynamicResource AccentGreenBrush}"
-                                                       FontWeight="Bold"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
-            </Grid>
+                                                       FontWeight="Bold" FontSize="14"/>
+                                        </StackPanel>
+
+                                        <Border Grid.Column="3" CornerRadius="6" Padding="10,4"
+                                                Background="{Binding Status, Converter={StaticResource StatusToColor}}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Status, Converter={StaticResource StatusToDisplay}}"
+                                                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="6"
+                                                    VerticalAlignment="Center">
+                                            <Button IsVisible="{Binding Status, Converter={StaticResource StatusToShipVisible}}"
+                                                    Command="{Binding DataContext.ShipOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="{DynamicResource MainAccentBrush}"
+                                                    Foreground="White"
+                                                    Height="30"
+                                                    Padding="12,0"
+                                                    FontSize="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <mi:MaterialIcon Kind="TruckDelivery" Width="14" Height="14" Foreground="White"/>
+                                                    <TextBlock Text="{Binding DataContext.L_ShipBtn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Foreground="White"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button IsVisible="{Binding Status, Converter={StaticResource StatusToDeliverVisible}}"
+                                                    Command="{Binding DataContext.DeliverOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="{DynamicResource AccentGreenBrush}"
+                                                    Foreground="White"
+                                                    Height="30"
+                                                    Padding="12,0"
+                                                    FontSize="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <mi:MaterialIcon Kind="CheckCircle" Width="14" Height="14" Foreground="White"/>
+                                                    <TextBlock Text="{Binding DataContext.L_DeliverBtn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Foreground="White"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button IsVisible="{Binding Status, Converter={StaticResource StatusToCancelVisible}}"
+                                                    Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="{DynamicResource AccentRedBrush}"
+                                                    Foreground="White"
+                                                    Height="30"
+                                                    Padding="12,0"
+                                                    FontSize="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <mi:MaterialIcon Kind="CloseCircleOutline" Width="14" Height="14" Foreground="White"/>
+                                                    <TextBlock Text="{Binding DataContext.L_CancelOrder, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                               Foreground="White"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Command="{Binding DataContext.DeleteOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="{DynamicResource AccentRedBrush}"
+                                                    Foreground="White"
+                                                    Height="30"
+                                                    Padding="12,0"
+                                                    FontSize="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <mi:MaterialIcon Kind="TrashCanOutline" Width="14" Height="14" Foreground="White"/>
+                                                    <TextBlock Text="{Binding DataContext.L_DeleteOrderBtn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Foreground="White"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
