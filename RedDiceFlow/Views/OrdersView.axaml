@@ -22,13 +22,13 @@
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="ClipboardListOutline" Width="28" Height="28"
                                      Foreground="{DynamicResource MainAccentBrush}"/>
-                    <TextBlock Text="{Binding L_OrdersHeader}"
+                    <TextBlock Text="{DynamicResource L_OrdersHeader}"
                                Classes="Header"
                                FontSize="24"
                                FontWeight="Bold"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </StackPanel>
-                <TextBlock Text="{Binding L_OrdersSub}"
+                <TextBlock Text="{DynamicResource L_OrdersSub}"
                            Foreground="{DynamicResource TextSecondaryBrush}"
                            FontSize="14"/>
             </StackPanel>
@@ -41,7 +41,7 @@
                 <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="12">
                     <TextBox Grid.Column="0"
                              Text="{Binding OrderSearchPhone}"
-                             PlaceholderText="{Binding L_OrderSearch}"
+                             PlaceholderText="{DynamicResource L_OrderSearch}"
                              Background="{DynamicResource PanelBgBrush}"
                              Foreground="{DynamicResource TextPrimaryBrush}"
                              BorderBrush="{DynamicResource BorderBrush2}"
@@ -55,7 +55,7 @@
                             Height="38">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <mi:MaterialIcon Kind="Magnify" Width="18" Height="18" Foreground="White"/>
-                            <TextBlock Text="{Binding L_OrderSearchButton}" Foreground="White"/>
+                            <TextBlock Text="{DynamicResource L_OrderSearchButton}" Foreground="White"/>
                         </StackPanel>
                     </Button>
 
@@ -75,7 +75,7 @@
                     BorderBrush="{DynamicResource BorderBrush2}"
                     BorderThickness="1">
                 <StackPanel Spacing="0">
-                    <TextBlock Text="{Binding L_OrderList}"
+                    <TextBlock Text="{DynamicResource L_OrderList}"
                                FontSize="18"
                                FontWeight="Bold"
                                Foreground="{DynamicResource TextPrimaryBrush}"
@@ -120,7 +120,7 @@
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding DataContext.L_OrderTotalLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            <TextBlock Text="{DynamicResource L_OrderTotalLabel}"
                                                        Foreground="{DynamicResource TextSecondaryBrush}"
                                                        FontSize="11"/>
                                             <TextBlock Text="{Binding TotalPrice, StringFormat='{}{0:N2} $'}"
@@ -148,7 +148,7 @@
                                                     FontSize="12">
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                                     <mi:MaterialIcon Kind="TruckDelivery" Width="14" Height="14" Foreground="White"/>
-                                                    <TextBlock Text="{Binding DataContext.L_ShipBtn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Foreground="White"/>
+                                                    <TextBlock Text="{DynamicResource L_ShipBtn}" Foreground="White"/>
                                                 </StackPanel>
                                             </Button>
                                             <Button IsVisible="{Binding Status, Converter={StaticResource StatusToDeliverVisible}}"
@@ -161,7 +161,7 @@
                                                     FontSize="12">
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                                     <mi:MaterialIcon Kind="CheckCircle" Width="14" Height="14" Foreground="White"/>
-                                                    <TextBlock Text="{Binding DataContext.L_DeliverBtn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Foreground="White"/>
+                                                    <TextBlock Text="{DynamicResource L_DeliverBtn}" Foreground="White"/>
                                                 </StackPanel>
                                             </Button>
                                             <Button IsVisible="{Binding Status, Converter={StaticResource StatusToCancelVisible}}"
@@ -174,7 +174,7 @@
                                                     FontSize="12">
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                                     <mi:MaterialIcon Kind="CloseCircleOutline" Width="14" Height="14" Foreground="White"/>
-                                                    <TextBlock Text="{Binding DataContext.L_CancelOrder, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    <TextBlock Text="{DynamicResource L_CancelOrder}"
                                                                Foreground="White"/>
                                                 </StackPanel>
                                             </Button>
@@ -187,7 +187,7 @@
                                                     FontSize="12">
                                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                                     <mi:MaterialIcon Kind="TrashCanOutline" Width="14" Height="14" Foreground="White"/>
-                                                    <TextBlock Text="{Binding DataContext.L_DeleteOrderBtn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Foreground="White"/>
+                                                    <TextBlock Text="{DynamicResource L_DeleteOrderBtn}" Foreground="White"/>
                                                 </StackPanel>
                                             </Button>
                                         </StackPanel>

@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using RedDiceFlow.Models;
 using RedDiceFlow.ViewModels;
@@ -22,6 +23,8 @@ namespace RedDiceFlow.Views
             }
         }
 
+        private static string Res(string key) => Application.Current!.FindResource(key) as string ?? key;
+
         private async System.Threading.Tasks.Task<bool> OnConfirmCancelOrder(Order? order)
         {
             var vm = DataContext as MainWindowViewModel;
@@ -31,9 +34,9 @@ namespace RedDiceFlow.Views
             var topLevel = TopLevel.GetTopLevel(this);
             if (topLevel is Window owner)
             {
-                dialog.Title = vm.L_ConfirmCancelTitle;
-                dialog.SetMessage(vm.L_ConfirmCancelMessage);
-                dialog.SetButtonTexts(vm.L_Yes, vm.L_No);
+                dialog.Title = Res("L_ConfirmCancelTitle");
+                dialog.SetMessage(Res("L_ConfirmCancelMessage"));
+                dialog.SetButtonTexts(Res("L_Yes"), Res("L_No"));
                 return await dialog.ShowDialog(owner);
             }
             return false;

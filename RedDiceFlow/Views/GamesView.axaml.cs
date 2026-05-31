@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using RedDiceFlow.ViewModels;
 
@@ -20,6 +21,8 @@ public partial class GamesView : UserControl
         }
     }
 
+    private static string Res(string key) => Application.Current!.FindResource(key) as string ?? key;
+
     private async Task<bool> OnConfirmDelete(Models.Product? product)
     {
         var vm = DataContext as MainWindowViewModel;
@@ -29,9 +32,10 @@ public partial class GamesView : UserControl
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel is Window owner)
         {
-            dialog.Title = vm.L_ConfirmDeleteTitle;
-            dialog.SetMessage(string.Format(vm.L_ConfirmDeleteMessage, product?.Name));
-            dialog.SetButtonTexts(vm.L_Yes, vm.L_No);
+            dialog.Title = Res("L_ConfirmDeleteTitle");
+            var msg = Res("L_ConfirmDeleteMessage");
+            dialog.SetMessage(string.Format(msg, product?.Name));
+            dialog.SetButtonTexts(Res("L_Yes"), Res("L_No"));
             return await dialog.ShowDialog(owner);
         }
         return false;

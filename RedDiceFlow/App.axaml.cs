@@ -11,6 +11,8 @@ namespace RedDiceFlow
 {
     public partial class App : Application
     {
+        public static bool IsUkrainianStatic { get; set; }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -40,6 +42,24 @@ namespace RedDiceFlow
                 : new Uri("avares://RedDiceFlow/Resources/DarkTheme.axaml");
 
             dicts.Add(new ResourceInclude(uri) { Source = uri });
+        }
+
+        public static void SwitchLanguage(bool isUkrainian)
+        {
+            var app = (App)Current!;
+            var uri = isUkrainian
+                ? new Uri("avares://RedDiceFlow/Resources/Lang_ua.axaml")
+                : new Uri("avares://RedDiceFlow/Resources/Lang_en.axaml");
+
+            var langDict = new ResourceInclude(uri) { Source = uri };
+
+            // Find and replace the language dictionary (second merged dict after theme)
+            var dicts = app.Resources.MergedDictionaries;
+            var themeDict = dicts.Count > 0 ? dicts[0] : null;
+            dicts.Clear();
+            if (themeDict != null)
+                dicts.Add(themeDict);
+            dicts.Add(langDict);
         }
     }
 }

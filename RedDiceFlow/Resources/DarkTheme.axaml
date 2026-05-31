@@ -12,4 +12,17 @@
     <Color x:Key="TableHeaderBg">#252525</Color>
     <Color x:Key="HoverBg">#1F1F1F</Color>
     <Color x:Key="BadgeBg">#252525</Color>
+
+    <SolidColorBrush x:Key="MainAccentBrush"    Color="#C3073F"/>
+    <SolidColorBrush x:Key="AppBgBrush"         Color="#121212"/>
+    <SolidColorBrush x:Key="PanelBgBrush"       Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="BorderBrush2"       Color="#252525"/>
+    <SolidColorBrush x:Key="BorderBrush3"       Color="#333333"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush"   Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#666666"/>
+    <SolidColorBrush x:Key="TextDimBrush"       Color="#888888"/>
+    <SolidColorBrush x:Key="AccentGreenBrush"   Color="#00FF41"/>
+    <SolidColorBrush x:Key="TableHeaderBgBrush" Color="#252525"/>
+    <SolidColorBrush x:Key="HoverBgBrush"       Color="#1F1F1F"/>
+    <SolidColorBrush x:Key="BadgeBgBrush"       Color="#252525"/>
 </ResourceDictionary>

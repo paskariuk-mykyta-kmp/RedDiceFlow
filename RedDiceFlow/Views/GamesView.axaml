@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:RedDiceFlow.ViewModels"
              xmlns:models="using:RedDiceFlow.Models"
@@ -29,16 +29,16 @@
                     <mi:MaterialIcon Kind="PackageVariantClosed" Width="28" Height="28"
                                      Foreground="{DynamicResource MainAccent}"
                                      VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding L_InventoryHeader}" Classes="Header" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+                    <TextBlock Text="{DynamicResource L_InventoryHeader}" Classes="Header" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
                 </StackPanel>
-                <TextBlock Text="{Binding L_InventorySub}" Foreground="{DynamicResource TextSecondary}" FontSize="14"/>
+                <TextBlock Text="{DynamicResource L_InventorySub}" Foreground="{DynamicResource TextSecondary}" FontSize="14"/>
             </StackPanel>
 
             <ComboBox Grid.Column="1" ItemsSource="{Binding SortOptions}" SelectedItem="{Binding SortMode}" VerticalAlignment="Bottom" Width="170"
                       Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource BorderCol2}"
                       CornerRadius="6" Height="35"/>
 
-            <TextBox Grid.Column="3" Width="250" PlaceholderText="{Binding L_SearchWatermark}" Text="{Binding SearchText}" Classes="Modern" VerticalAlignment="Bottom"/>
+            <TextBox Grid.Column="3" Width="250" PlaceholderText="{DynamicResource L_SearchWatermark}" Text="{Binding SearchText}" Classes="Modern" VerticalAlignment="Bottom"/>
         </Grid>
 
         <!-- Add / Edit form -->
@@ -46,32 +46,32 @@
             <StackPanel Spacing="15">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="PlusCircleOutline" Foreground="{DynamicResource MainAccent}" Width="20" Height="20"/>
-                    <TextBlock Text="{Binding L_QuickAdd}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding EditTargetProduct.Name, StringFormat='✎ {0}'}" FontWeight="Bold" FontSize="16"
+                    <TextBlock Text="{DynamicResource L_QuickAdd}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding EditTargetProduct.Name, StringFormat='? {0}'}" FontWeight="Bold" FontSize="16"
                                Foreground="{DynamicResource MainAccent}" IsVisible="{Binding IsEditMode}"/>
                 </StackPanel>
 
                 <Grid ColumnDefinitions="1.5*, 1*, 1*, 1*, 1*, Auto" ColumnSpacing="12">
                     <StackPanel Grid.Column="0" Spacing="5">
-                        <TextBlock Text="{Binding L_NameLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_NameLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewName}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Spacing="5">
-                        <TextBlock Text="{Binding L_PriceLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_PriceLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewPrice}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Spacing="5">
-                        <TextBlock Text="{Binding L_StockLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_StockLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewStock}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="3" Spacing="5">
-                        <TextBlock Text="{Binding L_GenreLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_GenreLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <ComboBox ItemsSource="{Binding GenreOptions}" SelectedItem="{Binding NewGenre}" Height="35"
                                   Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource BorderCol2}"
                                   CornerRadius="6" VerticalContentAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4" Spacing="5">
-                        <TextBlock Text="{Binding L_PlayersLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_PlayersLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
                         <ComboBox ItemsSource="{Binding PlayersCountOptions}" SelectedItem="{Binding NewPlayersCount}" Height="35"
                                   Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource BorderCol2}"
                                   CornerRadius="6" VerticalContentAlignment="Center"/>
@@ -82,19 +82,19 @@
                                 Height="35" Padding="16,0"
                                 Background="{DynamicResource MainAccent}" Foreground="White" 
                                 FontWeight="Bold"
-                                Content="{Binding L_ConfirmBtn}"
+                                Content="{DynamicResource L_ConfirmBtn}"
                                 IsVisible="{Binding !IsEditMode}"/>
                         <Button Command="{Binding AddProduct}" 
                                 Height="35" Padding="16,0"
                                 Background="{DynamicResource MainAccent}" Foreground="White" 
                                 FontWeight="Bold"
-                                Content="{Binding L_SaveBtn}"
+                                Content="{DynamicResource L_SaveBtn}"
                                 IsVisible="{Binding IsEditMode}"/>
                         <Button Command="{Binding CancelEditCommand}"
                                 Height="35" Padding="16,0"
                                 Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource BorderCol2}"
                                 BorderThickness="1" Foreground="{DynamicResource TextPrimary}"
-                                Content="{Binding L_CancelBtn}"
+                                Content="{DynamicResource L_CancelBtn}"
                                 IsVisible="{Binding IsEditMode}"/>
                     </StackPanel>
                 </Grid>
@@ -106,12 +106,12 @@
             <StackPanel>
                 <Border Background="{DynamicResource TableHeaderBg}" Padding="20,12">
                     <Grid ColumnDefinitions="1.5*, 0.8*, 0.8*, 0.8*, 0.8*, 1.5*">
-                        <TextBlock Grid.Column="0" Text="{Binding L_TableProduct}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="1" Text="{Binding L_TablePrice}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="2" Text="{Binding L_TableStock}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="3" Text="{Binding L_TablePlayers}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="4" Text="{Binding L_TableStatus}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="5" Text="{Binding L_TableActions}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource L_TableProduct}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource L_TablePrice}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="2" Text="{DynamicResource L_TableStock}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="3" Text="{DynamicResource L_TablePlayers}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="4" Text="{DynamicResource L_TableStatus}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="5" Text="{DynamicResource L_TableActions}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy" HorizontalAlignment="Center"/>
                     </Grid>
                 </Border>
 
@@ -143,7 +143,7 @@
                                         <Button Command="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).RestockProductCommand}"
                                                 CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Width="30" Height="30"
                                                 FontWeight="Bold" Foreground="{DynamicResource AccentGreen}"
-                                                Content="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).L_RestockBtn}"/>
+                                                Content="{DynamicResource L_RestockBtn}"/>
                                         <Button Command="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).DeleteProductCommand}"
                                                 CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Width="30" Height="30">
                                             <mi:MaterialIcon Kind="TrashCanOutline" Foreground="#e74c3c"/>

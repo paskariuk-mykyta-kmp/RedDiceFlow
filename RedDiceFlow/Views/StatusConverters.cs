@@ -2,7 +2,6 @@ using Avalonia.Media;
 using Avalonia.Data.Converters;
 using System;
 using System.Globalization;
-using RedDiceFlow.ViewModels;
 
 namespace RedDiceFlow.Views
 {
@@ -32,7 +31,7 @@ namespace RedDiceFlow.Views
             var status = value as string;
             if (status == null) return "";
 
-            var isUa = MainWindowViewModel.IsUkrainianStatic;
+            var isUa = App.IsUkrainianStatic;
             return status switch
             {
                 "sold" => isUa ? "Продано" : "Sold",
