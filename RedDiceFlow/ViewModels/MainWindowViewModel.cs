@@ -267,6 +267,30 @@ namespace RedDiceFlow.ViewModels
         public double SalesThisMonth => Orders.Where(o => o.Status == "delivered" && o.CreatedAt.Year == DateTime.Today.Year && o.CreatedAt.Month == DateTime.Today.Month).Sum(o => o.TotalPrice);
         public bool HasNoRecentOrders => Orders.Count == 0;
         public IEnumerable<Order> RecentOrders => Orders.Take(3);
+
+        private string _orderStatusFilter = "All";
+        public string OrderStatusFilter
+        {
+            get => _orderStatusFilter;
+            set
+            {
+                _orderStatusFilter = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(FilteredOrders));
+            }
+        }
+
+        public IEnumerable<Order> FilteredOrders
+        {
+            get
+            {
+                if (OrderStatusFilter == "All")
+                    return Orders;
+                return Orders.Where(o => o.Status == OrderStatusFilter);
+            }
+        }
+
+        public List<string> OrderStatusFilterOptions { get; } = new() { "All", "sold", "shipped", "delivered", "cancelled" };
         public IEnumerable<Product> LowStockProducts => Products.Where(p => p.Stock <= 5);
         public ObservableCollection<TopSellingGame> TopSellingGames { get; set; } = new();
 
@@ -718,6 +742,7 @@ namespace RedDiceFlow.ViewModels
                 RefreshRecentOrders();
                 StatusMessage = _isUkrainian ? "Замовлення оформлено" : "Order placed successfully";
                 RefreshAnalytics();
+                RefreshProducts();
             }
             catch (Exception ex)
             {
@@ -742,6 +767,7 @@ namespace RedDiceFlow.ViewModels
                 _databaseService.CancelOrder(order.Id);
                 RefreshRecentOrders();
                 RefreshAnalytics();
+                RefreshProducts();
                 StatusMessage = _isUkrainian ? "Замовлення скасовано, залишки повернено" : "Order cancelled, stock restored";
             }
             catch (Exception ex)
@@ -789,6 +815,7 @@ namespace RedDiceFlow.ViewModels
                 _databaseService.HardDeleteOrder(order.Id);
                 RefreshRecentOrders();
                 RefreshAnalytics();
+                RefreshProducts();
                 StatusMessage = _isUkrainian ? "Замовлення видалено" : "Order deleted";
             }
             catch (Exception ex)
@@ -824,6 +851,20 @@ namespace RedDiceFlow.ViewModels
             UpdateDisplayNumbers();
             OnPropertyChanged(nameof(RecentOrders));
             OnPropertyChanged(nameof(HasNoRecentOrders));
+            OnPropertyChanged(nameof(FilteredOrders));
+        }
+
+        private void RefreshProducts()
+        {
+            foreach (var product in Products)
+                product.PropertyChanged -= OnProductChanged;
+
+            Products.Clear();
+            foreach (var product in _databaseService.GetProducts())
+            {
+                product.PropertyChanged += OnProductChanged;
+                Products.Add(product);
+            }
         }
 
         private void UpdateDisplayNumbers()
@@ -869,6 +910,7 @@ namespace RedDiceFlow.ViewModels
             SelectedOrder = Orders.FirstOrDefault();
             OnPropertyChanged(nameof(RecentOrders));
             OnPropertyChanged(nameof(HasNoRecentOrders));
+            OnPropertyChanged(nameof(FilteredOrders));
         }
 
         public void ReloadOrders()
