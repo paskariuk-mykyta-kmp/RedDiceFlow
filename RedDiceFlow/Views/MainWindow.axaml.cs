@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 
 namespace RedDiceFlow.Views
 {
@@ -46,19 +45,9 @@ namespace RedDiceFlow.Views
         private void SetActiveButton(Button active)
         {
             foreach (var btn in new[] { BtnDash, BtnGames, BtnSales, BtnOrders, BtnAnalytic, BtnSettings })
-            {
-                var inactiveColor = this.TryFindResource("BorderCol", out var res) && res is Color c
-                    ? new SolidColorBrush(c)
-                    : new SolidColorBrush(Color.Parse("#252525"));
+                btn.Classes.Remove("Active");
 
-                btn.Background = inactiveColor;
-            }
-
-            var activeColor = this.TryFindResource("MainAccent", out var accent) && accent is Color ac
-                ? new SolidColorBrush(ac)
-                : new SolidColorBrush(Color.Parse("#C3073F"));
-
-            active.Background = activeColor;
+            active.Classes.Add("Active");
         }
     }
 }

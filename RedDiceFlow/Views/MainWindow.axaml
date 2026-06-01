@@ -20,6 +20,12 @@
         <Style Selector="Button.MenuButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource HoverBgBrush}"/>
         </Style>
+        <Style Selector="Button.MenuButton.Active">
+            <Setter Property="Background" Value="{DynamicResource MainAccentBrush}"/>
+        </Style>
+        <Style Selector="Button.MenuButton:not(.Active)">
+            <Setter Property="Background" Value="{DynamicResource BorderBrush2}"/>
+        </Style>
     </Window.Styles>
 
     <Grid ColumnDefinitions="260, *">
@@ -33,8 +39,7 @@
                            HorizontalAlignment="Center"/>
             </StackPanel>
 
-            <Button x:Name="BtnDash" Classes="MenuButton" Click="OnMenuClick"
-                    Background="{DynamicResource MainAccentBrush}">
+            <Button x:Name="BtnDash" Classes="MenuButton Active" Click="OnMenuClick">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="ViewDashboard" Width="18" Height="18" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_MenuDashboard}"

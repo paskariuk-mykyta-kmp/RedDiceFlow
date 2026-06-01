@@ -27,73 +27,73 @@
             <StackPanel Grid.Column="0" Spacing="5">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <mi:MaterialIcon Kind="PackageVariantClosed" Width="28" Height="28"
-                                     Foreground="{DynamicResource MainAccent}"
+                                     Foreground="{DynamicResource MainAccentBrush}"
                                      VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_InventoryHeader}" Classes="Header" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
                 </StackPanel>
-                <TextBlock Text="{DynamicResource L_InventorySub}" Foreground="{DynamicResource TextSecondary}" FontSize="14"/>
+                <TextBlock Text="{DynamicResource L_InventorySub}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14"/>
             </StackPanel>
 
             <ComboBox Grid.Column="1" ItemsSource="{Binding SortOptions}" SelectedItem="{Binding SortMode}" VerticalAlignment="Bottom" Width="170"
-                      Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource BorderCol2}"
+                      Background="{DynamicResource PanelBgBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderCol2Brush}"
                       CornerRadius="6" Height="35"/>
 
             <TextBox Grid.Column="3" Width="250" PlaceholderText="{DynamicResource L_SearchWatermark}" Text="{Binding SearchText}" Classes="Modern" VerticalAlignment="Bottom"/>
         </Grid>
 
         <!-- Add / Edit form -->
-        <Border Background="{DynamicResource PanelBg}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2}" BorderThickness="1" Padding="20">
+        <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2Brush}" BorderThickness="1" Padding="20">
             <StackPanel Spacing="15">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <mi:MaterialIcon Kind="PlusCircleOutline" Foreground="{DynamicResource MainAccent}" Width="20" Height="20" VerticalAlignment="Center"/>
+                    <mi:MaterialIcon Kind="PlusCircleOutline" Foreground="{DynamicResource MainAccentBrush}" Width="20" Height="20" VerticalAlignment="Center"/>
                     <TextBlock Text="{DynamicResource L_QuickAdd}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding EditTargetProduct.Name, StringFormat='? {0}'}" FontWeight="Bold" FontSize="16"
-                               Foreground="{DynamicResource MainAccent}" IsVisible="{Binding IsEditMode}"/>
+                               Foreground="{DynamicResource MainAccentBrush}" IsVisible="{Binding IsEditMode}"/>
                 </StackPanel>
 
                 <Grid ColumnDefinitions="1.5*, 1*, 1*, 1*, 1*, Auto" ColumnSpacing="12">
                     <StackPanel Grid.Column="0" Spacing="5">
-                        <TextBlock Text="{DynamicResource L_NameLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_NameLabel}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewName}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Spacing="5">
-                        <TextBlock Text="{DynamicResource L_PriceLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_PriceLabel}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewPrice}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Spacing="5">
-                        <TextBlock Text="{DynamicResource L_StockLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_StockLabel}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
                         <TextBox Classes="ModernInput" Text="{Binding NewStock}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="3" Spacing="5">
-                        <TextBlock Text="{DynamicResource L_GenreLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_GenreLabel}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
                         <ComboBox ItemsSource="{Binding GenreOptions}" SelectedItem="{Binding NewGenre}" Height="35"
-                                  Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource BorderCol2}"
+                                  Background="{DynamicResource AppBgBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderCol2Brush}"
                                   CornerRadius="6" VerticalContentAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4" Spacing="5">
-                        <TextBlock Text="{DynamicResource L_PlayersLabel}" FontSize="11" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="{DynamicResource L_PlayersLabel}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
                         <ComboBox ItemsSource="{Binding PlayersCountOptions}" SelectedItem="{Binding NewPlayersCount}" Height="35"
-                                  Background="{DynamicResource AppBg}" BorderBrush="{DynamicResource BorderCol2}"
+                                  Background="{DynamicResource AppBgBrush}" Foreground="{DynamicResource TextPrimaryBrush}" BorderBrush="{DynamicResource BorderCol2Brush}"
                                   CornerRadius="6" VerticalContentAlignment="Center"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
                         <Button Command="{Binding AddProduct}" 
                                 Height="35" Padding="16,0"
-                                Background="{DynamicResource MainAccent}" Foreground="White" 
+                                Background="{DynamicResource MainAccentBrush}" Foreground="White" 
                                 FontWeight="Bold"
                                 Content="{DynamicResource L_ConfirmBtn}"
                                 IsVisible="{Binding !IsEditMode}"/>
                         <Button Command="{Binding AddProduct}" 
                                 Height="35" Padding="16,0"
-                                Background="{DynamicResource MainAccent}" Foreground="White" 
+                                Background="{DynamicResource MainAccentBrush}" Foreground="White" 
                                 FontWeight="Bold"
                                 Content="{DynamicResource L_SaveBtn}"
                                 IsVisible="{Binding IsEditMode}"/>
                         <Button Command="{Binding CancelEditCommand}"
                                 Height="35" Padding="16,0"
-                                Background="{DynamicResource PanelBg}" BorderBrush="{DynamicResource BorderCol2}"
-                                BorderThickness="1" Foreground="{DynamicResource TextPrimary}"
+                                Background="{DynamicResource PanelBgBrush}" BorderBrush="{DynamicResource BorderCol2Brush}"
+                                BorderThickness="1" Foreground="{DynamicResource TextPrimaryBrush}"
                                 Content="{DynamicResource L_CancelBtn}"
                                 IsVisible="{Binding IsEditMode}"/>
                     </StackPanel>
@@ -102,47 +102,47 @@
         </Border>
 
         <!-- Table -->
-        <Border Background="{DynamicResource PanelBg}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2}" BorderThickness="1" ClipToBounds="True">
+        <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="12" BorderBrush="{DynamicResource BorderCol2Brush}" BorderThickness="1" ClipToBounds="True">
             <StackPanel>
-                <Border Background="{DynamicResource TableHeaderBg}" Padding="20,12">
+                <Border Background="{DynamicResource TableHeaderBgBrush}" Padding="20,12">
                     <Grid ColumnDefinitions="1.5*, 0.8*, 0.8*, 0.8*, 0.8*, 1.5*">
-                        <TextBlock Grid.Column="0" Text="{DynamicResource L_TableProduct}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="1" Text="{DynamicResource L_TablePrice}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="2" Text="{DynamicResource L_TableStock}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="3" Text="{DynamicResource L_TablePlayers}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="4" Text="{DynamicResource L_TableStatus}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy"/>
-                        <TextBlock Grid.Column="5" Text="{DynamicResource L_TableActions}" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="Heavy" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource L_TableProduct}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource L_TablePrice}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="2" Text="{DynamicResource L_TableStock}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="3" Text="{DynamicResource L_TablePlayers}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="4" Text="{DynamicResource L_TableStatus}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Heavy"/>
+                        <TextBlock Grid.Column="5" Text="{DynamicResource L_TableActions}" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11" FontWeight="Heavy" HorizontalAlignment="Center"/>
                     </Grid>
                 </Border>
 
                 <ItemsControl ItemsSource="{Binding FilteredProducts}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Product">
-                            <Border Padding="20,12" Background="Transparent" BorderBrush="{DynamicResource BorderCol}" BorderThickness="0,0,0,1" Classes="TableRow">
+                            <Border Padding="20,12" Background="Transparent" BorderBrush="{DynamicResource BorderBrush2}" BorderThickness="0,0,0,1" Classes="TableRow">
                                 <Grid ColumnDefinitions="1.5*, 0.8*, 0.8*, 0.8*, 0.8*, 1.5*">
                                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
-                                        <TextBlock Text="{Binding Genre}" FontSize="10" Foreground="{DynamicResource MainAccent}"/>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="{Binding Genre}" FontSize="10" Foreground="{DynamicResource MainAccentBrush}"/>
                                     </StackPanel>
-                                    <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='{}{0:N2}'}" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimary}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Stock, StringFormat='{}{0} pcs'}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
-                                    <TextBlock Grid.Column="3" Text="{Binding PlayersCount}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='{}{0:N2}'}" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Stock, StringFormat='{}{0} pcs'}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding PlayersCount}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                     <Border Grid.Column="4" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                            Background="{DynamicResource BadgeBg}" IsVisible="{Binding IsLowStock}">
+                                            Background="{DynamicResource BadgeBgBrush}" IsVisible="{Binding IsLowStock}">
                                         <TextBlock Text="{Binding StockStatusText}" FontSize="10" FontWeight="Bold" Foreground="#e74c3c"/>
                                     </Border>
                                     <Border Grid.Column="4" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                            Background="{DynamicResource BadgeBg}" IsVisible="{Binding !IsLowStock}">
-                                        <TextBlock Text="{Binding StockStatusText}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}"/>
+                                            Background="{DynamicResource BadgeBgBrush}" IsVisible="{Binding !IsLowStock}">
+                                        <TextBlock Text="{Binding StockStatusText}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentGreenBrush}"/>
                                     </Border>
-                                    <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                                    <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                                         <Button Command="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).EditProductCommand}"
                                                 CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Width="30" Height="30">
-                                            <mi:MaterialIcon Kind="PencilOutline" Foreground="{DynamicResource MainAccent}"/>
+                                            <mi:MaterialIcon Kind="PencilOutline" Foreground="{DynamicResource MainAccentBrush}"/>
                                         </Button>
                                         <Button Command="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).RestockProductCommand}"
                                                 CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Width="30" Height="30"
-                                                FontWeight="Bold" Foreground="{DynamicResource AccentGreen}"
+                                                FontWeight="Bold" Foreground="{DynamicResource AccentGreenBrush}"
                                                 Content="{DynamicResource L_RestockBtn}"/>
                                         <Button Command="{Binding $parent[UserControl].((vm:MainWindowViewModel)DataContext).DeleteProductCommand}"
                                                 CommandParameter="{Binding}" Background="Transparent" BorderThickness="0" Width="30" Height="30">

@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Styling;
 using Material.Icons.Avalonia;
 using RedDiceFlow.ViewModels;
 using RedDiceFlow.Views;
@@ -31,20 +32,22 @@ namespace RedDiceFlow
             base.OnFrameworkInitializationCompleted();
         }
 
-        public static void SwitchTheme(bool isLight)
-        {
-            var app = (App)Current!;
-            var dicts = app.Resources.MergedDictionaries;
-            var themeUri = isLight
-                ? new Uri("avares://RedDiceFlow/Resources/LightTheme.axaml")
-                : new Uri("avares://RedDiceFlow/Resources/DarkTheme.axaml");
+public static void SwitchTheme(bool isLight)
+{
+    var app = (App)Current!;
+    app.RequestedThemeVariant = isLight ? ThemeVariant.Light : ThemeVariant.Dark;
 
-            var newDict = new ResourceInclude(themeUri) { Source = themeUri };
-            if (dicts.Count > 0)
-                dicts[0] = newDict;
-            else
-                dicts.Add(newDict);
-        }
+    var dicts = app.Resources.MergedDictionaries;
+    var themeUri = isLight
+        ? new Uri("avares://RedDiceFlow/Resources/LightTheme.axaml")
+        : new Uri("avares://RedDiceFlow/Resources/DarkTheme.axaml");
+
+    var newDict = new ResourceInclude(themeUri) { Source = themeUri };
+    if (dicts.Count > 0)
+        dicts[0] = newDict;
+    else
+        dicts.Add(newDict);
+}
 
         public static void SwitchLanguage(bool isUkrainian)
         {

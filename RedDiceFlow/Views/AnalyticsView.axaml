@@ -50,6 +50,7 @@
                     <ComboBox ItemsSource="{Binding ReportPeriods}"
                               SelectedIndex="{Binding SelectedReportPeriodIndex}"
                               Width="140"
+                              Foreground="{DynamicResource TextPrimaryBrush}"
                               Classes="Modern"/>
                     <Button Command="{Binding CreateManagerReport}"
                             Background="{DynamicResource MainAccentBrush}"

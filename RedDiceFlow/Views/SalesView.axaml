@@ -41,7 +41,7 @@
                                    Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                         <TextBox Text="{Binding SaleSearchText}"
-                                 Watermark="{DynamicResource L_SearchProductPlaceholder}"
+                                 PlaceholderText="{DynamicResource L_SearchProductPlaceholder}"
                                  Background="{DynamicResource PanelBgBrush}"
                                  Foreground="{DynamicResource TextPrimaryBrush}"
                                  BorderBrush="{DynamicResource BorderBrush2}"

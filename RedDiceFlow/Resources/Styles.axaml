@@ -38,6 +38,15 @@
         <Setter Property="CornerRadius" Value="5"/>
     </Style>
 
+    <Style Selector="TextBox.ModernInput">
+        <Setter Property="Background" Value="{DynamicResource AppBgBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderCol2Brush}"/>
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
     <Style Selector="Border.TableRow">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Transitions">
